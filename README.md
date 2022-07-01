@@ -4,7 +4,7 @@
 TBD
 
 ## How it works
-1. we access CAN bus via (SocketCAN)[https://www.kernel.org/doc/html/latest/networking/can.html] (using FFI from [fsocket](https://github.com/fjames86/fsocket) library)
+1. we access CAN bus via [SocketCAN](https://www.kernel.org/doc/html/latest/networking/can.html) (using FFI from [fsocket](https://github.com/fjames86/fsocket) library)
 2. we use a simple configuration file to describe the structure of a CAN frame payload
 3. we send decoded data to a monitor written with [CLX](https://sharplispers.github.io/clx/)
 
