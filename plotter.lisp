@@ -23,9 +23,11 @@
   (round (* plot-window-size (/ (- y-max y0) (- y-max y-min)))))
 
 (defun compute-time (data-list plot-window-size t-max x-shift)
+  (format t "t0-start = ~a~%" (caar data-list))
   (let ((x-start (round (* plot-window-size (/ (caar data-list) t-max))))
 	(size (list-length data-list)))
-    (loop for i from 0 below (- size 1)
+    ;;(format t "x-start = ~a~%" x-start)
+    (loop for i from 0 below size
 	  collect (- x-start (* i x-shift)))))
 		   
 (defun reset-data (t-max dt data)
@@ -180,7 +182,7 @@
 		       (sleep 0.1))
 
 		     (loop :repeat n do
-		       (format t "time elapsed = ~a~%" (* dt (incf c)))
+		       ;;(format t "time elapsed = ~a~%" (* dt (incf c)))
 		       (copy-area plot-window canvas x-shift 0 plot-window-size plot-window-size plot-window 0 0)		       
 		       (let ((pd (sb-concurrency:dequeue *plot-queue*)))
 			 ;; draw grid
@@ -216,33 +218,45 @@
 				     ;;(format t "data = ~a~%" data)
 				     (let* ((data (reset-data t-max dt data))
 					    (data-list (split-data data)))
-				       (format t "data list = ~a =>~%" data-list)
+				       ;;(format t "data list = ~a =>~%" data-list)
 				       ;; (dolist (dl data-list)					
 				       ;; 	 (let ((pb (make-plot-buf dl plot-window-size t-max x-shift y-min y-max)))
 				       ;; 	   (format t "new buf = ~a~%" pb)
 				       ;; 	   (draw-lines plot-window canvas pb)))
 				       				       
-				       ;;(format t "data-list = ~a => " data-list) ;; dt = 0.1 strictly. 
+				       (format t "data-list = ~a~%" data-list) ;; dt = 0.1 strictly. 
 				       ;;(format t "reset-data = ~a~%" data)
 				       ;;(format t "last = ~a~%" (get-last-t0 data-list))
 				       ;;(format t "start x-grid = ~a~%" (- dx-grid grid-c))
 				       ;;(format t "dx-grid = ~a, grid-c = ~a, x-end = ~a. x-shit = ~a~%" dx-grid grid-c x-end x-shift)
 				       
 				       (dolist (data-item data-list) 				       				       
-					 (let ((plot-buf))					   
-					   (dolist (item data-item)
-					     (destructuring-bind (t0 . y0) item					       
-					       (let ((y0-mapped (map-y0-to-plot y0 y-min y-max plot-window-size)))
-						 ;;(format t "t0 = ~a, (* plot-window-size (/ t0 t-max)) = ~a, x0 = ~a~%" t0 (* plot-window-size (/ t0 t-max)) (round (* plot-window-size (/ t0 t-max))))
-						 (push y0-mapped plot-buf)
-						 (push (round (* plot-window-size (/ t0 t-max))) plot-buf)))
-					     (format t "buf = ~a~%" plot-buf)		     
-					     (draw-lines plot-window canvas plot-buf))))
+					 (let ((plot-buf)
+					       (y0-mapped-list (mapcar #'(lambda (item) (map-y0-to-plot (cdr item) y-min y-max plot-window-size)) data-item))
+					       (t0-mapped-list (compute-time data-item plot-window-size t-max x-shift)))
+					   (format t "t0-mapped-list = ~a~%" t0-mapped-list)
+					   ;;(format t "y0-mapped-list = ~a~%" y0-mapped-list)
+					   (loop for y0 in y0-mapped-list
+						 for t0 in t0-mapped-list do
+						   (push y0 plot-buf)						 
+					    	   (push t0 plot-buf))
+					   (draw-lines plot-window canvas plot-buf)))
 
-				       )))))
-			     (progn			     
-			       (push NIL data)
-			       (if (= data-counter data-length-max)			     			     
+				       (dolist (data-item data-list) 				       				       
+					 (let ((plot-buf)					 
+					       (y0-mapped-list (mapcar #'(lambda (item) (map-y0-to-plot (cdr item) y-min y-max plot-window-size)) data-item))
+					       (t0-mapped-list (mapcar #'(lambda (item) (round (* plot-window-size (/ (car item) t-max)))) data-item)))
+					   (format t "t0-mapped-list = ~a~%" t0-mapped-list)
+					   ;;(format t "y0-mapped-list = ~a~%" y0-mapped-list)
+					   (loop for y0 in y0-mapped-list
+						 for t0 in t0-mapped-list do
+						   (push y0 plot-buf)						 
+					    	   (push t0 plot-buf))
+					   (draw-lines plot-window canvas plot-buf)))
+				     )))))
+			 (progn			     
+				 (push NIL data)
+				 (if (= data-counter data-length-max)			     			     
 				   (setq data (butlast data))			     			       
 				   (incf data-counter))))
 			 (create-horizontal-grid-lines plot-window grid plot-window-size (- plot-window-size x-shift) y-coords)
