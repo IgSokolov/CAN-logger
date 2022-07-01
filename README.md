@@ -16,7 +16,7 @@ TBD
 
 ## How to use
 ```
-./can-looger -p "path-to-config-file" -c "name-of-can-interface"
+./can-logger -p "path-to-config-file" -c "name-of-can-interface"
 ```
 ## Tested
 SBCL 2.1.9
