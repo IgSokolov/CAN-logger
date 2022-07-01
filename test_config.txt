@@ -1,0 +1,26 @@
+can_id = {112}
+signal = {analog}
+byte_swap = {true}
+data_type_mask = {u8, u16, u16, u16}
+bit_factor_mask = {1.0, 1.0, 1.0, 1.0}
+physical_factor_mask = {1, 1e-4, 1e-4, 1e-4}
+physical_offset_mask = {0, 0, 0, 0}
+label = {Zelle_1_Spannung_Ist_V, Zelle_2_Spannung_Ist_V, Zelle_3_Spannung_Ist_V, Zelle_4_Spannung_Ist_V, Zelle_5_Spannung_Ist_V, Zelle_6_Spannung_Ist_V, Zelle_7_Spannung_Ist_V, Zelle_8_Spannung_Ist_V, Zelle_9_Spannung_Ist_V, Zelle_10_Spannung_Ist_V, Zelle_11_Spannung_Ist_V, Zelle_12_Spannung_Ist_V, Zelle_13_Spannung_Ist_V, Zelle_14_Spannung_Ist_V, Zelle_15_Spannung_Ist_V, Zelle_16_Spannung_Ist_V, Zelle_17_Spannung_Ist_V, Zelle_18_Spannung_Ist_V, Zelle_19_Spannung_Ist_V, Zelle_20_Spannung_Ist_V, Zelle_21_Spannung_Ist_V}
+
+can_id = {385}
+signal = {analog}
+byte_swap = {true}
+data_type_mask = {i16, i16, i16, i16}
+bit_factor_mask = {610.4e-9, 610.4e-9, 610.4e-9, 610.4e-9}
+physical_factor_mask = {12500.0, 1, 25000.0, 187500.0}
+physical_offset_mask = {-50.0, 0, -100.0, -750.0}
+label = {MFM_H2_Ist_nl_min,None,Hall_Sensor_Strom_Ist_A, MFC_Luft_Ist_nl_min}
+
+can_id = {485}
+signal = {analog}
+byte_swap = {true}
+data_type_mask = {i16, i16, i16, i16}
+bit_factor_mask = {305.1e-6, 305.1e-6, 305.2e-6, 305.2e-6}
+physical_factor_mask = {12.5, 10.0, 1.0, 1}
+physical_offset_mask = {-25.0, 0, 0, 0}
+label = {Kuehlmit_3WG_Ventil_Zustand_Ist_Prozent,Kuehlmobil_3WG_Ventil_Zustand_Ist_Prozent,None,None}
