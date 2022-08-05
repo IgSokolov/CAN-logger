@@ -103,7 +103,22 @@
     (map-window main-window)
     (map-window plot-window)
     (values plot-window grid canvas)))
-    
+
+(defun draw-initial-grid (display plot-window grid plot-window-size x-coords y-coords)
+  (loop :repeat 2 do ;; 2 because otherwise no result obtained from x11 server. a bug?
+    (create-horizontal-grid-lines plot-window grid plot-window-size 0 y-coords)
+    (create-vertical-grid-lines plot-window grid plot-window-size (append x-coords (list (- plot-window-size 1))))
+    (display-force-output display)
+    (sleep 0.1)))
+
+(defun init-coordinate-settings (plot-window-size n-yticks t-max dt)
+   (let ((y-coords (cdr (linspace 0 plot-window-size n-yticks)))			 
+	 (grid-c 0)		     
+	 (data-length-max (round (/ t-max dt)))
+	 (data-counter 0)
+	 (x-shift (round (* plot-window-size (/ dt t-max)))))
+     (values y-coords x-shift data-length-max grid-c data-counter)))
+
 (defun plot-loop (n dt)
   (multiple-value-bind (display screen colormap) (make-default-display-screen-colormap)
     (multiple-value-bind (window-size x-start x-end plot-window-size) (make-plot-window 1024 0.1 0.8)
@@ -117,19 +132,9 @@
 		   (n-xticks 10)
 		   (plot-window plot-window))
 	       (multiple-value-bind (x-coords dx-grid) (linspace 0 plot-window-size n-xticks)
-		 ;;(setq x-coords (cdr x-coords))		   
-		 (let ((y-coords (cdr (linspace 0 plot-window-size n-yticks)))			 
-		       (grid-c 0)		     
-		       (data-length-max (round (/ t-max dt)))
-		       (data-counter 0)
-		       (x-shift (round (* plot-window-size (/ dt t-max)))))
-		   
-		   (loop :repeat 2 do
-		     (create-horizontal-grid-lines plot-window grid plot-window-size 0 y-coords)
-		     (create-vertical-grid-lines plot-window grid plot-window-size (append x-coords (list (- plot-window-size 1))))
-		     (display-force-output display)
-		     (sleep 0.1))
-
+		 ;;(setq x-coords (cdr x-coords))
+		 (multiple-value-bind (y-coords x-shift data-length-max grid-c data-counter) (init-coordinate-settings plot-window-size n-yticks t-max dt)		 
+		   (draw-initial-grid display plot-window grid plot-window-size x-coords y-coords)		   		   
 		   (loop :repeat n do
 		     ;;(format t "time elapsed = ~a~%" (* dt (incf c)))
 		     (copy-area plot-window canvas x-shift 0 plot-window-size plot-window-size plot-window 0 0)		       
@@ -195,6 +200,3 @@
   ;;(can-logger.can2data::read-can-data)
   (can-logger.can2data::generate-data n)
   (plot-loop n dt))
-  
-;; wrong y before/after redraw
-;; update lot wrong point
