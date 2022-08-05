@@ -141,24 +141,27 @@
 		     (let ((pd (sb-concurrency:dequeue *plot-queue*)))
 		       ;; draw horizontal grid
 		       (if (>= grid-c dx-grid)
-			   (progn			       
+			   (progn
+			     ;; one pixel back to make the line visible
 			     (create-vertical-grid-lines plot-window grid plot-window-size (list (- plot-window-size 1)))
 			     (setq grid-c 0))
 			   (incf grid-c x-shift))
 		       ;; process data from queue
 		       (if pd  
-			   (let ((y0 (plot-data-y pd)))				 	 
-			     (push (cons NIL y0) data)
+			   (let ((y0 (plot-data-y pd)))
+			     ;; we consing NIL because we dont need absolute timestamp 99.9 % of time.
+			     ;; Only if we need to rescale and redraw the plot, NILs are filled with time values,
+			     ;; which are computed at every redraw cycle.
+			     (push (cons NIL y0) data) 
 			     ;; keep fixed number of elements to plot
 			     (if (= data-counter data-length-max)			     			     
 				 (setq data (butlast data))			     			       
-				 (incf data-counter))			     
-			     ;; plot if possible
- 			     (when (cdadr data)
+				 (incf data-counter))
+ 			     (when (cdadr data) ;; ensures the dataset is larger then ((NIL . 0.0d0))
 			       (let ((y0-mapped (map-y0-to-plot y0 y-min y-max plot-window-size))
 				     (prev-point (map-y0-to-plot (cdadr data) y-min y-max plot-window-size)))
 				 (draw-line plot-window canvas (- plot-window-size x-shift) prev-point (- plot-window-size 1) y0-mapped)))
-			     ;; check if we need rescaling
+			     ;; check if we need rescaling (bug here. see commit 0c04f5b)
 			     (multiple-value-bind (new-min new-max) (recompute-y-limits y0 y-min y-max (cdr data))
 			       (when (or (not (= new-min y-min))
 					 (not (= new-max y-max)))
@@ -169,6 +172,7 @@
 				   (create-vertical-grid-lines plot-window grid plot-window-size (linspace-2 (- dx-grid grid-c) x-end dx-grid))
 				   (setq y-min new-min
 					 y-max new-max)
+				   ;; redraw data
 				   (let* ((data (reset-data t-max dt data))
 					  (data-list (split-data data)))				       				       				       
 				     (dolist (data-item data-list) 				       				       
@@ -180,7 +184,7 @@
 						 (push y0 plot-buf)						 
 					    	 (push t0 plot-buf))
 					 (draw-lines plot-window canvas plot-buf))))))))				     
-			   (progn			     
+			   (progn	     
 			     (push NIL data)
 			     (if (= data-counter data-length-max)			     			     
 				 (setq data (butlast data))			     			       
