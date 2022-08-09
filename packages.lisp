@@ -17,9 +17,9 @@
 (defpackage :can-logger.can2data
   (:use :cl :can-logger.parser :fsocket)
   (:export
-
-   :plot-data-timestamp
+   
    :plot-data-y
+   :plot-data-label
    :*plot-queue*))
 
 (defpackage :can-logger.plotter

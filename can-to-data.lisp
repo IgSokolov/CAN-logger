@@ -1,7 +1,6 @@
 (in-package :can-logger.can2data)
 
 (eval-when (:compile-toplevel :load-toplevel :execute)
-
   (require :sb-concurrency))
 ;; (defstruct can-packet
 ;;   id
@@ -16,7 +15,7 @@
 ;;    (can-packet-timestamp packet)
 ;;    (can-packet-origin packet)))
 
-(defstruct plot-data y timestamp lable)
+(defstruct plot-data y label)
 
 (defun bytes-to-integer (bytes type endiannes)
   "Converts byte array to integer"
@@ -84,6 +83,8 @@
 (defun process-can-frame (can-frame)
   "decode data and send it to plotter"
   (multiple-value-bind (can-id data timestamp origin) (parse-can-packet can-frame)
+    (declare (ignore timestamp))
+    (format t "(do we need it ?) origin = ~a~%" origin)
     (let ((xnet-item (gethash can-id *can-db*)))
       (when xnet-item
 	(with-accessors ((signal-type signal-type)
@@ -105,21 +106,19 @@
 				       :y (+ physical-offset
 					     (* bit-factor
 						physical-factor
-						(bytes-to-integer bytes data-type endiannes)))
-				       :timestamp (make-plot-timestamp timestamp)
-				       :lable l)))
+						(bytes-to-integer bytes data-type endiannes)))				       
+				       :label l)))
 		      (sb-concurrency:enqueue plot-value *plot-queue*))		      
 		    (setq data rest)))))))) ;; todo multiplexed
 
 (defun generate-data (n)
   (loop for i from 0 upto n do
     (let ((plot-value (make-plot-data
-		       ;;:y (* 0.1 i (sin (* 2 pi 0.1 0.2 i)))
-		       :y i
+		       ;;:y (* 0.1 i (sin (* 2 pi 0.01 i)))
+		       :y (random 10)
 		       ;;:y 0.5
-		       :timestamp i
-		       :lable "test-data")))
-      (if (and (< i 20) (> i 10))
+		       :label (nth (random 2) (list "label-1" "label-2")))))
+      (if (and (< i 10) (> i 5))
 	  (sb-concurrency:enqueue NIL *plot-queue*)
 	  (sb-concurrency:enqueue plot-value *plot-queue*)))))
 
