@@ -146,8 +146,8 @@
 	(unwind-protect
 	     (let ((canvas-obj-db)
 		   (t-max 10)
-		   (y-min -1)
-		   (y-max 1)
+		   (y-min -5)
+		   (y-max 5)
 		   (n-yticks 10)
 		   (n-xticks 10)
 		   (plot-window plot-window)) ;; shared between canvas-objs
@@ -157,12 +157,12 @@
 		   (draw-initial-grid display plot-window grid plot-window-size x-coords y-coords)		   		   
 		   (loop :repeat n do
 		     ;; draw horizontal grid
-		       (if (>= grid-c dx-grid)
-			   (progn
-			     ;; one pixel back to make the line visible
-			     (create-vertical-grid-lines plot-window grid plot-window-size (list (- plot-window-size 1)))
-			     (setq grid-c 0))
-			   (incf grid-c x-shift))
+		     (if (>= grid-c dx-grid)
+			 (progn
+			   ;; one pixel back to make the line visible
+			   (create-vertical-grid-lines plot-window grid plot-window-size (list (- plot-window-size 1)))
+			   (setq grid-c 0))
+			 (incf grid-c x-shift))
 		     ;;(format t "time elapsed = ~a~%" (* dt (incf c)))		     
 		     (let ((pd (sb-concurrency:dequeue *plot-queue*)))		      
 		       ;; process data from queue
@@ -178,7 +178,7 @@
 					 canvas-obj-db new-db)))
 			       (mapc #'(lambda (canvas-obj) ;; or just one? check it! 
 					 (copy-area plot-window (canvas-obj-canvas canvas-obj) x-shift 0 plot-window-size plot-window-size plot-window 0 0))
-				     canvas-obj-db)				     			       
+				     canvas-obj-db)    			       
 			       ;; we consing NIL because we dont need absolute timestamp 99.9 % of time.
 			       ;; Only if we need to rescale and redraw the plot, NILs are filled with time values,
 			       ;; which are computed at every redraw cycle.
@@ -187,7 +187,8 @@
 			       (if (= data-counter data-length-max)
 				   (mapc #'(lambda (obj) (setf (canvas-obj-data obj) (butlast (canvas-obj-data obj)))) canvas-obj-db)
 				   (incf data-counter))
- 			       (when (cdadr (canvas-obj-data canvas-obj)) ;; ensures the dataset is larger then ((NIL . 0.0d0))
+			       ;;(format t "data = ~a~%" (canvas-obj-data canvas-obj))
+ 			       (when (cdadr (canvas-obj-data canvas-obj)) ;; ensures the dataset is larger then ((NIL . 0.0d0))				 
 				 (let ((y0-mapped (map-y0-to-plot y0 y-min y-max plot-window-size))
 				       (prev-point (map-y0-to-plot (cdadr (canvas-obj-data canvas-obj)) y-min y-max plot-window-size)))
 				   (draw-line plot-window (canvas-obj-canvas canvas-obj) (- plot-window-size x-shift) prev-point (- plot-window-size 1) y0-mapped)))
@@ -213,19 +214,19 @@
 						 for t0 in t0-mapped-list do
 						   (push y0 plot-buf)						 
 					    	   (push t0 plot-buf))
-					   (draw-lines plot-window (canvas-obj-canvas canvas-obj) plot-buf))))))))
-			     (progn
-			       (mapc #'(lambda (obj) (push NIL (canvas-obj-data obj))) canvas-obj-db)
-			       (if (= data-counter data-length-max)
-				   (mapc #'(lambda (obj) (setf (canvas-obj-data obj) (butlast (canvas-obj-data obj)))) canvas-obj-db)
-				   (incf data-counter)))))
+					   (draw-lines plot-window (canvas-obj-canvas canvas-obj) plot-buf)))))))))
+			   (progn			     
+			     (mapc #'(lambda (obj) (push NIL (canvas-obj-data obj))) canvas-obj-db)
+			     (if (= data-counter data-length-max)
+				 (mapc #'(lambda (obj) (setf (canvas-obj-data obj) (butlast (canvas-obj-data obj)))) canvas-obj-db)
+				 (incf data-counter))))
 		       (create-horizontal-grid-lines plot-window grid plot-window-size (- plot-window-size x-shift) y-coords)
 		       (display-force-output display)
-		       (sleep dt)))))))
-	(sleep 1)))
-    (sleep 1)
-    (display-finish-output display)
-    (CLOSE-DISPLAY display)))
+		       (sleep dt)))
+		   (sleep 1))))
+	  (sleep 1)
+	  (display-finish-output display)
+	  (CLOSE-DISPLAY display))))))
 
 (defun test (n dt)
   (loop for x = (sb-concurrency:dequeue *plot-queue*) do
