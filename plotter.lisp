@@ -111,9 +111,9 @@
    :background (screen-white-pixel screen)
    :foreground (alloc-color colormap (lookup-color colormap color))))
 
-(defun add-canvas-obj (db label plot-window screen colormap)
+(defun add-canvas-obj (db label plot-window screen colormap color)
   (let ((obj (make-canvas-obj
-	      :canvas (make-canvas plot-window screen colormap "green") ;; fixme: pick up random color
+	      :canvas (make-canvas plot-window screen colormap color)
 	      :label label)))
     (push obj db)
     (values obj db)))
@@ -145,6 +145,7 @@
       (multiple-value-bind (plot-window grid) (make-x11-layers screen window-size colormap x-start plot-window-size)
 	(unwind-protect
 	     (let ((canvas-obj-db)
+		   (list-of-colors (list "green" "red"))
 		   (t-max 10)
 		   (y-min -5)
 		   (y-max 5)
@@ -173,7 +174,7 @@
 			       ;; push NIL-data to the rest of canvasses
 			       (mapc #'(lambda (obj) (push NIL (canvas-obj-data obj))) rest-canvas-objs)			       
 			       (unless canvas-obj
-				 (multiple-value-bind (new-canvas-obj new-db) (add-canvas-obj canvas-obj-db label plot-window screen colormap)
+				 (multiple-value-bind (new-canvas-obj new-db) (add-canvas-obj canvas-obj-db label plot-window screen colormap (pop list-of-colors))
 				   (setq canvas-obj new-canvas-obj
 					 canvas-obj-db new-db)))
 			       (mapc #'(lambda (canvas-obj) ;; or just one? check it! 
