@@ -36,7 +36,6 @@
        (+ y0 (* (abs y0) 0.1))
        y-max)))
 
-
 (defun split-data (data)
   (flet ((delimiterp (item) (null item)))
     (split-sequence-by-delimiter data #'delimiterp)))
@@ -138,6 +137,7 @@
 	(unwind-protect
 	     (let ((canvas-obj-db)
 		   (list-of-colors (list "green" "red"))
+		   (point-size 4)
 		   (t-max 10)
 		   (y-min -1)
 		   (y-max 1)
@@ -185,10 +185,9 @@
 				     (prev-point (cdadr (canvas-obj-data canvas-obj))))
  				 (if prev-point ;; is the dataset larger then ((NIL . 0.0d0)) ?
 				     (let ((prev-point-mapped (map-y0-to-plot prev-point y-min y-max plot-window-size)))
-				       (draw-arc plot-window (canvas-obj-canvas canvas-obj) (- (- plot-window-size 2) 2) (- y0-mapped 2) 4 4 0 (* 2 pi) :fill-p)
+				       (draw-arc plot-window (canvas-obj-canvas canvas-obj) (- (- plot-window-size (/ point-size 2)) 2) (- y0-mapped (/ point-size 2)) point-size point-size 0 (* 2 pi) :fill-p)
 				       (draw-line plot-window (canvas-obj-canvas canvas-obj) (- plot-window-size x-shift) prev-point-mapped (- plot-window-size 2) y0-mapped))				     
-				     (draw-arc plot-window (canvas-obj-canvas canvas-obj) (- (- plot-window-size 2) 2) (- y0-mapped 2) 4 4 0 (* 2 pi) :fill-p)))				     
-				   
+				     (draw-arc plot-window (canvas-obj-canvas canvas-obj) (- (- plot-window-size (/ point-size 2)) 2) (- y0-mapped (/ point-size 2)) point-size point-size 0 (* 2 pi) :fill-p)))				   
 			       ;; check if we need rescaling (bug here. see commit 0c04f5b)
 			       (multiple-value-bind (new-min new-max) (recompute-y-limits y0 y-min y-max)
 				 (when (or (not (= new-min y-min))
@@ -215,13 +214,13 @@
 						   for t0 in t0-mapped-list do
 						     (push y0 plot-buf-1)
 						     (push t0 plot-buf-1)
-						     (loop for x in (list (* 2 pi) 0 4 4 (- y0 2) (- t0 2)) do
+						     (loop for x in (list (* 2 pi) 0 point-size point-size (- y0 (/ point-size 2)) (- t0 (/ point-size 2))) do
 						       (push x plot-buf-2)))						     						   
 					     (if (> (list-length plot-buf-1) 2) ;; cdadr ?
 						 (progn
 						   (draw-lines plot-window (canvas-obj-canvas canvas-obj) plot-buf-1)
 						   (draw-arcs plot-window (canvas-obj-canvas canvas-obj) plot-buf-2 :fill-p))						   
-						 (draw-arc plot-window (canvas-obj-canvas canvas-obj) (- (first plot-buf-1) 2) (- (second plot-buf-1) 2) 4 4 0 (* 2 pi) :fill-p)
+						 (draw-arc plot-window (canvas-obj-canvas canvas-obj) (- (first plot-buf-1) (/ point-size 2)) (- (second plot-buf-1) (/ point-size 2)) point-size point-size 0 (* 2 pi) :fill-p)
 						 ))))))))))			       
 			   (progn			     
 			     (mapc #'(lambda (obj) (push NIL (canvas-obj-data obj))) canvas-obj-db)
