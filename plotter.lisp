@@ -198,32 +198,46 @@
 				     (draw-arc plot-window (canvas-obj-canvas canvas-obj) (- (- plot-window-size 2) 2) (- y0-mapped 2) 4 4 0 (* 2 pi) :fill-p)))				     
 				   
 			       ;; check if we need rescaling (bug here. see commit 0c04f5b)
-			       ;; (multiple-value-bind (new-min new-max) (recompute-y-limits y0 y-min y-max (cdr (canvas-obj-data canvas-obj)))
-			       ;; 	 (when (or (not (= new-min y-min))
-			       ;; 		   (not (= new-max y-max)))
-			       ;; 	   (progn ;; redraw everything				     
-			       ;; 	     (clear-area plot-window)
- 			       ;; 	     ;; redraw grid				     
-			       ;; 	     (create-horizontal-grid-lines plot-window grid plot-window-size 0 y-coords)
-			       ;; 	     (create-vertical-grid-lines plot-window grid plot-window-size (linspace-2 (- dx-grid grid-c) x-end dx-grid))
-			       ;; 	     (setq y-min new-min
-			       ;; 		   y-max new-max)
-			       ;; 	     ;; redraw data
-			       ;; 	     (dolist (canvas-obj canvas-obj-db)
-			       ;; 	       (let* ((data (reset-data t-max dt (canvas-obj-data canvas-obj)))
-			       ;; 		      (data-list (split-data data)))
-			       ;; 		 ;;(format t "obj = ~a~%data = ~a~%data-list = ~a~%" canvas-obj data data-list)
-			       ;; 		 (dolist (data-item data-list)
-			       ;; 		   ;;(format t "data item = ~a~%" data-item)
-			       ;; 		   (let ((plot-buf)					 
-			       ;; 			 (y0-mapped-list (mapcar #'(lambda (item) (map-y0-to-plot (cdr item) y-min y-max plot-window-size)) data-item))
-			       ;; 			 (t0-mapped-list (mapcar #'(lambda (item) (round (* plot-window-size (/ (car item) t-max)))) data-item)))
-			       ;; 		     (loop for y0 in y0-mapped-list
-			       ;; 			   for t0 in t0-mapped-list do
-			       ;; 			     (push y0 plot-buf)						 
-			       ;; 		    	     (push t0 plot-buf))
-			       ;; 		     ;;(format t "plot-buf = ~a~%" plot-buf)
-			       ;; 		     (draw-lines plot-window (canvas-obj-canvas canvas-obj) plot-buf))))))))
+			       (multiple-value-bind (new-min new-max) (recompute-y-limits y0 y-min y-max (cdr (canvas-obj-data canvas-obj)))
+				 (when (or (not (= new-min y-min))
+					   (not (= new-max y-max)))
+				   (progn ;; redraw everything				     
+				     (clear-area plot-window)
+ 				     ;; redraw grid				     
+				     (create-horizontal-grid-lines plot-window grid plot-window-size 0 y-coords)
+				     (create-vertical-grid-lines plot-window grid plot-window-size (linspace-2 (- dx-grid grid-c) x-end dx-grid))
+				     (setq y-min new-min
+					   y-max new-max)
+				     ;; redraw data
+				     (dolist (canvas-obj canvas-obj-db)
+				       (let* ((data (reset-data t-max dt (canvas-obj-data canvas-obj)))
+					      (data-list (split-data data)))
+					 ;;(format t "obj = ~a~%data = ~a~%data-list = ~a~%" canvas-obj data data-list)
+					 (dolist (data-item data-list)
+					   ;;(format t "data item = ~a~%" data-item)
+					   (let ((plot-buf-1)
+						 (plot-buf-2)
+						 (y0-mapped-list (mapcar #'(lambda (item) (map-y0-to-plot (cdr item) y-min y-max plot-window-size)) data-item))
+						 (t0-mapped-list (mapcar #'(lambda (item) (round (* plot-window-size (/ (car item) t-max)))) data-item)))
+					     (loop for y0 in y0-mapped-list
+						   for t0 in t0-mapped-list do
+						     (push y0 plot-buf-1)
+						     (push t0 plot-buf-1)
+						     
+						     (push (* 2 pi) plot-buf-2)
+						     (push 0 plot-buf-2)
+						     (push 4 plot-buf-2)
+						     (push 4 plot-buf-2)						     						     
+						     (push (- y0 2) plot-buf-2)
+						     (push (- t0 2) plot-buf-2)						     						     
+						   )
+					     (if (> (list-length plot-buf-1) 2) ;; cdadr ?
+						 (progn
+						   (draw-lines plot-window (canvas-obj-canvas canvas-obj) plot-buf-1)
+						   (draw-arcs plot-window (canvas-obj-canvas canvas-obj) plot-buf-2 :fill-p))						   
+						 (draw-arc plot-window (canvas-obj-canvas canvas-obj) (- (first plot-buf-1) 2) (- (second plot-buf-1) 2) 4 4 0 (* 2 pi) :fill-p)
+						 ))))))))
+			       
 
 			       ))
 			   (progn			     
