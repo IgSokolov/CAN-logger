@@ -38,10 +38,10 @@
 	;;(format t "smallest = ~a, biggest = ~a~%" smallest biggest)
 	(values
 	 (if (< y0 smallest)       
-	     (coerce (- y0 (* (abs y0) 0.1)) 'short-float)
+	     (- y0 (* (abs y0) 0.1))
 	     y-min)
 	 (if (> y0 biggest)       
-	     (coerce (+ y0 (* (abs y0) 0.1)) 'short-float)
+	     (+ y0 (* (abs y0) 0.1))
 	     y-max)))
       (values y-min y-max)))
 
@@ -223,7 +223,7 @@
 						   for t0 in t0-mapped-list do
 						     (push y0 plot-buf-1)
 						     (push t0 plot-buf-1)
-						     (loop for x in (list (* 2 pi) 0 4 4  (- y0 2) (- t0 2)) do
+						     (loop for x in (list (* 2 pi) 0 4 4 (- y0 2) (- t0 2)) do
 						       (push x plot-buf-2)))						     						   
 					     (if (> (list-length plot-buf-1) 2) ;; cdadr ?
 						 (progn
