@@ -26,24 +26,16 @@
 				 (cons (- t-max (* (incf i) dt)) (cdr point))
 				 (progn (incf i) NIL)))
 	    data)))
-						   
-(defun recompute-y-limits (y0 y-min y-max data)
-  (if data
-      (multiple-value-bind (smallest biggest) (loop for x in data
-						    when x
-						      minimize (cdr x) into min
-						    when x
-						      maximize (cdr x) into max
-						    finally (return (values min max)))
-	;;(format t "smallest = ~a, biggest = ~a~%" smallest biggest)
-	(values
-	 (if (< y0 smallest)       
-	     (- y0 (* (abs y0) 0.1))
-	     y-min)
-	 (if (> y0 biggest)       
-	     (+ y0 (* (abs y0) 0.1))
-	     y-max)))
-      (values y-min y-max)))
+
+(defun recompute-y-limits (y0 y-min y-max)
+  (values
+   (if (< y0 y-min)       
+       (- y0 (* (abs y0) 0.1))
+       y-min)
+   (if (> y0 y-max)       
+       (+ y0 (* (abs y0) 0.1))
+       y-max)))
+
 
 (defun split-data (data)
   (flet ((delimiterp (item) (null item)))
@@ -198,7 +190,7 @@
 				     (draw-arc plot-window (canvas-obj-canvas canvas-obj) (- (- plot-window-size 2) 2) (- y0-mapped 2) 4 4 0 (* 2 pi) :fill-p)))				     
 				   
 			       ;; check if we need rescaling (bug here. see commit 0c04f5b)
-			       (multiple-value-bind (new-min new-max) (recompute-y-limits y0 y-min y-max (cdr (canvas-obj-data canvas-obj)))
+			       (multiple-value-bind (new-min new-max) (recompute-y-limits y0 y-min y-max)
 				 (when (or (not (= new-min y-min))
 					   (not (= new-max y-max)))
 				   (progn ;; redraw everything				     
