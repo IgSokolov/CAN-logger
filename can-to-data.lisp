@@ -111,16 +111,27 @@
 		      (sb-concurrency:enqueue plot-value *plot-queue*))		      
 		    (setq data rest)))))))) ;; todo multiplexed
 
+
 (defun generate-data (n)
-  (loop for i from 0 upto n do
-    (let ((plot-value (make-plot-data
-		       ;;:y (* 0.1 i (sin (* 2 pi 0.01 i)))
-		       :y (random 10)
-		       ;;:y 0.5
-		       :label (nth (random 2) (list "label-1" "label-2")))))
-      (if (and (< i 10) (> i 5))
-	  (sb-concurrency:enqueue NIL *plot-queue*)
-	  (sb-concurrency:enqueue plot-value *plot-queue*)))))
+  (let ((switch t))
+    (loop for i from 0 upto n do
+      (let ((plot-value-1 (make-plot-data
+			   :y (* 0.5 (sin (* 2 pi 0.1 i)))
+			   ;;:y (random 10)
+			   ;;:y 0.5
+			   :label "label-1"))
+	    (plot-value-2 (make-plot-data
+			   :y (* 0.1 (sin (* 2 pi 0.1 i)))
+			   ;;:y (random 10)
+			   ;;:y 0.5
+			   :label "label-2")))
+	(when (= 0 (mod i 10))
+	  (setq switch (not switch)))
+	(if switch
+	    ;;(sb-concurrency:enqueue NIL *plot-queue*)
+	    (sb-concurrency:enqueue plot-value-1 *plot-queue*)	 
+	    (sb-concurrency:enqueue plot-value-2 *plot-queue*)
+	    )))))
 
 
 (defun read-can-data ()
