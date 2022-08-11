@@ -135,6 +135,8 @@
     (multiple-value-bind (window-size x-start x-end plot-window-size) (make-plot-window 1500 0.1 0.5)
       (multiple-value-bind (plot-window grid) (make-x11-layers screen window-size colormap x-start plot-window-size)
 	(unwind-protect
+	     ;; this lexical environment is shared and modified
+	     ;; by many canvas instances
 	     (let ((canvas-obj-db)
 		   (list-of-colors (list "green" "red")) ;; todo: add more
 		   (point-size 4)
@@ -143,9 +145,8 @@
 		   (y-max 1)
 		   (n-yticks 10)
 		   (n-xticks 10)
-		   (plot-window plot-window)) ;; shared between canvas-objs
+		   (plot-window plot-window))
 	       (multiple-value-bind (x-coords dx-grid) (linspace 0 plot-window-size n-xticks)
-		 ;;(setq x-coords (cdr x-coords))
 		 (multiple-value-bind (y-coords x-shift data-length-max grid-c data-counter)
 		     (init-coordinate-settings plot-window-size n-yticks t-max dt)		 
 		   (draw-initial-grid display plot-window grid plot-window-size x-coords y-coords)		   		   
@@ -160,7 +161,8 @@
 		     ;;(format t "time elapsed = ~a~%" (* dt (incf c)))		     
 		     (let ((pd (sb-concurrency:dequeue *plot-queue*)))		      
 		       ;; process data from queue
-		       (if pd  
+		       (if pd
+			   ;;(multiple-value-bind (new-canvas-obj-db ) (plot-pd pd 
 			   (let ((y0 (plot-data-y pd))
 				 (label (plot-data-label pd)))			     
 			     (multiple-value-bind (canvas-obj rest-canvas-objs) (fetch-canvas-obj label canvas-obj-db)			       
@@ -170,10 +172,8 @@
 				 (multiple-value-bind (new-canvas-obj new-db)
 				     (add-canvas-obj canvas-obj-db label plot-window screen colormap (pop list-of-colors))
 				   (setq canvas-obj new-canvas-obj
-					 canvas-obj-db new-db)))
-			       (mapc #'(lambda (canvas-obj) ;; or just one? check it! 
-					 (copy-area plot-window (canvas-obj-canvas canvas-obj) x-shift 0 plot-window-size plot-window-size plot-window 0 0))
-				     (list canvas-obj))    			       
+					 canvas-obj-db new-db)))			       
+			       (copy-area plot-window (canvas-obj-canvas canvas-obj) x-shift 0 plot-window-size plot-window-size plot-window 0 0)
 			       ;; we consing NIL because we dont need absolute timestamp 99.9 % of time.
 			       ;; Only if we need to rescale and redraw the plot, NILs are filled with time values,
 			       ;; which are computed at every redraw cycle.
