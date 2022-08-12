@@ -27,15 +27,16 @@
 				 (progn (incf i) NIL)))
 	    data)))
 
-(defun recompute-y-limits (y0 y-min y-max)
-  (values
-   (if (< y0 y-min)       
-       (- y0 (* (abs y0) 0.1))
-       y-min)
-   (if (> y0 y-max)       
-       (+ y0 (* (abs y0) 0.1))
-       y-max)))
-
+(defun recompute-y-limits (y0 env)
+  (let ((redraw-p))
+    (when (< y0 (plot-env-y-min env))
+      (setq redraw-p t)
+      (setf (plot-env-y-min env) (- y0 (* (abs y0) 0.1))))
+    (when (> y0 (plot-env-y-max env))
+      (setq redraw-p t)
+      (setf (plot-env-y-max env) (+ y0 (* (abs y0) 0.1))))
+    redraw-p))
+ 
 (defun split-data (data)
   (flet ((delimiterp (item) (null item)))
     (split-sequence-by-delimiter data #'delimiterp)))
@@ -95,6 +96,14 @@
   label
   data)
 
+(defstruct plot-env
+  canvas-obj-db
+  (list-of-colors (list "green" "red")) ;; todo: add more
+  (data-counter 0)
+  (grid-c 0)  
+  (y-min -1)
+  (y-max 1))
+
 (defun make-canvas (plot-window screen colormap color)
   (create-gcontext
    :drawable plot-window
@@ -102,12 +111,12 @@
    :background (screen-white-pixel screen)
    :foreground (alloc-color colormap (lookup-color colormap color))))
 
-(defun add-canvas-obj (db label plot-window screen colormap color)
+(defun add-canvas-obj (env label screen colormap plot-window)
   (let ((obj (make-canvas-obj
-	      :canvas (make-canvas plot-window screen colormap color)
+	      :canvas (make-canvas plot-window screen colormap (pop (plot-env-list-of-colors env)))
 	      :label label)))
-    (push obj db)
-    (values obj db)))
+    (push obj (plot-env-canvas-obj-db env))
+    obj))
 
 (defun fetch-canvas-obj (label db)
   (let ((canvas-obj (find label db :test #'string= :key #'canvas-obj-label)))
@@ -124,121 +133,111 @@
 
 (defun init-coordinate-settings (plot-window-size n-yticks t-max dt)
    (let ((y-coords (cdr (linspace 0 plot-window-size n-yticks)))			 
-	 (grid-c 0)		     
 	 (data-length-max (round (/ t-max dt)))
-	 (data-counter 0)
 	 (x-shift (round (* plot-window-size (/ dt t-max)))))
-     (values y-coords x-shift data-length-max grid-c data-counter)))
+     (values y-coords x-shift data-length-max)))
+
+(defun plot-pd (pd env screen grid plot-window t-max dt x-end dx-grid point-size x-shift data-length-max plot-window-size y-coords colormap)
+  "env is modified."
+  (let ((y0 (plot-data-y pd))
+	(label (plot-data-label pd)))			     
+    (multiple-value-bind (canvas-obj rest-canvas-objs) (fetch-canvas-obj label (plot-env-canvas-obj-db env))			       
+      ;; push NIL-data to the rest of canvasses
+      (mapc #'(lambda (obj) (push NIL (canvas-obj-data obj))) rest-canvas-objs)			       
+      (unless canvas-obj
+	(setq canvas-obj (add-canvas-obj env label screen colormap plot-window)))
+      (copy-area plot-window (canvas-obj-canvas canvas-obj) x-shift 0 plot-window-size plot-window-size plot-window 0 0)
+      ;; we consing NIL because we dont need absolute timestamp 99.9 % of time.
+      ;; Only if we need to rescale and redraw the plot, NILs are filled with time values,
+      ;; which are computed at every redraw cycle.
+      (push (cons NIL y0) (canvas-obj-data canvas-obj)) 
+      ;; keep fixed number of elements to plot
+      (if (= (plot-env-data-counter env) data-length-max)
+	  (mapc #'(lambda (obj) (setf (canvas-obj-data obj) (butlast (canvas-obj-data obj)))) (plot-env-canvas-obj-db env))
+	  (incf (plot-env-data-counter env)))
+      ;;(format t "data = ~a~%" (canvas-obj-data canvas-obj))
+      (let ((y0-mapped (map-y0-to-plot y0 (plot-env-y-min env) (plot-env-y-max env) plot-window-size))
+	    (prev-point (cdadr (canvas-obj-data canvas-obj))))
+ 	(if prev-point ;; is the dataset larger then ((NIL . 0.0d0)) ?
+	    (let ((prev-point-mapped (map-y0-to-plot prev-point (plot-env-y-min env) (plot-env-y-max env) plot-window-size)))
+	      (draw-arc plot-window (canvas-obj-canvas canvas-obj) (- (- plot-window-size (/ point-size 2)) 2)
+			(- y0-mapped (/ point-size 2)) point-size point-size 0 (* 2 pi) :fill-p)
+	      (draw-line plot-window (canvas-obj-canvas canvas-obj) (- plot-window-size x-shift)
+			 prev-point-mapped (- plot-window-size 2) y0-mapped))				     
+	    (draw-arc plot-window (canvas-obj-canvas canvas-obj) (- (- plot-window-size (/ point-size 2)) 2)
+		      (- y0-mapped (/ point-size 2)) point-size point-size 0 (* 2 pi) :fill-p)))
+      ;; check if we need rescaling (bug here. see commit 0c04f5b)
+      (if (recompute-y-limits y0 env)      
+	  (progn ;; redraw everything				     
+	    (clear-area plot-window)
+ 	    ;; redraw grid				     
+	    (create-horizontal-grid-lines plot-window grid plot-window-size 0 y-coords)
+	    (create-vertical-grid-lines plot-window grid plot-window-size (linspace-2 (- dx-grid (plot-env-grid-c env)) x-end dx-grid))	    
+	    ;; redraw data
+	    (dolist (canvas-obj (plot-env-canvas-obj-db env))
+	      (let* ((data (reset-data t-max dt (canvas-obj-data canvas-obj)))
+		     (data-list (split-data data)))
+		;;(format t "obj = ~a~%data = ~a~%data-list = ~a~%" canvas-obj data data-list)
+		(dolist (data-item data-list)
+		  ;;(format t "data item = ~a~%" data-item)
+		  (let ((plot-buf-1) ;; for draw-lines
+			(plot-buf-2) ;; for draw-arcs
+			(y0-mapped-list (mapcar #'(lambda (item) (map-y0-to-plot (cdr item) (plot-env-y-min env) (plot-env-y-max env) plot-window-size)) data-item))
+			(t0-mapped-list (mapcar #'(lambda (item) (round (* plot-window-size (/ (car item) t-max)))) data-item)))
+		    (loop for y0 in y0-mapped-list
+			  for t0 in t0-mapped-list do
+			    (push y0 plot-buf-1)
+			    (push t0 plot-buf-1)
+			    (loop for x in (list (* 2 pi) 0 point-size point-size (- y0 (/ point-size 2)) (- t0 (/ point-size 2))) do
+			      (push x plot-buf-2)))						     						   
+		    (if (> (list-length plot-buf-1) 2) ;; cdadr ?
+			(progn
+			  (draw-lines plot-window (canvas-obj-canvas canvas-obj) plot-buf-1)
+			  (draw-arcs plot-window (canvas-obj-canvas canvas-obj) plot-buf-2 :fill-p))						   
+			(draw-arc plot-window (canvas-obj-canvas canvas-obj) (- (first plot-buf-1) (/ point-size 2))
+				  (- (second plot-buf-1) (/ point-size 2)) point-size point-size 0 (* 2 pi) :fill-p)))))))))))
+
+(defun draw-vertical-grid (env grid dx-grid x-shift plot-window plot-window-size)
+  (if (>= (plot-env-grid-c env) dx-grid)
+      (progn
+	;; one pixel back to make the line visible
+	(create-vertical-grid-lines plot-window grid plot-window-size (list (- plot-window-size 1)))
+	(setf (plot-env-grid-c env) 0))
+      (incf (plot-env-grid-c env) x-shift)))
 
 (defun plot-loop (n dt)
   (multiple-value-bind (display screen colormap) (make-default-display-screen-colormap)
     (multiple-value-bind (window-size x-start x-end plot-window-size) (make-plot-window 1500 0.1 0.5)
       (multiple-value-bind (plot-window grid) (make-x11-layers screen window-size colormap x-start plot-window-size)
 	(unwind-protect
-	     ;; this lexical environment is shared and modified
-	     ;; by many canvas instances
-	     (let ((canvas-obj-db)
-		   (list-of-colors (list "green" "red")) ;; todo: add more
-		   (point-size 4)
-		   (t-max 10)
-		   (y-min -1)
-		   (y-max 1)
+	     (let ((env (make-plot-env)) ;; the _env_ lexical environment is modified. The rest ist const.
 		   (n-yticks 10)
 		   (n-xticks 10)
-		   (plot-window plot-window))
+		   (t-max 10)
+		   (point-size 4))
 	       (multiple-value-bind (x-coords dx-grid) (linspace 0 plot-window-size n-xticks)
-		 (multiple-value-bind (y-coords x-shift data-length-max grid-c data-counter)
+		 (multiple-value-bind (y-coords x-shift data-length-max)
 		     (init-coordinate-settings plot-window-size n-yticks t-max dt)		 
-		   (draw-initial-grid display plot-window grid plot-window-size x-coords y-coords)		   		   
+		   (draw-initial-grid display plot-window grid plot-window-size x-coords y-coords)	   		   
 		   (loop :repeat n do
-		     ;; draw horizontal grid
-		     (if (>= grid-c dx-grid)
-			 (progn
-			   ;; one pixel back to make the line visible
-			   (create-vertical-grid-lines plot-window grid plot-window-size (list (- plot-window-size 1)))
-			   (setq grid-c 0))
-			 (incf grid-c x-shift))
+		     (draw-vertical-grid env grid dx-grid x-shift plot-window plot-window-size)		     
 		     ;;(format t "time elapsed = ~a~%" (* dt (incf c)))		     
 		     (let ((pd (sb-concurrency:dequeue *plot-queue*)))		      
 		       ;; process data from queue
 		       (if pd
-			   ;;(multiple-value-bind (new-canvas-obj-db ) (plot-pd pd 
-			   (let ((y0 (plot-data-y pd))
-				 (label (plot-data-label pd)))			     
-			     (multiple-value-bind (canvas-obj rest-canvas-objs) (fetch-canvas-obj label canvas-obj-db)			       
-			       ;; push NIL-data to the rest of canvasses
-			       (mapc #'(lambda (obj) (push NIL (canvas-obj-data obj))) rest-canvas-objs)			       
-			       (unless canvas-obj
-				 (multiple-value-bind (new-canvas-obj new-db)
-				     (add-canvas-obj canvas-obj-db label plot-window screen colormap (pop list-of-colors))
-				   (setq canvas-obj new-canvas-obj
-					 canvas-obj-db new-db)))			       
-			       (copy-area plot-window (canvas-obj-canvas canvas-obj) x-shift 0 plot-window-size plot-window-size plot-window 0 0)
-			       ;; we consing NIL because we dont need absolute timestamp 99.9 % of time.
-			       ;; Only if we need to rescale and redraw the plot, NILs are filled with time values,
-			       ;; which are computed at every redraw cycle.
-			       (push (cons NIL y0) (canvas-obj-data canvas-obj)) 
-			       ;; keep fixed number of elements to plot
-			       (if (= data-counter data-length-max)
-				   (mapc #'(lambda (obj) (setf (canvas-obj-data obj) (butlast (canvas-obj-data obj)))) canvas-obj-db)
-				   (incf data-counter))
-			       ;;(format t "data = ~a~%" (canvas-obj-data canvas-obj))
-			       (let ((y0-mapped (map-y0-to-plot y0 y-min y-max plot-window-size))
-				     (prev-point (cdadr (canvas-obj-data canvas-obj))))
- 				 (if prev-point ;; is the dataset larger then ((NIL . 0.0d0)) ?
-				     (let ((prev-point-mapped (map-y0-to-plot prev-point y-min y-max plot-window-size)))
-				       (draw-arc plot-window (canvas-obj-canvas canvas-obj) (- (- plot-window-size (/ point-size 2)) 2)
-						 (- y0-mapped (/ point-size 2)) point-size point-size 0 (* 2 pi) :fill-p)
-				       (draw-line plot-window (canvas-obj-canvas canvas-obj) (- plot-window-size x-shift)
-						  prev-point-mapped (- plot-window-size 2) y0-mapped))				     
-				     (draw-arc plot-window (canvas-obj-canvas canvas-obj) (- (- plot-window-size (/ point-size 2)) 2)
-					       (- y0-mapped (/ point-size 2)) point-size point-size 0 (* 2 pi) :fill-p)))
-			       ;; check if we need rescaling (bug here. see commit 0c04f5b)
-			       (multiple-value-bind (new-min new-max) (recompute-y-limits y0 y-min y-max)
-				 (when (or (not (= new-min y-min))
-					   (not (= new-max y-max)))
-				   (progn ;; redraw everything				     
-				     (clear-area plot-window)
- 				     ;; redraw grid				     
-				     (create-horizontal-grid-lines plot-window grid plot-window-size 0 y-coords)
-				     (create-vertical-grid-lines plot-window grid plot-window-size (linspace-2 (- dx-grid grid-c) x-end dx-grid))
-				     (setq y-min new-min
-					   y-max new-max)
-				     ;; redraw data
-				     (dolist (canvas-obj canvas-obj-db)
-				       (let* ((data (reset-data t-max dt (canvas-obj-data canvas-obj)))
-					      (data-list (split-data data)))
-					 ;;(format t "obj = ~a~%data = ~a~%data-list = ~a~%" canvas-obj data data-list)
-					 (dolist (data-item data-list)
-					   ;;(format t "data item = ~a~%" data-item)
-					   (let ((plot-buf-1) ;; for draw-lines
-						 (plot-buf-2) ;; for draw-arcs
-						 (y0-mapped-list (mapcar #'(lambda (item) (map-y0-to-plot (cdr item) y-min y-max plot-window-size)) data-item))
-						 (t0-mapped-list (mapcar #'(lambda (item) (round (* plot-window-size (/ (car item) t-max)))) data-item)))
-					     (loop for y0 in y0-mapped-list
-						   for t0 in t0-mapped-list do
-						     (push y0 plot-buf-1)
-						     (push t0 plot-buf-1)
-						     (loop for x in (list (* 2 pi) 0 point-size point-size (- y0 (/ point-size 2)) (- t0 (/ point-size 2))) do
-						       (push x plot-buf-2)))						     						   
-					     (if (> (list-length plot-buf-1) 2) ;; cdadr ?
-						 (progn
-						   (draw-lines plot-window (canvas-obj-canvas canvas-obj) plot-buf-1)
-						   (draw-arcs plot-window (canvas-obj-canvas canvas-obj) plot-buf-2 :fill-p))						   
-						 (draw-arc plot-window (canvas-obj-canvas canvas-obj) (- (first plot-buf-1) (/ point-size 2))
-							   (- (second plot-buf-1) (/ point-size 2)) point-size point-size 0 (* 2 pi) :fill-p)))))))))))
-			   (progn ;; if pd = NIL
-			     (mapc #'(lambda (obj) (push NIL (canvas-obj-data obj))) canvas-obj-db)
-			     (if (= data-counter data-length-max)
-				 (mapc #'(lambda (obj) (setf (canvas-obj-data obj) (butlast (canvas-obj-data obj)))) canvas-obj-db)
-				 (incf data-counter))))
-		       (create-horizontal-grid-lines plot-window grid plot-window-size (- plot-window-size x-shift) y-coords)
-		       (display-force-output display)
-		       (sleep dt)))
-		   (sleep 1))))
-	  (sleep 1)
-	  (display-finish-output display)
-	  (CLOSE-DISPLAY display))))))
+			   (plot-pd pd env screen grid plot-window t-max dt x-end dx-grid point-size x-shift data-length-max plot-window-size y-coords colormap)
+			   (progn
+			     (mapc #'(lambda (obj) (push NIL (canvas-obj-data obj))) (plot-env-canvas-obj-db env))
+			     (if (= (plot-env-data-counter env) data-length-max)
+				 (mapc #'(lambda (obj) (setf (canvas-obj-data obj) (butlast (canvas-obj-data obj)))) (plot-env-canvas-obj-db env))
+				 (incf (plot-env-data-counter env))))))
+		     (create-horizontal-grid-lines plot-window grid plot-window-size (- plot-window-size x-shift) y-coords)
+		     (display-force-output display)
+		     (sleep dt)))
+		 (sleep 1))))
+	(sleep 1)
+	(display-finish-output display)
+	(CLOSE-DISPLAY display)))))
 
 (defun test (n dt)
   (loop for x = (sb-concurrency:dequeue *plot-queue*) do
