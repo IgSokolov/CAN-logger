@@ -98,22 +98,24 @@
 
 (defstruct plot-env
   canvas-obj-db
-  (list-of-colors (list "green" "red")) ;; todo: add more
   (data-counter 0)
   (grid-c 0)  
   (y-min -1)
   (y-max 1))
 
-(defun make-canvas (plot-window screen colormap color)
+(defun make-random-color ()
+  (make-color :red (random 1.0) :blue (random 1.0) :green (random 1.0)))
+
+(defun make-canvas (plot-window screen colormap)
   (create-gcontext
    :drawable plot-window
    :fill-style :solid
    :background (screen-white-pixel screen)
-   :foreground (alloc-color colormap (lookup-color colormap color))))
+   :foreground (alloc-color colormap (make-random-color))))
 
 (defun add-canvas-obj (env label screen colormap plot-window)
   (let ((obj (make-canvas-obj
-	      :canvas (make-canvas plot-window screen colormap (pop (plot-env-list-of-colors env)))
+	      :canvas (make-canvas plot-window screen colormap)
 	      :label label)))
     (push obj (plot-env-canvas-obj-db env))
     obj))
@@ -137,6 +139,11 @@
 	 (x-shift (round (* plot-window-size (/ dt t-max)))))
      (values y-coords x-shift data-length-max)))
 
+(defun trim-data (env data-length-max)
+  (if (= (plot-env-data-counter env) data-length-max)
+      (mapc #'(lambda (obj) (setf (canvas-obj-data obj) (butlast (canvas-obj-data obj)))) (plot-env-canvas-obj-db env))
+      (incf (plot-env-data-counter env))))
+
 (defun plot-pd (pd env screen grid plot-window t-max dt x-end dx-grid point-size x-shift data-length-max plot-window-size y-coords colormap)
   "env is modified."
   (let ((y0 (plot-data-y pd))
@@ -150,11 +157,9 @@
       ;; we consing NIL because we dont need absolute timestamp 99.9 % of time.
       ;; Only if we need to rescale and redraw the plot, NILs are filled with time values,
       ;; which are computed at every redraw cycle.
-      (push (cons NIL y0) (canvas-obj-data canvas-obj)) 
+      (push (cons NIL y0) (canvas-obj-data canvas-obj))
       ;; keep fixed number of elements to plot
-      (if (= (plot-env-data-counter env) data-length-max)
-	  (mapc #'(lambda (obj) (setf (canvas-obj-data obj) (butlast (canvas-obj-data obj)))) (plot-env-canvas-obj-db env))
-	  (incf (plot-env-data-counter env)))
+      (trim-data env data-length-max)
       ;;(format t "data = ~a~%" (canvas-obj-data canvas-obj))
       (let ((y0-mapped (map-y0-to-plot y0 (plot-env-y-min env) (plot-env-y-max env) plot-window-size))
 	    (prev-point (cdadr (canvas-obj-data canvas-obj))))
@@ -205,6 +210,11 @@
 	(setf (plot-env-grid-c env) 0))
       (incf (plot-env-grid-c env) x-shift)))
 
+(defun push-NIL-data (env data-length-max)
+  (mapc #'(lambda (obj) (push NIL (canvas-obj-data obj))) (plot-env-canvas-obj-db env))
+  ;; keep fixed number of elements to plot
+  (trim-data env data-length-max))
+
 (defun plot-loop (n dt)
   (multiple-value-bind (display screen colormap) (make-default-display-screen-colormap)
     (multiple-value-bind (window-size x-start x-end plot-window-size) (make-plot-window 1500 0.1 0.5)
@@ -220,17 +230,12 @@
 		     (init-coordinate-settings plot-window-size n-yticks t-max dt)		 
 		   (draw-initial-grid display plot-window grid plot-window-size x-coords y-coords)	   		   
 		   (loop :repeat n do
-		     (draw-vertical-grid env grid dx-grid x-shift plot-window plot-window-size)		     
-		     ;;(format t "time elapsed = ~a~%" (* dt (incf c)))		     
+		     (draw-vertical-grid env grid dx-grid x-shift plot-window plot-window-size)		     		     
 		     (let ((pd (sb-concurrency:dequeue *plot-queue*)))		      
 		       ;; process data from queue
 		       (if pd
 			   (plot-pd pd env screen grid plot-window t-max dt x-end dx-grid point-size x-shift data-length-max plot-window-size y-coords colormap)
-			   (progn
-			     (mapc #'(lambda (obj) (push NIL (canvas-obj-data obj))) (plot-env-canvas-obj-db env))
-			     (if (= (plot-env-data-counter env) data-length-max)
-				 (mapc #'(lambda (obj) (setf (canvas-obj-data obj) (butlast (canvas-obj-data obj)))) (plot-env-canvas-obj-db env))
-				 (incf (plot-env-data-counter env))))))
+			   (push-NIL-data env data-length-max)))			   
 		     (create-horizontal-grid-lines plot-window grid plot-window-size (- plot-window-size x-shift) y-coords)
 		     (display-force-output display)
 		     (sleep dt)))
