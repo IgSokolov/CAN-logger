@@ -144,6 +144,36 @@
       (mapc #'(lambda (obj) (setf (canvas-obj-data obj) (butlast (canvas-obj-data obj)))) (plot-env-canvas-obj-db env))
       (incf (plot-env-data-counter env))))
 
+(defun redraw-plot-window (env plot-window point-size plot-window-size grid y-coords dx-grid x-end t-max dt)  
+  (clear-area plot-window)
+  ;; redraw grid				     
+  (create-horizontal-grid-lines plot-window grid plot-window-size 0 y-coords)
+  (create-vertical-grid-lines plot-window grid plot-window-size (linspace-2 (- dx-grid (plot-env-grid-c env)) x-end dx-grid))	    
+  ;; redraw data
+  (dolist (canvas-obj (plot-env-canvas-obj-db env))
+    (let* ((data (reset-data t-max dt (canvas-obj-data canvas-obj)))
+	   (data-list (split-data data)))
+      ;;(format t "obj = ~a~%data = ~a~%data-list = ~a~%" canvas-obj data data-list)
+      (dolist (data-item data-list)
+	;;(format t "data item = ~a~%" data-item)
+	(let ((plot-buf-1) ;; for draw-lines
+	      (plot-buf-2) ;; for draw-arcs
+	      (y0-mapped-list (mapcar #'(lambda (item) (map-y0-to-plot (cdr item) (plot-env-y-min env) (plot-env-y-max env) plot-window-size)) data-item))
+	      (t0-mapped-list (mapcar #'(lambda (item) (round (* plot-window-size (/ (car item) t-max)))) data-item)))
+	  (loop for y0 in y0-mapped-list
+		for t0 in t0-mapped-list do
+		  (push y0 plot-buf-1)
+		  (push t0 plot-buf-1)
+		  (loop for x in (list (* 2 pi) 0 point-size point-size (- y0 (/ point-size 2)) (- t0 (/ point-size 2))) do
+		    (push x plot-buf-2)))						     						   
+	  (if (> (list-length plot-buf-1) 2)
+	      (progn
+		(draw-lines plot-window (canvas-obj-canvas canvas-obj) plot-buf-1)
+		(draw-arcs plot-window (canvas-obj-canvas canvas-obj) plot-buf-2 :fill-p))						   
+	      (draw-arc plot-window (canvas-obj-canvas canvas-obj) (- (first plot-buf-1) (/ point-size 2))
+			(- (second plot-buf-1) (/ point-size 2)) point-size point-size 0 (* 2 pi) :fill-p)))))))
+
+
 (defun plot-pd (pd env screen grid plot-window t-max dt x-end dx-grid point-size x-shift data-length-max plot-window-size y-coords colormap)
   "env is modified."
   (let ((y0 (plot-data-y pd))
@@ -172,35 +202,9 @@
 	    (draw-arc plot-window (canvas-obj-canvas canvas-obj) (- (- plot-window-size (/ point-size 2)) 2)
 		      (- y0-mapped (/ point-size 2)) point-size point-size 0 (* 2 pi) :fill-p)))
       ;; check if we need rescaling (bug here. see commit 0c04f5b)
-      (if (recompute-y-limits y0 env)      
-	  (progn ;; redraw everything				     
-	    (clear-area plot-window)
- 	    ;; redraw grid				     
-	    (create-horizontal-grid-lines plot-window grid plot-window-size 0 y-coords)
-	    (create-vertical-grid-lines plot-window grid plot-window-size (linspace-2 (- dx-grid (plot-env-grid-c env)) x-end dx-grid))	    
-	    ;; redraw data
-	    (dolist (canvas-obj (plot-env-canvas-obj-db env))
-	      (let* ((data (reset-data t-max dt (canvas-obj-data canvas-obj)))
-		     (data-list (split-data data)))
-		;;(format t "obj = ~a~%data = ~a~%data-list = ~a~%" canvas-obj data data-list)
-		(dolist (data-item data-list)
-		  ;;(format t "data item = ~a~%" data-item)
-		  (let ((plot-buf-1) ;; for draw-lines
-			(plot-buf-2) ;; for draw-arcs
-			(y0-mapped-list (mapcar #'(lambda (item) (map-y0-to-plot (cdr item) (plot-env-y-min env) (plot-env-y-max env) plot-window-size)) data-item))
-			(t0-mapped-list (mapcar #'(lambda (item) (round (* plot-window-size (/ (car item) t-max)))) data-item)))
-		    (loop for y0 in y0-mapped-list
-			  for t0 in t0-mapped-list do
-			    (push y0 plot-buf-1)
-			    (push t0 plot-buf-1)
-			    (loop for x in (list (* 2 pi) 0 point-size point-size (- y0 (/ point-size 2)) (- t0 (/ point-size 2))) do
-			      (push x plot-buf-2)))						     						   
-		    (if (> (list-length plot-buf-1) 2) ;; cdadr ?
-			(progn
-			  (draw-lines plot-window (canvas-obj-canvas canvas-obj) plot-buf-1)
-			  (draw-arcs plot-window (canvas-obj-canvas canvas-obj) plot-buf-2 :fill-p))						   
-			(draw-arc plot-window (canvas-obj-canvas canvas-obj) (- (first plot-buf-1) (/ point-size 2))
-				  (- (second plot-buf-1) (/ point-size 2)) point-size point-size 0 (* 2 pi) :fill-p)))))))))))
+      (when (recompute-y-limits y0 env)
+	(redraw-plot-window env plot-window point-size plot-window-size grid y-coords dx-grid x-end t-max dt)))))
+	
 
 (defun draw-vertical-grid (env grid dx-grid x-shift plot-window plot-window-size)
   (if (>= (plot-env-grid-c env) dx-grid)
@@ -242,7 +246,7 @@
 		 (sleep 1))))
 	(sleep 1)
 	(display-finish-output display)
-	(CLOSE-DISPLAY display)))))
+	(close-display display)))))
 
 (defun test (n dt)
   (loop for x = (sb-concurrency:dequeue *plot-queue*) do
