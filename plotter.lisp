@@ -19,8 +19,8 @@
 (defun map-y0-to-plot (y0 y-min y-max plot-window-size)
   (round (* plot-window-size (/ (- y-max y0) (- y-max y-min)))))
 
-
 (defun reset-data (t-max dt data)
+  "Assign a timestamp to each plotted point in data."
   (let ((i -1))
     (mapcar #'(lambda(point) (if point
 				 (cons (- t-max (* (incf i) dt)) (cdr point))
@@ -28,6 +28,7 @@
 	    data)))
 
 (defun recompute-y-limits (y0 env)
+  "Recompute ymin and y-max if y0 doesn't fit in beetween"
   (let ((redraw-p))
     (when (< y0 (plot-env-y-min env))
       (setq redraw-p t)
@@ -38,6 +39,8 @@
     redraw-p))
  
 (defun split-data (data)
+  "Split data into plottable pieces. It is necessary
+   because data can contain NILs when"
   (flet ((delimiterp (item) (null item)))
     (split-sequence-by-delimiter data #'delimiterp)))
 
@@ -55,12 +58,14 @@
     (values display screen colormap)))
    
 (defun make-plot-window (size start-offest-in-% end-offset-in-%) ;; offsets are in % of window-size
+  "Set plot-window size"
   (let* ((x-start (round (* start-offest-in-% size)))
 	 (x-end (round (* end-offset-in-% size)))
 	 (plot-window-size (- x-end x-start)))
     (values size x-start x-end plot-window-size)))
 
 (defun make-x11-layers (screen window-size colormap x-start plot-window-size)
+  "Create main windows and gcontexts"
   (let* ((main-window (create-window
 		       :parent (screen-root screen)
 		       :x 0
@@ -114,6 +119,7 @@
    :foreground (alloc-color colormap (make-random-color))))
 
 (defun add-canvas-obj (env label screen colormap plot-window)
+  "Check in a new canvas in database"
   (let ((obj (make-canvas-obj
 	      :canvas (make-canvas plot-window screen colormap)
 	      :label label)))
@@ -121,12 +127,14 @@
     obj))
 
 (defun fetch-canvas-obj (label db)
+  "Retrieve a canvas from database"
   (let ((canvas-obj (find label db :test #'string= :key #'canvas-obj-label)))
     (values
-     canvas-obj
-     (remove canvas-obj db))))
+     canvas-obj ;; canvas found
+     (remove canvas-obj db)))) ;; the rest
 
 (defun draw-initial-grid (display plot-window grid plot-window-size x-coords y-coords)
+  "Create rectangular grid at start-up"
   (loop :repeat 2 do ;; 2 because otherwise no result obtained from x11 server. a bug?
     (create-horizontal-grid-lines plot-window grid plot-window-size 0 y-coords)
     (create-vertical-grid-lines plot-window grid plot-window-size (append x-coords (list (- plot-window-size 1))))
@@ -140,11 +148,12 @@
      (values y-coords x-shift data-length-max)))
 
 (defun trim-data (env data-length-max)
+  "Keep fixed number of elements on a canvas"
   (if (= (plot-env-data-counter env) data-length-max)
       (mapc #'(lambda (obj) (setf (canvas-obj-data obj) (butlast (canvas-obj-data obj)))) (plot-env-canvas-obj-db env))
       (incf (plot-env-data-counter env))))
 
-(defun redraw-plot-window (env plot-window point-size plot-window-size grid y-coords dx-grid x-end t-max dt)  
+(defun redraw-plot-window (env plot-window point-size plot-window-size grid y-coords dx-grid x-end t-max dt)
   (clear-area plot-window)
   ;; redraw grid				     
   (create-horizontal-grid-lines plot-window grid plot-window-size 0 y-coords)
@@ -173,9 +182,8 @@
 	      (draw-arc plot-window (canvas-obj-canvas canvas-obj) (- (first plot-buf-1) (/ point-size 2))
 			(- (second plot-buf-1) (/ point-size 2)) point-size point-size 0 (* 2 pi) :fill-p)))))))
 
-
 (defun plot-pd (pd env screen grid plot-window t-max dt x-end dx-grid point-size x-shift data-length-max plot-window-size y-coords colormap)
-  "env is modified."
+  "Plot plot-data (pd). _env_ is modified."
   (let ((y0 (plot-data-y pd))
 	(label (plot-data-label pd)))			     
     (multiple-value-bind (canvas-obj rest-canvas-objs) (fetch-canvas-obj label (plot-env-canvas-obj-db env))			       
@@ -215,11 +223,11 @@
       (incf (plot-env-grid-c env) x-shift)))
 
 (defun push-NIL-data (env data-length-max)
-  (mapc #'(lambda (obj) (push NIL (canvas-obj-data obj))) (plot-env-canvas-obj-db env))
-  ;; keep fixed number of elements to plot
+  (mapc #'(lambda (obj) (push NIL (canvas-obj-data obj))) (plot-env-canvas-obj-db env))  
   (trim-data env data-length-max))
 
 (defun plot-loop (n dt)
+  "Create plotting environment, fetch plot-data (pd) from a data queue and plot it."
   (multiple-value-bind (display screen colormap) (make-default-display-screen-colormap)
     (multiple-value-bind (window-size x-start x-end plot-window-size) (make-plot-window 1500 0.1 0.5)
       (multiple-value-bind (plot-window grid) (make-x11-layers screen window-size colormap x-start plot-window-size)
