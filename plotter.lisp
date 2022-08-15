@@ -80,7 +80,7 @@
 	 (plot-window (create-window
 		       :parent main-window
 		       :x x-start
-		       :y x-start
+		       :y 50 ;; fixed
 		       :width plot-window-size
 		       :height plot-window-size
 		       :border (screen-black-pixel screen)
