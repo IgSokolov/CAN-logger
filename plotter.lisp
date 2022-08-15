@@ -134,9 +134,12 @@
     :background (screen-white-pixel screen)
     :foreground (alloc-color colormap (lookup-color colormap "black")))
    (font-ascent (open-font display font))
-   x-end
-   (+ x-start (font-ascent (open-font display font)))
-   (+ x-end (font-ascent (open-font display font)))))
+   x-end                                              ;; Y for y-max
+   (+ x-start (font-ascent (open-font display font))) ;; Y for y-min
+   (+ x-end (font-ascent (open-font display font)))   ;; X for y min max
+   x-start                                            ;; x for title
+   (- x-start (font-ascent (open-font display font))))) ;; y for title
+  
 
 (defun add-canvas-obj (env label screen colormap plot-window)
   "Check in a new canvas in database"
@@ -251,15 +254,15 @@
     (draw-glyphs main-window text-layer x-coord y-min-coord y-min-string)
     (draw-glyphs main-window text-layer x-coord y-max-coord y-max-string)))
 
-;; (defun draw-plot-title (env main-window text-layer)
-;;    (draw-glyphs main-window text-layer x-coord y-min-coord y-min-string))
+(defun draw-plot-title (main-window text-layer x-coord y-coord dt t-max)
+  (draw-glyphs main-window text-layer x-coord y-coord (format NIL "dt = ~3,3F sec, t-max = ~3,1F sec" dt t-max)))
   
 (defun plot-loop (n dt)
   "Create plotting environment, fetch plot-data (pd) from a data queue and plot it."
   (multiple-value-bind (display screen colormap) (make-default-display-screen-colormap)
     (multiple-value-bind (window-size x-start x-end plot-window-size) (make-plot-window 1500 0.1 0.5)
       (multiple-value-bind (main-window plot-window grid) (make-x11-layers screen window-size colormap x-start plot-window-size)
-	(multiple-value-bind (text-layer-background text-layer font-ascent y-min-yc y-max-yc y-min-max-xc) (make-text-area main-window screen display colormap x-end x-start)
+	(multiple-value-bind (text-layer-background text-layer font-ascent y-min-yc y-max-yc y-min-max-xc x-title y-title) (make-text-area main-window screen display colormap x-end x-start)
 	  (unwind-protect
 	       (let ((env (make-plot-env)) ;; the _env_ lexical environment is modified. The rest ist const.
 		     (n-yticks 10)
@@ -270,6 +273,7 @@
 		   (multiple-value-bind (y-coords x-shift data-length-max)
 		       (init-coordinate-settings plot-window-size n-yticks t-max dt)		 
 		     (draw-initial-grid display plot-window grid plot-window-size x-coords y-coords)
+		     (draw-plot-title main-window text-layer x-title y-title dt t-max)
 		     (loop :repeat n do
 		       (draw-y-min-max env main-window text-layer text-layer-background font-ascent y-min-max-xc y-min-yc y-max-yc)
 		       (draw-vertical-grid env grid dx-grid x-shift plot-window plot-window-size)		     		     
