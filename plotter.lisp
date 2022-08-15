@@ -118,7 +118,7 @@
    :background (screen-white-pixel screen)
    :foreground (alloc-color colormap (make-random-color))))
 
-(defun make-text-area (window screen display colormap)
+(defun make-text-area (window screen display colormap x-end x-start &optional (font "fixed"))
   (values
    ;; background
    (create-gcontext
@@ -129,11 +129,14 @@
    ;; foreground
    (create-gcontext
     :drawable window
-    :font (open-font display "fixed")
+    :font (open-font display font)
     :line-style :solid
     :background (screen-white-pixel screen)
     :foreground (alloc-color colormap (lookup-color colormap "black")))
-   (font-ascent (open-font display "fixed"))))
+   (font-ascent (open-font display font))
+   x-end
+   (+ x-start (font-ascent (open-font display font)))
+   (+ x-end (font-ascent (open-font display font)))))
 
 (defun add-canvas-obj (env label screen colormap plot-window)
   "Check in a new canvas in database"
@@ -179,9 +182,7 @@
   (dolist (canvas-obj (plot-env-canvas-obj-db env))
     (let* ((data (reset-data t-max dt (canvas-obj-data canvas-obj)))
 	   (data-list (split-data data)))
-      ;;(format t "obj = ~a~%data = ~a~%data-list = ~a~%" canvas-obj data data-list)
       (dolist (data-item data-list)
-	;;(format t "data item = ~a~%" data-item)
 	(let ((plot-buf-1) ;; for draw-lines
 	      (plot-buf-2) ;; for draw-arcs
 	      (y0-mapped-list (mapcar #'(lambda (item) (map-y0-to-plot (cdr item) (plot-env-y-min env) (plot-env-y-max env) plot-window-size)) data-item))
@@ -215,7 +216,6 @@
       (push (cons NIL y0) (canvas-obj-data canvas-obj))
       ;; keep fixed number of elements to plot
       (trim-data env data-length-max)
-      ;;(format t "data = ~a~%" (canvas-obj-data canvas-obj))
       (let ((y0-mapped (map-y0-to-plot y0 (plot-env-y-min env) (plot-env-y-max env) plot-window-size))
 	    (prev-point (cdadr (canvas-obj-data canvas-obj))))
  	(if prev-point ;; is the dataset larger then ((NIL . 0.0d0)) ?
@@ -250,22 +250,22 @@
     (draw-rectangle main-window text-layer-background x-coord (- y-min-coord font-ascent) (text-width text-layer y-min-string) font-ascent :fill-p)
     (draw-glyphs main-window text-layer x-coord y-min-coord y-min-string)
     (draw-glyphs main-window text-layer x-coord y-max-coord y-max-string)))
+
+;; (defun draw-plot-title (env main-window text-layer)
+;;    (draw-glyphs main-window text-layer x-coord y-min-coord y-min-string))
   
 (defun plot-loop (n dt)
   "Create plotting environment, fetch plot-data (pd) from a data queue and plot it."
   (multiple-value-bind (display screen colormap) (make-default-display-screen-colormap)
     (multiple-value-bind (window-size x-start x-end plot-window-size) (make-plot-window 1500 0.1 0.5)
       (multiple-value-bind (main-window plot-window grid) (make-x11-layers screen window-size colormap x-start plot-window-size)
-	(multiple-value-bind (text-layer-background text-layer font-ascent) (make-text-area main-window screen display colormap)
+	(multiple-value-bind (text-layer-background text-layer font-ascent y-min-yc y-max-yc y-min-max-xc) (make-text-area main-window screen display colormap x-end x-start)
 	  (unwind-protect
 	       (let ((env (make-plot-env)) ;; the _env_ lexical environment is modified. The rest ist const.
 		     (n-yticks 10)
 		     (n-xticks 10)
 		     (t-max 10)
-		     (point-size 4))
-		 (let ((y-min-yc x-end) ;; rectangular window => x = y
-		       (y-max-yc (+ x-start 12))
-		       (y-min-max-xc (+ x-end 10)))
+		     (point-size 4))		 
 		 (multiple-value-bind (x-coords dx-grid) (linspace 0 plot-window-size n-xticks)
 		   (multiple-value-bind (y-coords x-shift data-length-max)
 		       (init-coordinate-settings plot-window-size n-yticks t-max dt)		 
@@ -280,7 +280,7 @@
 			     (push-NIL-data env data-length-max)))			   
 		       (create-horizontal-grid-lines plot-window grid plot-window-size (- plot-window-size x-shift) y-coords)
 		       (display-force-output display)
-		       (sleep dt)))))
+		       (sleep dt))))
 		 (sleep 1))))
 	(sleep 1)
 	(display-finish-output display)
