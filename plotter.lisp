@@ -48,7 +48,6 @@
   (mapc (lambda (y) (draw-line win gcontext x-start y plot-window-size y)) y-coords))
 
 (defun create-vertical-grid-lines (win gcontext plot-window-size x-coords)
-  ;;(assert (not (and x-start draw-last-line-only)))  
   (mapc (lambda (x) (draw-line win gcontext x 0 x plot-window-size)) x-coords))
 
 (defun make-default-display-screen-colormap ()
@@ -57,14 +56,14 @@
          (colormap (screen-default-colormap screen)))
     (values display screen colormap)))
    
-(defun make-plot-window (size start-offest-in-% end-offset-in-%) ;; offsets are in % of window-size
+(defun make-plot-window (size start-offest-in-% end-offset-in-% y-start) ;; offsets are in % of window-size
   "Set plot-window size"
   (let* ((x-start (round (* start-offest-in-% size)))
 	 (x-end (round (* end-offset-in-% size)))
 	 (plot-window-size (- x-end x-start)))
-    (values size x-start x-end plot-window-size)))
+    (values size x-start y-start x-end plot-window-size)))
 
-(defun make-x11-layers (screen window-size colormap x-start plot-window-size)
+(defun make-x11-layers (screen window-size colormap x-start y-start plot-window-size)
   "Create main windows and gcontexts"
   (let* ((main-window (create-window
 		       :parent (screen-root screen)
@@ -80,7 +79,7 @@
 	 (plot-window (create-window
 		       :parent main-window
 		       :x x-start
-		       :y 50 ;; fixed
+		       :y y-start
 		       :width plot-window-size
 		       :height plot-window-size
 		       :border (screen-black-pixel screen)
@@ -118,27 +117,36 @@
    :background (screen-white-pixel screen)
    :foreground (alloc-color colormap (make-random-color))))
 
-(defun make-plot-text-area (window screen display colormap x-end x-start &optional (font "fixed"))
-  (values
-   ;; background
-   (create-gcontext
-    :drawable window
-    :line-style :solid
-    :background (screen-white-pixel screen)
-    :foreground (alloc-color colormap (lookup-color colormap "red")))
-   ;; foreground
-   (create-gcontext
-    :drawable window
-    :font (open-font display font)
-    :line-style :solid
-    :background (screen-white-pixel screen)
-    :foreground (alloc-color colormap (lookup-color colormap "black")))
-   (font-ascent (open-font display font))             ;; font height
-   x-end                                              ;; Y for y-max
-   (+ x-start (font-ascent (open-font display font))) ;; Y for y-min
-   (+ x-end (font-ascent (open-font display font)))   ;; X for y min max
-   x-start                                            ;; x for title
-   (- x-start (font-ascent (open-font display font))))) ;; y for title
+(defstruct plot-text-settings
+  background
+  foreground
+  font-height
+  yc-ymax
+  yc-ymin
+  xc-ymin-ymax
+  xc-title
+  yc-title)
+
+(defun make-plot-text-area (window screen display colormap y-start x-end x-start &optional (font "fixed"))
+  (let ((plot-window-size (- x-end x-start)))
+    (make-plot-text-settings
+     :background (create-gcontext
+		  :drawable window
+		  :line-style :solid
+		  :background (screen-white-pixel screen)
+		  :foreground (alloc-color colormap (lookup-color colormap "red")))
+     :foreground (create-gcontext
+		  :drawable window
+		  :font (open-font display font)
+		  :line-style :solid
+		  :background (screen-white-pixel screen)
+		  :foreground (alloc-color colormap (lookup-color colormap "black")))
+     :font-height (font-ascent (open-font display font))
+     :yc-ymax ( + y-start (font-ascent (open-font display font)))
+     :yc-ymin (+ y-start plot-window-size)
+     :xc-ymin-ymax (+ x-end 2)
+     :xc-title x-start
+     :yc-title (- y-start (font-ascent (open-font display font))))))
 
 (defun draw-plot-text-y-min-y-max (env main-window text-layer text-layer-background font-ascent x-coord y-min-coord y-max-coord)
   (let ((y-min-string (format NIL "~10,3F" (plot-env-y-min env)))
@@ -259,9 +267,9 @@
 (defun plot-loop (n dt)
   "Create plotting environment, fetch plot-data (pd) from a data queue and plot it."
   (multiple-value-bind (display screen colormap) (make-default-display-screen-colormap)
-    (multiple-value-bind (window-size x-start x-end plot-window-size) (make-plot-window 1500 0.1 0.5)
-      (multiple-value-bind (main-window plot-window grid) (make-x11-layers screen window-size colormap x-start plot-window-size)
-	(multiple-value-bind (text-layer-background text-layer font-ascent y-min-yc y-max-yc y-min-max-xc x-title y-title) (make-plot-text-area main-window screen display colormap x-end x-start)
+    (multiple-value-bind (window-size x-start y-start x-end plot-window-size) (make-plot-window 1500 0.1 0.5 50)
+      (multiple-value-bind (main-window plot-window grid) (make-x11-layers screen window-size colormap x-start y-start plot-window-size)
+	(let ((plot-text-area (make-plot-text-area main-window screen display colormap y-start x-end x-start)))
 	  (unwind-protect
 	       (let ((env (make-plot-env)) ;; the _env_ lexical environment is modified. The rest ist const.
 		     (n-yticks 10)
@@ -272,9 +280,9 @@
 		   (multiple-value-bind (y-coords x-shift data-length-max)
 		       (init-coordinate-settings plot-window-size n-yticks t-max dt)		 
 		     (draw-initial-grid display plot-window grid plot-window-size x-coords y-coords)
-		     (draw-plot-text-plot-title main-window text-layer x-title y-title dt t-max)
+		     (draw-plot-text-plot-title main-window (plot-text-settings-foreground plot-text-area) (plot-text-settings-xc-title plot-text-area) (plot-text-settings-yc-title plot-text-area) dt t-max)
 		     (loop :repeat n do
-		       (draw-plot-text-y-min-y-max env main-window text-layer text-layer-background font-ascent y-min-max-xc y-min-yc y-max-yc)
+		       (draw-plot-text-y-min-y-max env main-window (plot-text-settings-foreground plot-text-area) (plot-text-settings-background plot-text-area) (plot-text-settings-font-height plot-text-area) (plot-text-settings-xc-ymin-ymax plot-text-area) (plot-text-settings-yc-ymin plot-text-area) (plot-text-settings-yc-ymax plot-text-area))
 		       (draw-vertical-grid env grid dx-grid x-shift plot-window plot-window-size)		     		     
 		       (let ((pd (sb-concurrency:dequeue *plot-queue*)))		      
 			 ;; process data from queue
