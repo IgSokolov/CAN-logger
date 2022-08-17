@@ -14,7 +14,7 @@
    :width x-size
    :height y-size
    :border (screen-black-pixel screen)
-   :border-width 2
+   :border-width 1
    :colormap colormap
    :background (alloc-color colormap (lookup-color colormap "green"))))
 
@@ -24,9 +24,12 @@
 
 (defstruct table  
   window
-  content)
+  display
+  content
+  font
+  cell-height)
 
-(defun create-table (screen window colormap col-width-list cell-height n-of-rows &optional (font "fixed"))
+(defun create-table (screen display window colormap col-width-list cell-height n-of-rows &optional (font "fixed"))
   (let ((y 0)
 	(idx 0)
 	(db (make-hash-table)))
@@ -41,13 +44,13 @@
 			       :width w
 			       :height cell-height
 			       :border (screen-black-pixel screen)
-			       :border-width 2
+			       :border-width 1
 			       :bit-gravity :center
 			       :colormap colormap
 			       :background (alloc-color colormap (lookup-color colormap "white"))))
 		 (cell-gcontext (create-gcontext
 				 :drawable cell-window
-				 :font font
+				 :font (open-font display font)
 				 :line-style :solid
 				 :background (screen-white-pixel screen)
 				 :foreground (alloc-color colormap (lookup-color colormap "black")))))
@@ -57,38 +60,48 @@
 	(setf (gethash idx db) row) 	
 	(incf idx))
       (incf y cell-height))
+    (map-window window)
     (make-table :window window
-		:content db)))
+		:display display
+		:content db
+		:font (open-font display font)
+		:cell-height cell-height)))
 	
 (defun write-to-cell (table row-idx col-n string)
-  (let ((window (table-window table))
-	(row (gethash row-idx (table-content table))))
-    (let ((cell (nth col-n row)))
-      (clear-area (car cell))
-      (draw-glyphs window (cdr cell) 0 0  string)
-      (map-window window))))
+  (let* ((display (table-display table))
+	 (row (gethash row-idx (table-content table)))
+	 (cell (nth col-n row))
+	 (font-height (font-ascent (table-font table)))
+	 ;;(string-width (text-width (cdr cell) string))
+	 (cell-height (table-cell-height table))
+	 (yc (round (/ (+ cell-height font-height) 2))))
+    (clear-area (car cell))
+    (draw-glyphs (car cell) (cdr cell) 2 yc string)
+    (sleep 0.1) ;; wtf!
+    (display-force-output display)
+    ))
   
 (defun test ()
   (multiple-value-bind (display screen colormap) (make-default-display-screen-colormap)
     (let ((main-window (create-window ;; must be inhereted
-			 :parent (screen-root screen)
-			 :x 0
-			 :y 0
-			 :width 1500
-			 :height 1500
-			 :border (screen-black-pixel screen)
-			 :border-width 2
-			 :bit-gravity :center
-			 :colormap colormap
-			 :background (alloc-color colormap (lookup-color colormap "white")))))      
+			:parent (screen-root screen)
+			:x 0
+			:y 0
+			:width 1500
+			:height 1500
+			:border (screen-black-pixel screen)
+			:border-width 2
+			:bit-gravity :center
+			:colormap colormap
+			:background (alloc-color colormap (lookup-color colormap "white")))))
+      (map-window main-window)	      
       (unwind-protect
-	   (let ((window (make-table-window main-window screen colormap 800 50 500 800)))
-	     (map-window main-window)
-	     (map-window window)
-	     (display-force-output display)
-	     (create-table screen window colormap (list 20 200 50) 50 3))
-	     (sleep 5)
-	     (display-finish-output display))
-	(close-display display))))
+           (let* ((window (make-table-window main-window screen colormap 800 50 500 800))
+		  (table (create-table screen display window colormap (list 200 200 200) 50 10)))	     
+             (write-to-cell table 1 1 "hello!")
+	     (write-to-cell table 1 2 "hello!")
+	     (sleep 3)
+	     (display-finish-output display)
+	     (close-display display))))))
 
 
