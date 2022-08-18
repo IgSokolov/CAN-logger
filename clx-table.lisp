@@ -87,28 +87,30 @@
 	      (clear-area window)
 	      (draw-glyphs window gcontext xc yc string)
 	      (sleep 0.1) ;; wtf!
-	      (display-force-output display)))))
+	      (display-force-output display)))
+    row))
 	      
 
 (defun new-label-p (table label)
   (let ((db (table-content table)))
     (not (gethash label db))))
-;; do we need DB???
-(defun register-label (table label) ; todo: cache NIL ?
-  (let ((row (pop (table-cache table))))
-    (write-to-row table row (list 0 1) (list "112" label))
-    (setf (gethash label (table-content table)) row)))
+
+(defun register-label (table label can-id) ; todo: cache NIL ?
+  (let ((row (pop (table-cache table))))    
+    (setf (gethash label (table-content table)) (write-to-row table row (list 0 1) (list (write-to-string can-id) label)))))
 
 (defun write-value (table label value)
   (let ((db (table-content table)))
     (let ((row (gethash label db)))      
-      (write-to-row table row (list 2) (list (write-to-string value))))))
+      (setf (gethash label (table-content table)) (write-to-row table row (list 2) (list (write-to-string value)))))))
 
-(defun add-titles (table) ; todo: cache NIL ?
+(defun add-titles (table)
   (let ((row (pop (table-cache table))))
-    (write-to-row table row (list 0 1 2) (list "can-id" "label" "value"))
-    (setf (gethash "titles" (table-content table)) row)))
-    
+    (setf (gethash "titles" (table-content table)) (write-to-row table row (list 0 1 2) (list "can-id" "label" "value")))))
+
+;;(defun restore-table (table)
+  
+
 (defun test ()
   (multiple-value-bind (display screen colormap) (make-default-display-screen-colormap)
     (let ((main-window (create-window ;; must be inhereted
@@ -127,10 +129,13 @@
            (let* ((window (make-table-window main-window screen colormap 800 50 500 800))
 		  (table (create-table screen display window colormap (list 60 200 60) 50 10)))
 	     (add-titles table)	     
-	     (register-label table "pressure")
+	     (register-label table "pressure" 112)
 	     (write-value table "pressure" 112.7)
+	     (sleep 1)
+	     (write-value table "pressure" 300)	     
              ;;(write-to-cell table 1 1 "qwertz")
-	     ;;(sleep 1)
+	     (sleep 1)
+	     (clear-area window)
 	     ;;(write-to-cell table 1 1 "hello!")
 	     (sleep 3)
 	     (display-finish-output display)
