@@ -27,7 +27,8 @@
   display
   content
   font
-  cell-height)
+  cell-height
+  col-width-list)
 
 (defun create-table (screen display window colormap col-width-list cell-height n-of-rows &optional (font "fixed"))
   (let ((y 0)
@@ -65,21 +66,26 @@
 		:display display
 		:content db
 		:font (open-font display font)
-		:cell-height cell-height)))
+		:cell-height cell-height
+		:col-width-list col-width-list)))
 	
 (defun write-to-cell (table row-idx col-n string)
   (let* ((display (table-display table))
 	 (row (gethash row-idx (table-content table)))
-	 (cell (nth col-n row))
-	 (font-height (font-ascent (table-font table)))
-	 ;;(string-width (text-width (cdr cell) string))
-	 (cell-height (table-cell-height table))
-	 (yc (round (/ (+ cell-height font-height) 2))))
-    (clear-area (car cell))
-    (draw-glyphs (car cell) (cdr cell) 2 yc string)
-    (sleep 0.1) ;; wtf!
-    (display-force-output display)
-    ))
+	 (cell (nth col-n row)))
+    (let ((window (car cell))
+	  (gcontext (cdr cell)))
+      (let* ((font-height (font-ascent (table-font table)))
+	     (string-width (text-width gcontext string))
+	     (cell-height (table-cell-height table))
+	     (col-width (nth col-n (table-col-width-list table)))
+	     (xc (round (/ (- col-width string-width) 2)))
+	     (yc (round (/ (+ cell-height font-height) 2))))
+	(clear-area window)
+	(draw-glyphs window gcontext xc yc string)
+	(sleep 0.1) ;; wtf!
+	(display-force-output display)))))
+
   
 (defun test ()
   (multiple-value-bind (display screen colormap) (make-default-display-screen-colormap)
@@ -97,8 +103,8 @@
       (map-window main-window)	      
       (unwind-protect
            (let* ((window (make-table-window main-window screen colormap 800 50 500 800))
-		  (table (create-table screen display window colormap (list 200 200 200) 50 10)))	     
-             (write-to-cell table 1 1 "hello!")
+		  (table (create-table screen display window colormap (list 200 200 200) 50 10)))	
+             (write-to-cell table 1 1 "qwertz")
 	     (write-to-cell table 1 2 "hello!")
 	     (sleep 3)
 	     (display-finish-output display)
