@@ -26,14 +26,15 @@
   window
   display
   content
+  cache
   font
   cell-height
   col-width-list)
 
 (defun create-table (screen display window colormap col-width-list cell-height n-of-rows &optional (font "fixed"))
   (let ((y 0)
-	(idx 0)
-	(db (make-hash-table)))
+	(cache)
+	(db (make-hash-table :test 'equal)))
     (dotimes (h n-of-rows)
       (let ((x 0)
 	    (row))
@@ -58,35 +59,46 @@
 	    (map-window cell-window)
 	    (push (cons cell-window cell-gcontext) row))
 	  (incf x w))
-	(setf (gethash idx db) row) 	
-	(incf idx))
+	(push (nreverse row) cache))	
       (incf y cell-height))
     (map-window window)
+    (display-force-output display)
     (make-table :window window
 		:display display
 		:content db
+		:cache (nreverse cache)
 		:font (open-font display font)
 		:cell-height cell-height
 		:col-width-list col-width-list)))
-	
-(defun write-to-cell (table row-idx col-n string)
-  (let* ((display (table-display table))
-	 (row (gethash row-idx (table-content table)))
-	 (cell (nth col-n row)))
-    (let ((window (car cell))
-	  (gcontext (cdr cell)))
-      (let* ((font-height (font-ascent (table-font table)))
-	     (string-width (text-width gcontext string))
-	     (cell-height (table-cell-height table))
-	     (col-width (nth col-n (table-col-width-list table)))
-	     (xc (round (/ (- col-width string-width) 2)))
-	     (yc (round (/ (+ cell-height font-height) 2))))
-	(clear-area window)
-	(draw-glyphs window gcontext xc yc string)
-	(sleep 0.1) ;; wtf!
-	(display-force-output display)))))
 
-  
+(defun write-to-row (table row columns-list string-list)
+  (let ((display (table-display table))
+	(cell-height (table-cell-height table))
+	(font-height (font-ascent (table-font table))))
+    (loop for col-n in columns-list
+	  for string in string-list
+	  for cell = (nth col-n row)
+	  for window = (car cell)
+	  for gcontext = (cdr cell)
+	  for string-width = (text-width gcontext string)	
+	  for col-width = (nth col-n (table-col-width-list table)) do
+	    (let ((xc (round (/ (- col-width string-width) 2)))
+		  (yc (round (/ (+ cell-height font-height) 2))))	    	    
+	      (clear-area window)
+	      (draw-glyphs window gcontext xc yc string)
+	      (sleep 0.1) ;; wtf!
+	      (display-force-output display)))))
+	      
+
+(defun new-label-p (table label)
+  (let ((db (table-content table)))
+    (not (gethash label db))))
+
+(defun register-label (table label) ; todo: cache NIL ?
+  (let ((row (pop (table-cache table))))
+    (write-to-row table row (list 0 1) (list "hello" "man"))
+    (setf (gethash label (table-content table)) row)))
+    
 (defun test ()
   (multiple-value-bind (display screen colormap) (make-default-display-screen-colormap)
     (let ((main-window (create-window ;; must be inhereted
@@ -103,9 +115,15 @@
       (map-window main-window)	      
       (unwind-protect
            (let* ((window (make-table-window main-window screen colormap 800 50 500 800))
-		  (table (create-table screen display window colormap (list 200 200 200) 50 10)))	
-             (write-to-cell table 1 1 "qwertz")
-	     (write-to-cell table 1 2 "hello!")
+		  (table (create-table screen display window colormap (list 200 200 200) 50 10)))
+	     (print (length (table-cache table)))
+	     (print (table-content table))
+	     (register-label table "pressure")
+	     (print (length (table-cache table)))
+	     (print (table-content table))
+             ;;(write-to-cell table 1 1 "qwertz")
+	     ;;(sleep 1)
+	     ;;(write-to-cell table 1 1 "hello!")
 	     (sleep 3)
 	     (display-finish-output display)
 	     (close-display display))))))
