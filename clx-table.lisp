@@ -93,11 +93,21 @@
 (defun new-label-p (table label)
   (let ((db (table-content table)))
     (not (gethash label db))))
-
+;; do we need DB???
 (defun register-label (table label) ; todo: cache NIL ?
   (let ((row (pop (table-cache table))))
-    (write-to-row table row (list 0 1) (list "hello" "man"))
+    (write-to-row table row (list 0 1) (list "112" label))
     (setf (gethash label (table-content table)) row)))
+
+(defun write-value (table label value)
+  (let ((db (table-content table)))
+    (let ((row (gethash label db)))      
+      (write-to-row table row (list 2) (list (write-to-string value))))))
+
+(defun add-titles (table) ; todo: cache NIL ?
+  (let ((row (pop (table-cache table))))
+    (write-to-row table row (list 0 1 2) (list "can-id" "label" "value"))
+    (setf (gethash "titles" (table-content table)) row)))
     
 (defun test ()
   (multiple-value-bind (display screen colormap) (make-default-display-screen-colormap)
@@ -115,12 +125,10 @@
       (map-window main-window)	      
       (unwind-protect
            (let* ((window (make-table-window main-window screen colormap 800 50 500 800))
-		  (table (create-table screen display window colormap (list 200 200 200) 50 10)))
-	     (print (length (table-cache table)))
-	     (print (table-content table))
+		  (table (create-table screen display window colormap (list 60 200 60) 50 10)))
+	     (add-titles table)	     
 	     (register-label table "pressure")
-	     (print (length (table-cache table)))
-	     (print (table-content table))
+	     (write-value table "pressure" 112.7)
              ;;(write-to-cell table 1 1 "qwertz")
 	     ;;(sleep 1)
 	     ;;(write-to-cell table 1 1 "hello!")
