@@ -6,6 +6,7 @@
   :components ((:file "packages")
 	       (:file "config-parser")
 	       (:file "can-to-data")
+	       (:file "clx-table")
 	       (:file "plotter"))	       
   :depends-on (:fsocket :clx))
 	       

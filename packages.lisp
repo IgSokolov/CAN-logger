@@ -22,6 +22,9 @@
    :plot-data-label
    :*plot-queue*))
 
+(defpackage :can-logger.table
+  (:use :cl :xlib))
+
 (defpackage :can-logger.plotter
   (:use :cl :can-logger.can2data :xlib)
   (:import-from :can-logger.parser :split-sequence-by-delimiter))

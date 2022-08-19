@@ -121,12 +121,6 @@
 			 (clear-area window)))
 	       db)))
 
-(defun restore-table (table)
-  (let ((db (table-content table)))
-    (maphash #'(lambda (key value)
-		 
-
-
 (defun test ()
   (multiple-value-bind (display screen colormap) (make-default-display-screen-colormap)
     (let ((main-window (create-window ;; must be inhereted

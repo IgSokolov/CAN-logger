@@ -116,7 +116,7 @@
   (let ((switch t))
     (loop for i from 0 upto n do
       (let ((plot-value-1 (make-plot-data
-			   :y (* 0.1 (sin (* 2 pi 0.01 i)))
+			   :y (* 0.1 i (sin (* 2 pi 0.01 i)))
 			   ;;:y (random 10)
 			   ;;:y 0.5
 			   :label "label-1"))
@@ -125,7 +125,7 @@
 			   ;;:y (random 10)
 			   ;;:y 0.5
 			   :label "label-2")))
-	(when (= 0 (mod i 30))
+	(when (= 0 (mod i 1))
 	  (setq switch (not switch)))
 	(if switch
 	    ;;(sb-concurrency:enqueue NIL *plot-queue*)
