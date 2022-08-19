@@ -56,12 +56,13 @@
 				 :line-style :solid
 				 :background (screen-white-pixel screen)
 				 :foreground (alloc-color colormap (lookup-color colormap "black")))))
-	    (map-window cell-window)
+	    ;;(map-window cell-window)
 	    (push (cons cell-window cell-gcontext) row))
 	  (incf x w))
 	(push (nreverse row) cache))	
       (incf y cell-height))
     (map-window window)
+    (map-subwindows window)
     (display-force-output display)
     (make-table :window window
 		:display display
@@ -86,30 +87,45 @@
 		  (yc (round (/ (+ cell-height font-height) 2))))	    	    
 	      (clear-area window)
 	      (draw-glyphs window gcontext xc yc string)
+	      (print (gcontext-plist gcontext))
 	      (sleep 0.1) ;; wtf!
 	      (display-force-output display)))
     row))
 	      
-
 (defun new-label-p (table label)
   (let ((db (table-content table)))
     (not (gethash label db))))
 
 (defun register-label (table label can-id) ; todo: cache NIL ?
   (let ((row (pop (table-cache table))))    
-    (setf (gethash label (table-content table)) (write-to-row table row (list 0 1) (list (write-to-string can-id) label)))))
+    (setf (gethash label (table-content table))
+	  (write-to-row table row (list 0 1) (list (write-to-string can-id) label)))))
 
 (defun write-value (table label value)
   (let ((db (table-content table)))
     (let ((row (gethash label db)))      
-      (setf (gethash label (table-content table)) (write-to-row table row (list 2) (list (write-to-string value)))))))
+      (setf (gethash label (table-content table))
+	    (write-to-row table row (list 2) (list (write-to-string value)))))))
 
 (defun add-titles (table)
   (let ((row (pop (table-cache table))))
-    (setf (gethash "titles" (table-content table)) (write-to-row table row (list 0 1 2) (list "can-id" "label" "value")))))
+    (setf (gethash "titles" (table-content table))
+	  (write-to-row table row (list 0 1 2) (list "can-id" "label" "value")))))
 
-;;(defun restore-table (table)
-  
+(defun clean-table (table)
+  (let ((db (table-content table)))
+    (maphash #'(lambda (key value)
+		 (declare (ignore key))
+		 (loop for cell in value
+		       for window = (car cell) do
+			 (clear-area window)))
+	       db)))
+
+(defun restore-table (table)
+  (let ((db (table-content table)))
+    (maphash #'(lambda (key value)
+		 
+
 
 (defun test ()
   (multiple-value-bind (display screen colormap) (make-default-display-screen-colormap)
@@ -135,9 +151,10 @@
 	     (write-value table "pressure" 300)	     
              ;;(write-to-cell table 1 1 "qwertz")
 	     (sleep 1)
-	     (clear-area window)
+	     (clean-table table)
+	     (display-force-output display)
 	     ;;(write-to-cell table 1 1 "hello!")
-	     (sleep 3)
+	     (sleep 1)
 	     (display-finish-output display)
 	     (close-display display))))))
 
