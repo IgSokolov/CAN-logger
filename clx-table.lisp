@@ -61,7 +61,7 @@
 	  (incf x w))
 	(push (nreverse row) cache))	
       (incf y cell-height))
-    (map-window window)
+    (map-window window) ;; comment later!
     (map-subwindows window)
     (display-force-output display)
     (make-table :window window
@@ -86,8 +86,7 @@
 	    (let ((xc (round (/ (- col-width string-width) 2)))
 		  (yc (round (/ (+ cell-height font-height) 2))))	    	    
 	      (clear-area window)
-	      (draw-glyphs window gcontext xc yc string)
-	      (print (gcontext-plist gcontext))
+	      (draw-glyphs window gcontext xc yc string)	      
 	      (sleep 0.1) ;; wtf!
 	      (display-force-output display)))
     row))
@@ -121,6 +120,20 @@
 			 (clear-area window)))
 	       db)))
 
+(defun make-table-window-pair (main-window screen display colormap)
+  (let* ((window (make-table-window main-window screen colormap 800 50 500 800))
+	 (table (create-table screen display window colormap (list 60 200 60) 50 10)))
+    (add-titles table)
+    (cons window table)))
+
+(defun show-window (n window-table-list)
+  (let ((window (car (nth n window-table-list))))
+    (map-window window)
+    (map-subwindows window)))
+		    	     
+(defun find-wt (wt-pool label)
+  (assoc label wt-pool :test 'string=))
+
 (defun test ()
   (multiple-value-bind (display screen colormap) (make-default-display-screen-colormap)
     (let ((main-window (create-window ;; must be inhereted
@@ -136,20 +149,37 @@
 			:background (alloc-color colormap (lookup-color colormap "white")))))
       (map-window main-window)	      
       (unwind-protect
-           (let* ((window (make-table-window main-window screen colormap 800 50 500 800))
-		  (table (create-table screen display window colormap (list 60 200 60) 50 10)))
-	     (add-titles table)	     
-	     (register-label table "pressure" 112)
-	     (write-value table "pressure" 112.7)
-	     (sleep 1)
-	     (write-value table "pressure" 300)	     
-             ;;(write-to-cell table 1 1 "qwertz")
-	     (sleep 1)
-	     (clean-table table)
-	     (display-force-output display)
-	     ;;(write-to-cell table 1 1 "hello!")
-	     (sleep 1)
-	     (display-finish-output display)
-	     (close-display display))))))
+           (let ((wt-pool))
+	     ;;(list (make-table-window-pair main-window screen display colormap))))
+	     (dolist (data (list (cons "pressure" 11.1) (cons "pressure" 15.1) (cons "flow" 100)))
+	       (let ((label (car data))
+		     (value (cdr data)))
+		 (let ((wt (find-wt wt-pool label))) ;; wt = (window . table)
+		   (format t "wt = ~a~%" wt)
+		   (if wt
+		       (write-value (cddr wt) label value)
+		       (if wt-pool
+			   (progn
+			     (register-label (cddar wt-pool) label #x101) ;; cdar wt-pool: insert new value to the last table
+			     (write-value (cddar wt-pool) label value))
+			   (let ((wt (make-table-window-pair main-window screen display colormap)))
+			     (register-label (cdr wt) label #x101) ;; todo: can-id look up
+			     (write-value (cdr wt) label value)
+			     (push (cons label wt) wt-pool))))))
+			   
+			   ;;(progn
+			   
+			   ;; (let ((wt (make-table-window-pair main-window screen display colormap)))
+			   ;;   (register-label (cdr wt) label #x101) ;; todo: can-id look up
+			   ;;   (write-value (cdr wt) label value)
+			   ;;   (push wt wt-pool))))
+	       (display-force-output display)
+	       (sleep 4)))
+		 
+	;;(map-window window2)
+	;;(map-subwindows window2)
+	(display-finish-output display)
+	(sleep 1)
+	(close-display display)))))
 
 
