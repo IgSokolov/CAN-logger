@@ -124,15 +124,20 @@
   (let* ((window (make-table-window main-window screen colormap 800 50 500 800))
 	 (table (create-table screen display window colormap (list 60 200 60) 50 10)))
     (add-titles table)
-    (cons window table)))
+    (values window table)))
 
 (defun show-window (n windows-stack)
   (let ((window (nth n windows-stack)))
     (map-window window)
     (map-subwindows window)))
 		    	     
-(defun find-wt (wt-pool label)
-  (assoc label wt-pool :test 'string=))
+(defstruct wt-pool-unit
+  label
+  window
+  table)
+
+(defun find-wt-unit (wt-pool label)
+  (find label wt-pool :key #'wt-pool-unit-label))
 
 (defun make-random-data ()
     (let ((tags (list "pressure" "flow" "temperature" "velocity"))
@@ -140,7 +145,9 @@
       (loop :repeat 10 do
 	(push (cons (nth (random (list-length tags)) tags) (random 100.0)) output))
       output))
-	
+
+
+
 (defun test ()
   (multiple-value-bind (display screen colormap) (make-default-display-screen-colormap)
     (let ((main-window (create-window ;; must be inhereted
@@ -156,27 +163,29 @@
 			:background (alloc-color colormap (lookup-color colormap "white")))))
       (map-window main-window)	      
       (unwind-protect
-           (let ((wt-pool)
-		 (windows-stack))
-	     ;;(list (make-table-window-pair main-window screen display colormap))))
+           (let ((wt-pool) ;; wt-pool = (list od wt-pool-units)
+		 (windows-stack))	
 	     (dolist (data (make-random-data))	       
 	       (let ((label (car data))
 		     (value (cdr data)))
-		 (let ((wt (find-wt wt-pool label))) ;; wt = (window . table)		   
-		   (if wt
-		       (write-value (cddr wt) label value)
+		 (let ((wt-unit (find-wt-unit wt-pool label))) ;; wt-unit -> label window table
+		   (if wt-unit
+		       (write-value (wt-pool-unit-table wt-unit) (wt-pool-unit-label wt-unit) value)
 		       (if wt-pool
-			   (progn
-			     (register-label (cddar wt-pool) label #x101) ;; cdar wt-pool: insert new value to the last table
-			     (write-value (cddar wt-pool) label value))
-			   (let ((wt (make-table-window-pair main-window screen display colormap)))
-			     (push (car wt) windows-stack)
-			     (register-label (cdr wt) label #x101) ;; todo: can-id look up
-			     (write-value (cdr wt) label value)
-			     (push (cons label wt) wt-pool))))))	       	
+			   (let ((free-wt-unit (car wt-pool)))
+			     (let ((wt-unit (make-wt-pool-unit :label label :window (wt-pool-unit-window free-wt-unit) :table (wt-pool-unit-table free-wt-unit))))
+			       (register-label (wt-pool-unit-table wt-unit) (wt-pool-unit-label wt-unit) #x101) ;; todo: can-id look up
+			       (write-value (wt-pool-unit-table wt-unit) (wt-pool-unit-label wt-unit) value)
+			       (push wt-unit wt-pool)))
+			   (multiple-value-bind (window table) (make-table-window-pair main-window screen display colormap)
+			     (let ((wt-unit (make-wt-pool-unit :label label :window window :table table)))				   
+			       (push window windows-stack)
+			       (register-label (wt-pool-unit-table wt-unit) (wt-pool-unit-label wt-unit) #x101) ;; todo: can-id look up
+			       (write-value (wt-pool-unit-table wt-unit) (wt-pool-unit-label wt-unit) value)
+			       (push wt-unit wt-pool))))))
 	       ;; (show-window 0 windows-stack) ;; switch windows
-	       (display-force-output display)
-	       (sleep 1)))
+		 (display-force-output display)
+		 (sleep 1))))
 		 
 	;;(map-window window2)
 	;;(map-subwindows window2)
