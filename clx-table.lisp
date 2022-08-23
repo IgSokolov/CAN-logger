@@ -171,26 +171,25 @@
 		 (let ((wt-unit (find-wt-unit wt-pool label))) ;; wt-unit -> label window table
 		   (if wt-unit
 		       (write-value (wt-pool-unit-table wt-unit) (wt-pool-unit-label wt-unit) value)
-		       (if wt-pool
-			   (let ((free-wt-unit (car wt-pool)))
-			     (let ((wt-unit (make-wt-pool-unit :label label :window (wt-pool-unit-window free-wt-unit) :table (wt-pool-unit-table free-wt-unit))))
-			       (register-label (wt-pool-unit-table wt-unit) (wt-pool-unit-label wt-unit) #x101) ;; todo: can-id look up
-			       (write-value (wt-pool-unit-table wt-unit) (wt-pool-unit-label wt-unit) value)
-			       (push wt-unit wt-pool)))
-			   (multiple-value-bind (window table) (make-table-window-pair main-window screen display colormap)
-			     (let ((wt-unit (make-wt-pool-unit :label label :window window :table table)))				   
-			       (push window windows-stack)
-			       (register-label (wt-pool-unit-table wt-unit) (wt-pool-unit-label wt-unit) #x101) ;; todo: can-id look up
-			       (write-value (wt-pool-unit-table wt-unit) (wt-pool-unit-label wt-unit) value)
-			       (push wt-unit wt-pool))))))
+		       (progn
+			 (if wt-pool
+			     (let ((free-wt-unit (car wt-pool)))			     
+			       (setq wt-unit (make-wt-pool-unit :label label :window (wt-pool-unit-window free-wt-unit) :table (wt-pool-unit-table free-wt-unit))))
+			     (multiple-value-bind (window table) (make-table-window-pair main-window screen display colormap)
+			       (let ((new-wt-unit (make-wt-pool-unit :label label :window window :table table)))				   
+				 (push window windows-stack)
+				 (setq wt-unit new-wt-unit))))
+			 (register-label (wt-pool-unit-table wt-unit) (wt-pool-unit-label wt-unit) #x101) ;; todo: can-id look up
+			 (write-value (wt-pool-unit-table wt-unit) (wt-pool-unit-label wt-unit) value)
+			 (push wt-unit wt-pool)))))
 	       ;; (show-window 0 windows-stack) ;; switch windows
-		 (display-force-output display)
-		 (sleep 1))))
+	       (display-force-output display)
+	       (sleep 1))))
 		 
 	;;(map-window window2)
 	;;(map-subwindows window2)
 	(display-finish-output display)
 	(sleep 1)
-	(close-display display)))))
+	(close-display display))))
 
 
