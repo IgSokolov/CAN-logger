@@ -22,6 +22,10 @@
 ;; write fn to create coords
 ;; create 2D array of windows
 
+(defstruct row
+  cells
+  value)
+  
 (defstruct table  
   window
   display
@@ -37,7 +41,7 @@
 	(db (make-hash-table :test 'equal)))
     (dotimes (h n-of-rows)
       (let ((x 0)
-	    (row))
+	    (row (make-row)))
 	(dolist (w col-width-list)
 	  (let* ((cell-window (create-window
 			       :parent window
@@ -57,9 +61,11 @@
 				 :background (screen-white-pixel screen)
 				 :foreground (alloc-color colormap (lookup-color colormap "black")))))
 	    ;;(map-window cell-window)
-	    (push (cons cell-window cell-gcontext) row))
+	    
+	    (push (cons cell-window cell-gcontext) (row-cells row)))
 	  (incf x w))
-	(push (nreverse row) cache))	
+	(setf (row-cells row) (nreverse (row-cells row)))
+	(push row cache))
       (incf y cell-height))
     (map-window window)
     (map-subwindows window)
@@ -75,10 +81,11 @@
 (defun write-to-row (table row columns-list string-list)
   (let ((display (table-display table))
 	(cell-height (table-cell-height table))
-	(font-height (font-ascent (table-font table))))
+	(font-height (font-ascent (table-font table)))
+	(cells (row-cells row)))
     (loop for col-n in columns-list
 	  for string in string-list
-	  for cell = (nth col-n row)
+	  for cell = (nth col-n cells) ;; check!
 	  for window = (car cell)
 	  for gcontext = (cdr cell)
 	  for string-width = (text-width gcontext string)	
@@ -109,7 +116,8 @@
 
 (defun write-value (table label value)
   (let ((db (table-content table)))
-    (let ((row (gethash label db)))      
+    (let ((row (gethash label db)))
+      (setf (row-value row) value)
       (setf (gethash label (table-content table))
 	    (write-to-row table row (list 2) (list (write-to-string value)))))))
 
@@ -198,14 +206,15 @@
 				 (register-label (wt-pool-unit-table wt-unit) (wt-pool-unit-label wt-unit) #x101))))) ;; todo: can-id look up))))
 			 (write-value (wt-pool-unit-table wt-unit) (wt-pool-unit-label wt-unit) value)
 			 (push wt-unit wt-pool))))))
-	     (print "show time! - 1")
 	     (sleep 1)
-	     (show-table 0 tables-stack) ;; switch tables
-	     (print "show time! - 2")
-	     (sleep 1)
-	     (show-table 1 tables-stack) ;; switch tables
-	     (display-force-output display)
-	     (sleep 1)
+	     ;; (print "show time! - 1")
+	     ;; (sleep 1)
+	     ;; (show-table 0 tables-stack) ;; switch tables
+	     ;; (print "show time! - 2")
+	     ;; (sleep 1)
+	     ;; (show-table 1 tables-stack) ;; switch tables
+	     ;; (display-force-output display)
+	     ;; (sleep 1)
 		 
 	;;(map-window window2)
 	;;(map-subwindows window2)
