@@ -35,7 +35,8 @@
   cache
   font
   cell-height
-  col-width-list)
+  col-width-list
+  (titles-list (list "can-id" "label" "value")))
 
 (defun create-table (screen display window colormap col-width-list cell-height n-of-rows &optional (font "fixed"))
   (let ((y 0)
@@ -126,7 +127,7 @@
 (defun add-titles (table)
   (let ((row (pop (table-cache table))))
     (setf (gethash "titles" (table-content table))
-	  (write-to-row table row (list 0 1 2) (list "can-id" "label" "value")))))
+	  (write-to-row table row (list 0 1 2) (table-titles-list table)))))
 
 (defun clean-table (table)
   (let ((db (table-content table)))
@@ -143,14 +144,13 @@
     (add-titles table)
     (values window table)))
 
-
 (defun redraw-table (table)  
   (let ((db (table-content table)))
     (maphash #'(lambda (label row) ;; label = "flow", row = {value, 3 cells = (window . gcontext) for "can-id" "lable" "value"}
 		 (format t "label = ~a~%" label)
 		 (mapc #'(lambda (cell) (clear-area (car cell))) (row-cells row))
 		 (if (string= label "titles")
-		     (write-to-row table row (list 0 1 2) (list "can-id" "label" "value"))
+		     (write-to-row table row (list 0 1 2) (table-titles-list table))
 		     (write-to-row table row (list 0 1 2) (list (write-to-string #x112) label (write-to-string (row-value row)))))) db)))
   
 (defun show-table (n wt-stack)
@@ -217,18 +217,9 @@
 				 (setq wt-unit new-wt-unit)
 				 (register-label (wt-pool-unit-table wt-unit) (wt-pool-unit-label wt-unit) #x101))))) ;; todo: can-id look up))))
 			 (write-value (wt-pool-unit-table wt-unit) (wt-pool-unit-label wt-unit) value)
-			 (push wt-unit wt-pool))))))
-	     
-	     (sleep 1)
-	     (print "1")
+			 (push wt-unit wt-pool))))))	     
 	     (show-table 1 wt-stack)
-	     (sleep 1)
-	     (print "0")
 	     (show-table 0 wt-stack)	     
-	     ;; (sleep 1)
-		 
-	;;(map-window window2)
-	;;(map-subwindows window2)
 	     (display-finish-output display)
 	     (sleep 1)
 	     (close-display display))))))
