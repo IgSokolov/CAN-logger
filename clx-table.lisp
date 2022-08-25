@@ -15,7 +15,8 @@
    :height y-size
    :border (screen-black-pixel screen)
    :border-width 1
-   :colormap colormap
+   :colormap colormap   
+   :save-under :on
    :background (alloc-color colormap (lookup-color colormap "green"))))
 
 ;; each cell is a subwindow of table-window,
@@ -52,6 +53,7 @@
 			       :border (screen-black-pixel screen)
 			       :border-width 1
 			       :bit-gravity :center
+			       :save-under :on ;; TBC
 			       :colormap colormap
 			       :background (alloc-color colormap (lookup-color colormap "white"))))
 		 (cell-gcontext (create-gcontext
@@ -114,7 +116,7 @@
     (setf (gethash label (table-content table))
 	  (write-to-row table row (list 0 1) (list (write-to-string can-id) label)))))
 
-(defun write-value (table label value)
+(defun write-value (table label value) ;; todo: opt no-overwrite
   (let ((db (table-content table)))
     (let ((row (gethash label db)))
       (setf (row-value row) value)
@@ -128,9 +130,9 @@
 
 (defun clean-table (table)
   (let ((db (table-content table)))
-    (maphash #'(lambda (key value)
-		 (declare (ignore key))
-		 (loop for cell in value
+    (maphash #'(lambda (label row)
+		 (declare (ignore label))
+		 (loop for cell in (row-cells row)
 		       for window = (car cell) do
 			 (clear-area window)))
 	       db)))
@@ -141,14 +143,32 @@
     (add-titles table)
     (values window table)))
 
-;; (defun show-table (n tables-stack)
-;;   (let ((table (nth n tables-stack)))
-;;       (let ((db (table-content table)))
-;; 	(maphash #'(lambda (key value)
-;; 		     (loop for cell in value
-;; 		       for window = (car cell) do
-;; 			 (map-wi window)))
-		    	     
+
+(defun redraw-table (table)  
+  (let ((db (table-content table)))
+    (maphash #'(lambda (label row) ;; label = "flow", row = {value, 3 cells = (window . gcontext) for "can-id" "lable" "value"}
+		 (format t "label = ~a~%" label)
+		 (mapc #'(lambda (cell)
+			   (circulate-window-up (car cell))
+			   (setf (window-priority (car cell) :above))) (row-cells row))
+		 (if (string= label "titles")
+		     (write-to-row table row (list 0 1 2) (list "can-id" "label" "value"))
+		     (write-to-row table row (list 0 1 2) (list (write-to-string #x112) label (write-to-string (row-value row)))))) db)))
+  
+(defun show-table (n wt-stack)
+  (let ((wt (nth n wt-stack)))
+    (let ((window (car wt))
+	  (table (cdr wt)))
+      ;;(clear-area window)
+      (clean-table table)
+      (sleep 1)
+      (redraw-table table)      
+      (circulate-window-down window)
+      ;;(print (query-tree window))
+      ;;(setf (window-priority window) :above)
+      (display-force-output (table-display table)))))
+      
+			      
 (defstruct wt-pool-unit
   label
   window
@@ -180,8 +200,8 @@
       (map-window main-window)	      
       (unwind-protect
            (let ((wt-pool) ;; wt-pool is a list of wt-pool-units
-		 (tables-stack))	
-	     (dolist (data (make-random-data))	       
+		 (wt-stack))	
+	     (dolist (data (make-random-data))
 	       (let ((label (car data))
 		     (value (cdr data)))
 		 (let ((wt-unit (find-wt-unit wt-pool label))) ;; wt-unit -> struct: label window table
@@ -193,7 +213,7 @@
 			       (setq wt-unit (make-wt-pool-unit :label label :window (wt-pool-unit-window free-wt-unit) :table (wt-pool-unit-table free-wt-unit))))
 			     (multiple-value-bind (window table) (make-table-window-pair main-window screen display colormap)
 			       (let ((new-wt-unit (make-wt-pool-unit :label label :window window :table table)))				   
-				 (push table tables-stack) ;; for a switch button
+				 (push (cons window table) wt-stack) ;; for a switch button
 				 (setq wt-unit new-wt-unit))))
 			 (handler-case 
 			     (register-label (wt-pool-unit-table wt-unit) (wt-pool-unit-label wt-unit) #x101) ;; todo: can-id look up
@@ -201,19 +221,18 @@
 			     (declare (ignore c))
 			     (multiple-value-bind (window table) (make-table-window-pair main-window screen display colormap)
 			       (let ((new-wt-unit (make-wt-pool-unit :label label :window window :table table)))				   
-				 (push table tables-stack) ;; for a switch button
+				 (push (cons window table) wt-stack) ;; for a switch button
 				 (setq wt-unit new-wt-unit)
 				 (register-label (wt-pool-unit-table wt-unit) (wt-pool-unit-label wt-unit) #x101))))) ;; todo: can-id look up))))
 			 (write-value (wt-pool-unit-table wt-unit) (wt-pool-unit-label wt-unit) value)
 			 (push wt-unit wt-pool))))))
+	     
 	     (sleep 1)
-	     ;; (print "show time! - 1")
-	     ;; (sleep 1)
-	     ;; (show-table 0 tables-stack) ;; switch tables
-	     ;; (print "show time! - 2")
-	     ;; (sleep 1)
-	     ;; (show-table 1 tables-stack) ;; switch tables
-	     ;; (display-force-output display)
+	     (print "1")
+	     (show-table 1 wt-stack)
+	     (sleep 1)
+	     (print "0")
+	     (show-table 0 wt-stack)	     
 	     ;; (sleep 1)
 		 
 	;;(map-window window2)
