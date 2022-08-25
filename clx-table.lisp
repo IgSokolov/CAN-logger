@@ -15,7 +15,8 @@
    :height y-size
    :border (screen-black-pixel screen)
    :border-width 1
-   :colormap colormap   
+   :colormap colormap
+   :event-mask '(:structure-notify)
    :save-under :on
    :background (alloc-color colormap (lookup-color colormap "green"))))
 
@@ -62,8 +63,7 @@
 				 :line-style :solid
 				 :background (screen-white-pixel screen)
 				 :foreground (alloc-color colormap (lookup-color colormap "black")))))
-	    ;;(map-window cell-window)
-	    
+	    ;;(map-window cell-window)	    
 	    (push (cons cell-window cell-gcontext) (row-cells row)))
 	  (incf x w))
 	(setf (row-cells row) (nreverse (row-cells row)))
@@ -148,9 +148,7 @@
   (let ((db (table-content table)))
     (maphash #'(lambda (label row) ;; label = "flow", row = {value, 3 cells = (window . gcontext) for "can-id" "lable" "value"}
 		 (format t "label = ~a~%" label)
-		 (mapc #'(lambda (cell)
-			   (circulate-window-up (car cell))
-			   (setf (window-priority (car cell) :above))) (row-cells row))
+		 (mapc #'(lambda (cell) (clear-area (car cell))) (row-cells row))
 		 (if (string= label "titles")
 		     (write-to-row table row (list 0 1 2) (list "can-id" "label" "value"))
 		     (write-to-row table row (list 0 1 2) (list (write-to-string #x112) label (write-to-string (row-value row)))))) db)))
@@ -158,16 +156,10 @@
 (defun show-table (n wt-stack)
   (let ((wt (nth n wt-stack)))
     (let ((window (car wt))
-	  (table (cdr wt)))
-      ;;(clear-area window)
-      (clean-table table)
-      (sleep 1)
-      (redraw-table table)      
-      (circulate-window-down window)
-      ;;(print (query-tree window))
-      ;;(setf (window-priority window) :above)
+	  (table (cdr wt)))            
+      (setf (window-priority window) :above)      
+      (redraw-table table)            
       (display-force-output (table-display table)))))
-      
 			      
 (defstruct wt-pool-unit
   label
@@ -197,7 +189,7 @@
 			:bit-gravity :center
 			:colormap colormap
 			:background (alloc-color colormap (lookup-color colormap "white")))))
-      (map-window main-window)	      
+      (map-window main-window)      
       (unwind-protect
            (let ((wt-pool) ;; wt-pool is a list of wt-pool-units
 		 (wt-stack))	
