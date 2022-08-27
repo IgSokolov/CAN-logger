@@ -202,6 +202,7 @@
 		      :border (screen-black-pixel screen)
 		      :border-width 2
 		      :bit-gravity :center
+		      :event-mask '(:button-press :button-release)
 		      :colormap colormap
 		      :background (alloc-color colormap (lookup-color colormap "green")))))
       (let ((left-g (create-gcontext
@@ -228,15 +229,14 @@
 	   (lambda ()
 	     (loop :repeat 100 do ;; fixme: termination
 				  (event-case (display :force-output-p t :timeout 0.1)
-				    (:button-press ()
-						   (put-image left-win left-g next-pressed-image :x 0 :y 0 :width size :height size :bitmap-p t)
-						   ;;(put-image right-win right-g prev-pressed-image :x 0 :y 0 :width size :height size :bitmap-p t)
-						   )
-				    (:button-release ()
-						     (put-image left-win left-g next-image :x 0 :y 0 :width size :height size :bitmap-p t)
-						     ;;(put-image right-win right-g prev-image :x 0 :y 0 :width size :height size :bitmap-p t)
-						     )))))
-	  
+				    (:button-press (window)
+						   (if (drawable-equal window left-win)
+						       (put-image left-win left-g next-pressed-image :x 0 :y 0 :width size :height size :bitmap-p t)
+						       (put-image right-win right-g prev-pressed-image :x 0 :y 0 :width size :height size :bitmap-p t)))
+				    (:button-release (window)
+						     (if (drawable-equal window left-win)
+							 (put-image left-win left-g next-image :x 0 :y 0 :width size :height size :bitmap-p t)
+							 (put-image right-win right-g prev-image :x 0 :y 0 :width size :height size :bitmap-p t)))))))
 	  (display-force-output display)))))
 
 (defun test ()
