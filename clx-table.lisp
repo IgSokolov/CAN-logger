@@ -180,7 +180,7 @@
   (let ((image (read-bitmap-file path-to-image.xbm)))
     (put-image window gcontext image :x 0 :y 0 :width size :height size :bitmap-p t)))
 
-(defun make-paging-buttons (window display x y screen colormap size &optional (font "fixed")) ;; per table???
+(defun make-paging-buttons (task-queue window display x y screen colormap size &optional (font "fixed")) ;; per table???
   (let ((left-win (create-window
 		   :parent window
 		   :x x
@@ -231,8 +231,12 @@
 				  (event-case (display :force-output-p t :timeout 0.1)
 				    (:button-press (window)
 						   (if (drawable-equal window left-win)
-						       (put-image left-win left-g next-pressed-image :x 0 :y 0 :width size :height size :bitmap-p t)
-						       (put-image right-win right-g prev-pressed-image :x 0 :y 0 :width size :height size :bitmap-p t)))
+						       (progn
+							 (put-image left-win left-g next-pressed-image :x 0 :y 0 :width size :height size :bitmap-p t)
+							 (sb-concurrency:enqueue :next task-queue))
+						       (progn
+							 (put-image right-win right-g prev-pressed-image :x 0 :y 0 :width size :height size :bitmap-p t)
+							 (sb-concurrency:enqueue :prev task-queue))))
 				    (:button-release (window)
 						     (if (drawable-equal window left-win)
 							 (put-image left-win left-g next-image :x 0 :y 0 :width size :height size :bitmap-p t)
@@ -255,7 +259,19 @@
       (map-window main-window)      
       (unwind-protect
            (let ((wt-pool) ;; wt-pool is a list of wt-pool-units
-		 (wt-stack))	
+		 (wt-stack)
+		 (paging-task-queue (sb-concurrency:make-queue :initial-contents NIL)))
+	     ;; start table switch daemon
+	     (sb-thread:make-thread
+	      (lambda ()
+		(loop :repeat 100 do
+		  (let ((task (sb-concurrency:dequeue paging-task-queue)))
+		    (case task
+		      (:next (print "next"))
+		      (:prev (print "prev"))))
+		  (sleep 0.1))))
+					  
+				     
 	     (dolist (data (make-random-data))
 	       (let ((label (car data))
 		     (value (cdr data)))
@@ -267,7 +283,7 @@
 			     (let ((free-wt-unit (car wt-pool)))
 			       (setq wt-unit (make-wt-pool-unit :label label :window (wt-pool-unit-window free-wt-unit) :table (wt-pool-unit-table free-wt-unit))))
 			     (multiple-value-bind (window table) (make-table-window-pair main-window screen display colormap)
-			       (make-paging-buttons main-window display 30 30 screen colormap 100)
+			       (make-paging-buttons paging-task-queue main-window display 30 30 screen colormap 100)
 			       (let ((new-wt-unit (make-wt-pool-unit :label label :window window :table table)))				   
 				 (push (cons window table) wt-stack) ;; for a switch button
 				 (setq wt-unit new-wt-unit))))
