@@ -176,18 +176,16 @@
 	(push (cons (nth (random (list-length tags)) tags) (random 100.0)) output))
       output))
 
-(defun show-image (path-to-image.xbm window gcontext)
+(defun show-image (path-to-image.xbm window gcontext size)
   (let ((image (read-bitmap-file path-to-image.xbm)))
-    (put-image window gcontext image :x 0 :y 0 :width 30 :height 30 :bitmap-p t)))
+    (put-image window gcontext image :x 0 :y 0 :width size :height size :bitmap-p t)))
 
-(defun make-paging-buttons (table screen colormap size) ;; per table???
-  (let ((width (drawable-width (table-window table)))
-	(height (drawable-height (table-window table))))
-    (let ((left-win (create-window
-		   :parent (table-window table)
-		   :x 0
-		   :y (- height size)
-		   :width size
+(defun make-paging-buttons (window display x y screen colormap size &optional (font "fixed")) ;; per table???
+  (let ((left-win (create-window
+		   :parent window
+		   :x x
+		   :y y
+		   :width  size
 		   :height size
 		   :border (screen-black-pixel screen)
 		   :border-width 2
@@ -195,9 +193,9 @@
 		   :colormap colormap
 		   :background (alloc-color colormap (lookup-color colormap "green"))))
 	  (right-win (create-window
-		      :parent (table-window table)
-		      :x (- width size)
-		      :y (- height size)
+		      :parent window
+		      :x x
+		      :y (+ y size 10)
 		      :width size
 		      :height size
 		      :border (screen-black-pixel screen)
@@ -207,22 +205,22 @@
 		      :background (alloc-color colormap (lookup-color colormap "green")))))
       (let ((left-g (create-gcontext
 		     :drawable left-win
-		     :font (table-font table)
+		     :font (open-font display font)
 		     :line-style :solid
 		     :background (screen-white-pixel screen)
 		     :foreground (alloc-color colormap (lookup-color colormap "black"))))
 	    (right-g (create-gcontext
 		      :drawable right-win
-		      :font (table-font table)
+		      :font (open-font display font)
 		      :line-style :solid
 		      :background (screen-white-pixel screen)
 		      :foreground (alloc-color colormap (lookup-color colormap "black")))))
 	(map-window left-win)
 	(map-window right-win)
-	(show-image "./images/next.xbm" left-win left-g)
-	(show-image "./images/next.xbm" right-win right-g)
-	(display-force-output (table-display table))))))
-  
+	(show-image "./images/next.xbm" left-win left-g size)
+	(show-image "./images/prev.xbm" right-win right-g size)
+	(display-force-output display))))
+
     
 (defun test ()
   (multiple-value-bind (display screen colormap) (make-default-display-screen-colormap)
@@ -252,7 +250,7 @@
 			     (let ((free-wt-unit (car wt-pool)))
 			       (setq wt-unit (make-wt-pool-unit :label label :window (wt-pool-unit-window free-wt-unit) :table (wt-pool-unit-table free-wt-unit))))
 			     (multiple-value-bind (window table) (make-table-window-pair main-window screen display colormap)
-			       (make-paging-buttons table screen colormap 100)
+			       (make-paging-buttons main-window display 30 30 screen colormap 100)
 			       (let ((new-wt-unit (make-wt-pool-unit :label label :window window :table table)))				   
 				 (push (cons window table) wt-stack) ;; for a switch button
 				 (setq wt-unit new-wt-unit))))
