@@ -190,6 +190,7 @@
 		   :border (screen-black-pixel screen)
 		   :border-width 2
 		   :bit-gravity :center
+		   :event-mask '(:button-press :button-release)
 		   :colormap colormap
 		   :background (alloc-color colormap (lookup-color colormap "green"))))
 	  (right-win (create-window
@@ -217,11 +218,27 @@
 		      :foreground (alloc-color colormap (lookup-color colormap "black")))))
 	(map-window left-win)
 	(map-window right-win)
-	(show-image "./images/next.xbm" left-win left-g size)
-	(show-image "./images/prev.xbm" right-win right-g size)
-	(display-force-output display))))
+	(let ((next-image (read-bitmap-file "./images/next.xbm"))
+	      (prev-image (read-bitmap-file "./images/prev.xbm"))
+	      (next-pressed-image (read-bitmap-file "./images/next-pressed.xbm"))
+	      (prev-pressed-image (read-bitmap-file "./images/prev-pressed.xbm")))
+	  (put-image left-win left-g next-image :x 0 :y 0 :width size :height size :bitmap-p t)
+          (put-image right-win right-g prev-image :x 0 :y 0 :width size :height size :bitmap-p t)
+	  (sb-thread:make-thread
+	   (lambda ()
+	     (loop :repeat 100 do ;; fixme: termination
+				  (event-case (display :force-output-p t :timeout 0.1)
+				    (:button-press ()
+						   (put-image left-win left-g next-pressed-image :x 0 :y 0 :width size :height size :bitmap-p t)
+						   ;;(put-image right-win right-g prev-pressed-image :x 0 :y 0 :width size :height size :bitmap-p t)
+						   )
+				    (:button-release ()
+						     (put-image left-win left-g next-image :x 0 :y 0 :width size :height size :bitmap-p t)
+						     ;;(put-image right-win right-g prev-image :x 0 :y 0 :width size :height size :bitmap-p t)
+						     )))))
+	  
+	  (display-force-output display)))))
 
-    
 (defun test ()
   (multiple-value-bind (display screen colormap) (make-default-display-screen-colormap)
     (let ((main-window (create-window ;; must be inhereted
