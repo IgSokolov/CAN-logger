@@ -153,18 +153,33 @@
 		     (write-to-row table row (list 0 1 2) (table-titles-list table))
 		     (write-to-row table row (list 0 1 2) (list (write-to-string #x112) label (write-to-string (row-value row)))))) db)))
   
-(defun show-table (n wt-stack)
-  (let ((wt (nth n wt-stack)))
+(defstruct wt-pool-unit
+  label
+  window
+  table)
+
+(defstruct window-table-stack
+  stack
+  (size 0)
+  (pointer -1))
+  
+(defun add-wt-stack (window table wt-stack)
+  (push (cons window table) (window-table-stack-stack wt-stack))
+  (incf (window-table-stack-size wt-stack))
+  (incf (window-table-stack-pointer wt-stack)))
+  
+(defun show-table (wt-stack direction)
+  (ccase direction
+    (:next (when (<= (+ (window-table-stack-pointer wt-stack) 2) (window-table-stack-size wt-stack))
+	     (incf (window-table-stack-pointer wt-stack))))
+    (:prev (when (> (window-table-stack-pointer wt-stack) 0)
+	     (decf (window-table-stack-pointer wt-stack)))))  
+  (let ((wt (nth (window-table-stack-pointer wt-stack) (window-table-stack-stack wt-stack))))
     (let ((window (car wt))
 	  (table (cdr wt)))            
       (setf (window-priority window) :above)      
       (redraw-table table)            
       (display-force-output (table-display table)))))
-			      
-(defstruct wt-pool-unit
-  label
-  window
-  table)
 
 (defun find-wt-unit (wt-pool label)
   (find label wt-pool :key #'wt-pool-unit-label))
@@ -175,10 +190,6 @@
       (loop :repeat 10 do
 	(push (cons (nth (random (list-length tags)) tags) (random 100.0)) output))
       output))
-
-(defun show-image (path-to-image.xbm window gcontext size)
-  (let ((image (read-bitmap-file path-to-image.xbm)))
-    (put-image window gcontext image :x 0 :y 0 :width size :height size :bitmap-p t)))
 
 (defun make-paging-buttons (task-queue window display x y screen colormap size &optional (font "fixed")) ;; per table???
   (let ((left-win (create-window
@@ -259,19 +270,17 @@
       (map-window main-window)      
       (unwind-protect
            (let ((wt-pool) ;; wt-pool is a list of wt-pool-units
-		 (wt-stack)
+		 (wt-stack (make-window-table-stack))
 		 (paging-task-queue (sb-concurrency:make-queue :initial-contents NIL)))
 	     ;; start table switch daemon
 	     (sb-thread:make-thread
 	      (lambda ()
 		(loop :repeat 100 do
 		  (let ((task (sb-concurrency:dequeue paging-task-queue)))
-		    (case task
-		      (:next (print "next"))
-		      (:prev (print "prev"))))
+		    (when task
+		      (show-table wt-stack task)))
 		  (sleep 0.1))))
-					  
-				     
+	     ;; read data
 	     (dolist (data (make-random-data))
 	       (let ((label (car data))
 		     (value (cdr data)))
@@ -285,7 +294,7 @@
 			     (multiple-value-bind (window table) (make-table-window-pair main-window screen display colormap)
 			       (make-paging-buttons paging-task-queue main-window display 30 30 screen colormap 100)
 			       (let ((new-wt-unit (make-wt-pool-unit :label label :window window :table table)))				   
-				 (push (cons window table) wt-stack) ;; for a switch button
+				 (add-wt-stack window table wt-stack) ;; for a switch button
 				 (setq wt-unit new-wt-unit))))
 			 (handler-case 
 			     (register-label (wt-pool-unit-table wt-unit) (wt-pool-unit-label wt-unit) #x101) ;; todo: can-id look up
@@ -293,15 +302,13 @@
 			     (declare (ignore c))
 			     (multiple-value-bind (window table) (make-table-window-pair main-window screen display colormap)
 			       (let ((new-wt-unit (make-wt-pool-unit :label label :window window :table table)))				   
-				 (push (cons window table) wt-stack) ;; for a switch button
+				 (add-wt-stack window table wt-stack)
 				 (setq wt-unit new-wt-unit)
 				 (register-label (wt-pool-unit-table wt-unit) (wt-pool-unit-label wt-unit) #x101))))) ;; todo: can-id look up))))
 			 (write-value (wt-pool-unit-table wt-unit) (wt-pool-unit-label wt-unit) value)
 			 (push wt-unit wt-pool))))))	     
-	     (show-table 1 wt-stack)
-	     (show-table 0 wt-stack)	     
 	     (display-finish-output display)
-	     (sleep 1)
+	     (sleep 10)
 	     (close-display display))))))
 
 
