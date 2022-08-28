@@ -20,10 +20,6 @@
    :save-under :on
    :background (alloc-color colormap (lookup-color colormap "white"))))
 
-;; each cell is a subwindow of table-window,
-;; write fn to create coords
-;; create 2D array of windows
-
 (defstruct row
   cells
   value)
@@ -47,7 +43,7 @@
 	    (row (make-row)))
 	(dolist (w col-width-list)
 	  (let* ((cell-window (create-window
-			       :parent window
+v			       :parent window
 			       :x x
 			       :y y
 			       :width w
@@ -63,8 +59,7 @@
 				 :font (open-font display font)
 				 :line-style :solid
 				 :background (screen-white-pixel screen)
-				 :foreground (alloc-color colormap (lookup-color colormap "black")))))
-	    ;;(map-window cell-window)	    
+				 :foreground (alloc-color colormap (lookup-color colormap "black")))))	 
 	    (push (cons cell-window cell-gcontext) (row-cells row)))
 	  (incf x w))
 	(setf (row-cells row) (nreverse (row-cells row)))
@@ -101,11 +96,6 @@
 	      (display-force-output display)))
     row))
 
-;; depr!
-(defun new-label-p (table label)
-  (let ((db (table-content table)))
-    (not (gethash label db))))
-
 (define-condition empty-cache (error)
   ((label :initarg label :reader label) ;; fields not used!
    (can-id :initarg can-id :reader can-id)))
@@ -129,6 +119,7 @@
     (setf (gethash "titles" (table-content table))
 	  (write-to-row table row (list 0 1 2) (table-titles-list table)))))
 
+;; depr!
 (defun clean-table (table)
   (let ((db (table-content table)))
     (maphash #'(lambda (label row)
@@ -185,13 +176,15 @@
   (find label wt-pool :key #'wt-pool-unit-label))
 
 (defun make-random-data ()
-    (let ((tags (list "pressure" "flow" "temperature" "velocity"))
+    (let ((tags (list "pressure" "flow" "temperature" "velocity" "A" "B" "C" "D" "E" "F"))
 	  (output))
       (loop :repeat 10 do
 	(push (cons (nth (random (list-length tags)) tags) (random 100.0)) output))
       output))
 
-(defun make-paging-buttons (task-queue window display x y screen colormap size &optional (font "fixed")) ;; per table???
+(defparameter *stop* NIL)
+
+(defun make-paging-buttons (task-queue window display x y screen colormap size &optional (font "fixed"))
   (let ((left-win (create-window
 		   :parent window
 		   :x x
@@ -238,7 +231,7 @@
           (put-image right-win right-g prev-image :x 0 :y 0 :width size :height size :bitmap-p t)
 	  (sb-thread:make-thread
 	   (lambda ()
-	     (loop :repeat 100 do ;; fixme: termination
+	     (loop until *stop* do ;; fixme: termination
 				  (event-case (display :force-output-p t :timeout 0.1)
 				    (:button-press (window)
 						   (if (drawable-equal window left-win)
@@ -254,7 +247,8 @@
 							 (put-image right-win right-g prev-image :x 0 :y 0 :width size :height size :bitmap-p t)))))))
 	  (display-force-output display)))))
 
-(defun test ()
+(defun run ()
+  (setq *stop* NIL)
   (multiple-value-bind (display screen colormap) (make-default-display-screen-colormap)
     (let ((main-window (create-window ;; must be inhereted
 			:parent (screen-root screen)
@@ -275,7 +269,7 @@
 	     ;; start table switch daemon
 	     (sb-thread:make-thread
 	      (lambda ()
-		(loop :repeat 100 do
+		(loop until *stop* do
 		  (let ((task (sb-concurrency:dequeue paging-task-queue)))
 		    (when task
 		      (show-table wt-stack task)))
@@ -308,7 +302,18 @@
 			 (write-value (wt-pool-unit-table wt-unit) (wt-pool-unit-label wt-unit) value)
 			 (push wt-unit wt-pool))))))	     
 	     (display-finish-output display)
-	     (sleep 10)
-	     (close-display display))))))
+	     (loop do
+	       (if *stop* ;; fixme: sync threads!
+		   (progn
+		     (close-display display)
+		     (return))
+		   (sleep 0.1)))	       
+	     )))))
 
+(defun stop-threads ()
+  (setq *stop* t))
 
+(defun test()
+  (sb-thread:make-thread (lambda () (run)))
+  (sleep 4)
+  (stop-threads))
