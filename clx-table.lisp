@@ -92,7 +92,7 @@
 		  (yc (round (/ (+ cell-height font-height) 2))))	    	    
 	      (clear-area window)
 	      (draw-glyphs window gcontext xc yc string)	      
-	      (sleep 0.1) ;; wtf!	      
+	      (sleep 0.1) ;; wtf!!!!	      
 	      (display-force-output display)))	      
     row))
 
@@ -138,7 +138,6 @@
 (defun redraw-table (table)  
   (let ((db (table-content table)))
     (maphash #'(lambda (label row) ;; label = "flow", row = {value, 3 cells = (window . gcontext) for "can-id" "lable" "value"}
-		 (format t "label = ~a~%" label)
 		 (mapc #'(lambda (cell) (clear-area (car cell))) (row-cells row))
 		 (if (string= label "titles")
 		     (write-to-row table row (list 0 1 2) (table-titles-list table))
@@ -241,21 +240,23 @@
           (put-image right-win right-g prev-image :x 0 :y 0 :width size :height size :bitmap-p t)
 	  (sb-thread:make-thread
 	   (lambda ()
-	     (loop until *stop* do ;; fixme: termination
+	     (loop until *stop* do
 				  (event-case (display :force-output-p t :timeout 0.1)
-				    (:button-press (window)
+				    (:button-press (window)						   
 						   (if (drawable-equal window left-win)
 						       (progn
-							 (put-image left-win left-g next-pressed-image :x 0 :y 0 :width size :height size :bitmap-p t)
+							 (put-image left-win left-g next-pressed-image :x 0 :y 0 :width size :height size :bitmap-p t)							 
 							 (sb-concurrency:enqueue :next task-queue))
 						       (progn
 							 (put-image right-win right-g prev-pressed-image :x 0 :y 0 :width size :height size :bitmap-p t)
-							 (sb-concurrency:enqueue :prev task-queue))))
-				    (:button-release (window)
+							 (sb-concurrency:enqueue :prev task-queue)))
+						   t)
+				    (:button-release (window)						     
 						     (if (drawable-equal window left-win)
 							 (put-image left-win left-g next-image :x 0 :y 0 :width size :height size :bitmap-p t)
-							 (put-image right-win right-g prev-image :x 0 :y 0 :width size :height size :bitmap-p t)))))))
-	  (display-force-output display)))))
+							 (put-image right-win right-g prev-image :x 0 :y 0 :width size :height size :bitmap-p t))
+						     t)))))
+	  (Display-force-output display)))))
 
 (defun run ()  
   (multiple-value-bind (display screen colormap) (make-default-display-screen-colormap)
@@ -320,5 +321,5 @@
   (setq *stop* NIL)
   (sb-thread:make-thread (lambda () (generate-random-data)))
   (sb-thread:make-thread (lambda () (run)))
-  (sleep 5)
+  (sleep 10)
   (setq *stop* t))
