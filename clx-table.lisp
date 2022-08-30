@@ -91,8 +91,7 @@
 	    (let ((xc (round (/ (- col-width string-width) 2)))
 		  (yc (round (/ (+ cell-height font-height) 2))))	    	    
 	      (clear-area window)
-	      (draw-glyphs window gcontext xc yc string)	      
-	      (sleep 0.1) ;; wtf!!!!	      
+	      (draw-glyphs window gcontext xc yc string)	      	      
 	      (display-force-output display)))	      
     row))
 
@@ -230,14 +229,16 @@
 		      :line-style :solid
 		      :background (screen-white-pixel screen)
 		      :foreground (alloc-color colormap (lookup-color colormap "black")))))
-	(map-window left-win)
-	(map-window right-win)
 	(let ((next-image (read-bitmap-file "./images/next.xbm"))
 	      (prev-image (read-bitmap-file "./images/prev.xbm"))
 	      (next-pressed-image (read-bitmap-file "./images/next-pressed.xbm"))
 	      (prev-pressed-image (read-bitmap-file "./images/prev-pressed.xbm")))
+	  (map-window left-win)
+	  (map-window right-win)
+	  (sleep 0.1)
 	  (put-image left-win left-g next-image :x 0 :y 0 :width size :height size :bitmap-p t)
           (put-image right-win right-g prev-image :x 0 :y 0 :width size :height size :bitmap-p t)
+	  
 	  (sb-thread:make-thread
 	   (lambda ()
 	     (loop until *stop* do
@@ -255,8 +256,9 @@
 						     (if (drawable-equal window left-win)
 							 (put-image left-win left-g next-image :x 0 :y 0 :width size :height size :bitmap-p t)
 							 (put-image right-win right-g prev-image :x 0 :y 0 :width size :height size :bitmap-p t))
-						     t)))))
-	  (Display-force-output display)))))
+						     t)
+				    (otherwise () t)))))
+	  (display-force-output display)))))
 
 (defun run ()  
   (multiple-value-bind (display screen colormap) (make-default-display-screen-colormap)
@@ -321,5 +323,5 @@
   (setq *stop* NIL)
   (sb-thread:make-thread (lambda () (generate-random-data)))
   (sb-thread:make-thread (lambda () (run)))
-  (sleep 10)
+  (sleep 20)
   (setq *stop* t))
