@@ -22,7 +22,8 @@
 
 (defstruct row
   cells
-  value)
+  value
+  can-id)
   
 (defstruct table  
   window
@@ -51,7 +52,7 @@
 			       :border (screen-black-pixel screen)
 			       :border-width 1
 			       :bit-gravity :center
-			       :save-under :on ;; TBC
+			       :save-under :on
 			       :colormap colormap
 			       :background (alloc-color colormap (lookup-color colormap "white"))))
 		 (cell-gcontext (create-gcontext
@@ -83,7 +84,7 @@
 	(cells (row-cells row)))
     (loop for col-n in columns-list
 	  for string in string-list
-	  for cell = (nth col-n cells) ;; check!
+	  for cell = (nth col-n cells)
 	  for window = (car cell)
 	  for gcontext = (cdr cell)
 	  for string-width = (text-width gcontext string)	
@@ -96,17 +97,17 @@
     row))
 
 (define-condition empty-cache (error)
-  ((label :initarg label :reader label) ;; fields not used!
-   (can-id :initarg can-id :reader can-id)))
+  ())
 
 (defun register-label (table label can-id)
   (let ((row (pop (table-cache table))))
     (unless row
-      (error 'empty-cache :label label :can-id can-id))
+      (error 'empty-cache))    
+    (setf (row-can-id row) can-id)
     (setf (gethash label (table-content table))
 	  (write-to-row table row (list 0 1) (list (write-to-string can-id) label)))))
 
-(defun write-value (table label value) ;; todo: opt no-overwrite
+(defun write-value (table label value)
   (let ((db (table-content table)))
     (let ((row (gethash label db)))
       (setf (row-value row) value)
@@ -118,16 +119,6 @@
     (setf (gethash "titles" (table-content table))
 	  (write-to-row table row (list 0 1 2) (table-titles-list table)))))
 
-;; depr!
-(defun clean-table (table)
-  (let ((db (table-content table)))
-    (maphash #'(lambda (label row)
-		 (declare (ignore label))
-		 (loop for cell in (row-cells row)
-		       for window = (car cell) do
-			 (clear-area window)))
-	       db)))
-
 (defun make-table-window-pair (main-window screen display colormap)
   (let* ((window (make-table-window main-window screen colormap 800 50 500 800))
 	 (table (create-table screen display window colormap (list 60 200 60) 50 3)))
@@ -136,14 +127,15 @@
 
 (defun redraw-table (table)  
   (let ((db (table-content table)))
-    (maphash #'(lambda (label row) ;; label = "flow", row = {value, 3 cells = (window . gcontext) for "can-id" "lable" "value"}
+    (maphash #'(lambda (label row) ;; label = "flow", row = {value, can-id, 3 cells = (window . gcontext) for "can-id" "lable" "value"}
 		 (mapc #'(lambda (cell) (clear-area (car cell))) (row-cells row))
 		 (if (string= label "titles")
 		     (write-to-row table row (list 0 1 2) (table-titles-list table))
-		     (write-to-row table row (list 0 1 2) (list (write-to-string #x112) label (write-to-string (row-value row)))))) db)))
+		     (write-to-row table row (list 0 1 2) (list (write-to-string (row-can-id row)) label (write-to-string (row-value row)))))) db)))
   
 (defstruct wt-pool-unit
   label
+  can-id
   window
   table)
 
@@ -178,14 +170,18 @@
 (defun find-wt-unit (wt-pool label)
   (find label wt-pool :key #'wt-pool-unit-label))
 
-
 (defparameter *data-queue* (sb-concurrency:make-queue :initial-contents NIL))
 
 (defun generate-random-data ()
-    (let ((tags (list "pressure" "flow" "temperature" "velocity")))
-      (loop until *stop* do
-	(sb-concurrency:enqueue (cons (nth (random (list-length tags)) tags) (random 100.0)) *data-queue*)
-	(sleep 0.1))))
+  (let* ((tags (list (cons #x000 "pressure") (cons #x010 "flow") (cons #x020 "temperature") (cons #x030 "velocity")))
+	 (size (list-length tags)))
+    (loop until *stop*
+	  for n = (random size)
+	  for data = (nth n tags)
+	  for can-id = (car data)
+	  for label = (cdr data) do	   
+	    (sb-concurrency:enqueue (list can-id label (random 100.0)) *data-queue*)
+	    (sleep 0.1))))
 
 (defun get-random-data ()
   (sb-concurrency:dequeue *data-queue*))
@@ -289,39 +285,37 @@
 	     ;; read data
 	     (loop until *stop* for data = (get-random-data) do
 	       (when data
-		 (let ((label (car data))
-		       (value (cdr data)))
+		 (destructuring-bind (can-id label value) data
 		   (let ((wt-unit (find-wt-unit wt-pool label))) ;; wt-unit -> struct: label window table
 		     (if wt-unit
 			 (write-value (wt-pool-unit-table wt-unit) (wt-pool-unit-label wt-unit) value)
 			 (progn
 			   (if wt-pool
 			       (let ((free-wt-unit (car wt-pool)))
-				 (setq wt-unit (make-wt-pool-unit :label label :window (wt-pool-unit-window free-wt-unit) :table (wt-pool-unit-table free-wt-unit))))
+				 (setq wt-unit (make-wt-pool-unit :can-id can-id :label label :window (wt-pool-unit-window free-wt-unit) :table (wt-pool-unit-table free-wt-unit))))
 			       (multiple-value-bind (window table) (make-table-window-pair main-window screen display colormap)
 				 (make-paging-buttons paging-task-queue main-window display 30 30 screen colormap 100)
-				 (let ((new-wt-unit (make-wt-pool-unit :label label :window window :table table)))				   
+				 (let ((new-wt-unit (make-wt-pool-unit :can-id can-id :label label :window window :table table)))				   
 				   (add-wt-stack window table wt-stack) ;; for a switch button
 				   (setq wt-unit new-wt-unit))))
 			   (handler-case 
-			       (register-label (wt-pool-unit-table wt-unit) (wt-pool-unit-label wt-unit) #x101) ;; todo: can-id look up
+			       (register-label (wt-pool-unit-table wt-unit) (wt-pool-unit-label wt-unit) (wt-pool-unit-can-id wt-unit)) ;; todo: can-id look up
 			     (empty-cache (c)
 			       (declare (ignore c))
 			       (multiple-value-bind (window table) (make-table-window-pair main-window screen display colormap)
-				 (let ((new-wt-unit (make-wt-pool-unit :label label :window window :table table)))				   
+				 (let ((new-wt-unit (make-wt-pool-unit :can-id can-id :label label :window window :table table)))				   
 				   (add-wt-stack window table wt-stack)
 				   (setq wt-unit new-wt-unit)
-				   (register-label (wt-pool-unit-table wt-unit) (wt-pool-unit-label wt-unit) #x101))))) ;; todo: can-id look up))))
+				   (register-label (wt-pool-unit-table wt-unit) (wt-pool-unit-label wt-unit) (wt-pool-unit-can-id wt-unit)))))) ;; todo: can-id look up))))
 			   (write-value (wt-pool-unit-table wt-unit) (wt-pool-unit-label wt-unit) value)
 			   (push wt-unit wt-pool)))))))
 	     (display-finish-output display)
 	     (close-display display))	     
-	(close-display display)
-	))))
+	(close-display display)))))	
 
 (defun test()
   (setq *stop* NIL)
   (sb-thread:make-thread (lambda () (generate-random-data)))
   (sb-thread:make-thread (lambda () (run)))
-  (sleep 20)
+  (sleep 10)
   (setq *stop* t))
