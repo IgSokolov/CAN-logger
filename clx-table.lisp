@@ -290,6 +290,7 @@
 			  (setq wt-unit new-wt-unit)
 			  (register-label (wt-pool-unit-table wt-unit) (wt-pool-unit-label wt-unit) (wt-pool-unit-can-id wt-unit))))))
 		  (write-value (wt-pool-unit-table wt-unit) (wt-pool-unit-label wt-unit) value)
-		  (push wt-unit wt-pool)))))))))
+		  (push wt-unit wt-pool))))))
+	  (sleep 0.01))))
 ;;(display-finish-output display)
 ;;(close-display display)

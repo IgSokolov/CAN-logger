@@ -45,7 +45,7 @@
 	    (multicast plot-value-1 (list *data-queue-1* *data-queue-2*))
 	    (multicast plot-value-2 (list *data-queue-1* *data-queue-2*))))
       (incf i)
-      (sleep 0.01))))
+      (sleep 0.1))))
 
 (defun stop-gui ()
   (setq *stop* t)
@@ -72,7 +72,7 @@
       (map-window main-window)            
       (unwind-protect
 	   (progn
-	     (sb-thread:make-thread (lambda () (make-widget-plot main-window display screen colormap (round (* (screen-width screen) 0.01)) 50 1000 *data-queue-1* 0.01)))
+	     (sb-thread:make-thread (lambda () (make-widget-plot main-window display screen colormap (round (* (screen-width screen) 0.01)) 50 1000 *data-queue-1* 0.1)))
 	     (sb-thread:make-thread (lambda () (make-widget-table main-window display screen colormap *data-queue-2*
 								  (round (* (screen-width screen) 0.7))
 								  50 400 600 3
