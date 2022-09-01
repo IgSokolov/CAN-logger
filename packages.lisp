@@ -20,10 +20,13 @@
    
    :plot-data-y
    :plot-data-label
+   :plot-data-can-id
    :*plot-queue*))
 
 (defpackage :can-logger.table
-  (:use :cl :xlib))
+  (:use :cl :xlib :can-logger.can2data)
+  (:export :make-widget-table :close-widget-table))
+  
 
 (defpackage :can-logger.plotter
   (:use :cl :can-logger.can2data :xlib)

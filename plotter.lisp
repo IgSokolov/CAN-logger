@@ -297,10 +297,10 @@
 	(display-finish-output display)
 	(close-display display)))))
 
-  (defun test (n dt)
-    (loop for x = (sb-concurrency:dequeue *plot-queue*) do
-      (unless x
-	(return)))	
-    ;;(can-logger.can2data::read-can-data)
-    (can-logger.can2data::generate-data n)
-    (plot-loop n dt))
+(defun test (n dt)
+  (loop for x = (sb-concurrency:dequeue *plot-queue*) do
+    (unless x
+      (return)))	
+  ;;(can-logger.can2data::read-can-data)
+  (can-logger.can2data::generate-data n)
+  (plot-loop n dt))

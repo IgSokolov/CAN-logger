@@ -15,7 +15,7 @@
 ;;    (can-packet-timestamp packet)
 ;;    (can-packet-origin packet)))
 
-(defstruct plot-data y label)
+(defstruct plot-data y label can-id)
 
 (defun bytes-to-integer (bytes type endiannes)
   "Converts byte array to integer"
@@ -106,7 +106,8 @@
 				       :y (+ physical-offset
 					     (* bit-factor
 						physical-factor
-						(bytes-to-integer bytes data-type endiannes)))				       
+						(bytes-to-integer bytes data-type endiannes)))
+				       :can-id can-id
 				       :label l)))
 		      (sb-concurrency:enqueue plot-value *plot-queue*))		      
 		    (setq data rest)))))))) ;; todo multiplexed
@@ -119,11 +120,13 @@
 			   :y (* 0.1 i (sin (* 2 pi 0.01 i)))
 			   ;;:y (random 10)
 			   ;;:y 0.5
+			   :can-id #x112
 			   :label "label-1"))
 	    (plot-value-2 (make-plot-data
 			   :y (* 0.1 i (sin (* 2 pi 0.01 i)))
 			   ;;:y (random 10)
 			   ;;:y 0.5
+			   :can-id #x222
 			   :label "label-2")))
 	(when (= 0 (mod i 1))
 	  (setq switch (not switch)))
