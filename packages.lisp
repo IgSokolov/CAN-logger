@@ -18,9 +18,10 @@
   (:use :cl :can-logger.parser :fsocket)
   (:export
    
-   :plot-data-y
+   :plot-data-value
    :plot-data-label
    :plot-data-can-id
+   :make-plot-data
    :*plot-queue*))
 
 (defpackage :can-logger.table
@@ -30,5 +31,9 @@
 
 (defpackage :can-logger.plotter
   (:use :cl :can-logger.can2data :xlib)
-  (:import-from :can-logger.parser :split-sequence-by-delimiter))
+  (:import-from :can-logger.parser :split-sequence-by-delimiter)
+  (:export :make-widget-plot :close-widget-plot))
+
+(defpackage :can-logger.main
+  (:use :cl :xlib :can-logger.table :can-logger.plotter :can-logger.can2data))
   

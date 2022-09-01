@@ -7,6 +7,7 @@
 	       (:file "config-parser")
 	       (:file "can-to-data")
 	       (:file "clx-table")
-	       (:file "plotter"))	       
+	       (:file "plotter")
+	       (:file "main"))	       
   :depends-on (:fsocket :clx))
 	       

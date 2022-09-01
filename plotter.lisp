@@ -50,25 +50,20 @@
 (defun create-vertical-grid-lines (win gcontext plot-window-size x-coords)
   (mapc (lambda (x) (draw-line win gcontext x 0 x plot-window-size)) x-coords))
 
-(defun make-default-display-screen-colormap ()
-  (let* ((display (open-default-display))
-         (screen (display-default-screen display))
-         (colormap (screen-default-colormap screen)))
-    (values display screen colormap)))
-   
-(defun make-plot-window (size start-offest-in-% end-offset-in-% y-start) ;; offsets are in % of window-size
+
+(defun get-plot-window-size (size start-offest-in-% end-offset-in-% y-start) ;; offsets are in % of window-size
   "Set plot-window size"
   (let* ((x-start (round (* start-offest-in-% size)))
 	 (x-end (round (* end-offset-in-% size)))
 	 (plot-window-size (- x-end x-start)))
     (values size x-start y-start x-end plot-window-size)))
 
-(defun make-x11-layers (screen window-size colormap x-start y-start plot-window-size)
+(defun make-x11-layers (root-window screen window-size colormap x-start y-start plot-window-size)
   "Create main windows and gcontexts"
   (let* ((main-window (create-window
-		       :parent (screen-root screen)
-		       :x 0
-		       :y 0
+		       :parent root-window
+		       :x 10
+		       :y 10
 		       :width window-size
 		       :height window-size
 		       :border (screen-black-pixel screen)
@@ -78,8 +73,8 @@
 		       :background (alloc-color colormap (lookup-color colormap "white"))))
 	 (plot-window (create-window
 		       :parent main-window
-		       :x x-start
-		       :y y-start
+		       :x 10
+		       :y 60
 		       :width plot-window-size
 		       :height plot-window-size
 		       :border (screen-black-pixel screen)
@@ -127,8 +122,10 @@
   xc-title
   yc-title)
 
-(defun make-plot-text-area (window screen display colormap y-start x-end x-start &optional (font "fixed"))
-  (let ((plot-window-size (- x-end x-start)))
+(defun make-plot-text-area (window plot-window-size screen display colormap &optional (font "fixed"))
+  (let* ((x-start (round (* (drawable-width window) 0.1)))
+	 (x-end (round (* (drawable-width window) 0.7)))
+	 (y-start 50))
     (make-plot-text-settings
      :background (create-gcontext
 		  :drawable window
@@ -223,8 +220,8 @@
 
 (defun plot-pd (pd env screen grid plot-window t-max dt x-end dx-grid point-size x-shift data-length-max plot-window-size y-coords colormap)
   "Plot plot-data (pd). _env_ is modified."
-  (let ((y0 (plot-data-y pd))
-	(label (plot-data-label pd)))			     
+  (let ((y0 (plot-data-value pd))
+	(label (plot-data-label pd)))
     (multiple-value-bind (canvas-obj rest-canvas-objs) (fetch-canvas-obj label (plot-env-canvas-obj-db env))			       
       ;; push NIL-data to the rest of canvasses
       (mapc #'(lambda (obj) (push NIL (canvas-obj-data obj))) rest-canvas-objs)			       
@@ -251,7 +248,6 @@
       (when (recompute-y-limits y0 env)
 	(redraw-plot-window env plot-window point-size plot-window-size grid y-coords dx-grid x-end t-max dt)))))
 	
-
 (defun draw-vertical-grid (env grid dx-grid x-shift plot-window plot-window-size)
   (if (>= (plot-env-grid-c env) dx-grid)
       (progn
@@ -263,44 +259,48 @@
 (defun push-NIL-data (env data-length-max)
   (mapc #'(lambda (obj) (push NIL (canvas-obj-data obj))) (plot-env-canvas-obj-db env))  
   (trim-data env data-length-max))
-  
-(defun plot-loop (n dt)
-  "Create plotting environment, fetch plot-data (pd) from a data queue and plot it."
-  (multiple-value-bind (display screen colormap) (make-default-display-screen-colormap)
-    (multiple-value-bind (window-size x-start y-start x-end plot-window-size) (make-plot-window 1500 0.1 0.5 50)
-      (multiple-value-bind (main-window plot-window grid) (make-x11-layers screen window-size colormap x-start y-start plot-window-size)
-	(let ((plot-text-area (make-plot-text-area main-window screen display colormap y-start x-end x-start)))
-	  (unwind-protect
-	       (let ((env (make-plot-env)) ;; the _env_ lexical environment is modified. The rest ist const.
-		     (n-yticks 10)
-		     (n-xticks 10)
-		     (t-max 10)
-		     (point-size 4))		 
-		 (multiple-value-bind (x-coords dx-grid) (linspace 0 plot-window-size n-xticks)
-		   (multiple-value-bind (y-coords x-shift data-length-max)
-		       (init-coordinate-settings plot-window-size n-yticks t-max dt)		 
-		     (draw-initial-grid display plot-window grid plot-window-size x-coords y-coords)
-		     (draw-plot-text-plot-title main-window (plot-text-settings-foreground plot-text-area) (plot-text-settings-xc-title plot-text-area) (plot-text-settings-yc-title plot-text-area) dt t-max)
-		     (loop :repeat n do
-		       (draw-plot-text-y-min-y-max env main-window (plot-text-settings-foreground plot-text-area) (plot-text-settings-background plot-text-area) (plot-text-settings-font-height plot-text-area) (plot-text-settings-xc-ymin-ymax plot-text-area) (plot-text-settings-yc-ymin plot-text-area) (plot-text-settings-yc-ymax plot-text-area))
-		       (draw-vertical-grid env grid dx-grid x-shift plot-window plot-window-size)		     		     
-		       (let ((pd (sb-concurrency:dequeue *plot-queue*)))		      
-			 ;; process data from queue
-			 (if pd
-			     (plot-pd pd env screen grid plot-window t-max dt x-end dx-grid point-size x-shift data-length-max plot-window-size y-coords colormap)
-			     (push-NIL-data env data-length-max)))			   
-		       (create-horizontal-grid-lines plot-window grid plot-window-size (- plot-window-size x-shift) y-coords)
-		       (display-force-output display)
-		       (sleep dt))))
-		 (sleep 1))))
-	(sleep 1)
-	(display-finish-output display)
-	(close-display display)))))
 
-(defun test (n dt)
-  (loop for x = (sb-concurrency:dequeue *plot-queue*) do
-    (unless x
-      (return)))	
-  ;;(can-logger.can2data::read-can-data)
-  (can-logger.can2data::generate-data n)
-  (plot-loop n dt))
+(defparameter *stop* NIL)
+
+(defun close-widget-plot ()
+  (setq *stop* t))
+
+(defun make-widget-plot (root-window display screen colormap x-start y-start x-end data-queue dt)
+  "Create plotting environment, fetch plot-data (pd) from a data queue and plot it."
+  (setq *stop* NIL)
+  ;;(multiple-value-bind (window-size x-start y-start x-end plot-window-size) (make-plot-window 1500 0.1 0.5 50)
+  (let ((plot-window-size 200))
+   (multiple-value-bind (main-window plot-window grid) (make-x11-layers root-window screen (- x-end x-start) colormap x-start y-start plot-window-size) ;; 800 ?
+      (let ((plot-text-area (make-plot-text-area main-window plot-window-size screen display colormap)))
+	(let ((env (make-plot-env)) ;; the _env_ lexical environment is modified. The rest ist const.
+	      (n-yticks 10)
+	      (n-xticks 10)
+	      (t-max 10)
+	      (point-size 4))		 
+	  (multiple-value-bind (x-coords dx-grid) (linspace 0 plot-window-size n-xticks)
+	    (multiple-value-bind (y-coords x-shift data-length-max)
+		(init-coordinate-settings plot-window-size n-yticks t-max dt)		 
+	      (draw-initial-grid display plot-window grid plot-window-size x-coords y-coords)
+	      (draw-plot-text-plot-title main-window (plot-text-settings-foreground plot-text-area) (plot-text-settings-xc-title plot-text-area) (plot-text-settings-yc-title plot-text-area) dt t-max)
+	      (loop until *stop* do
+		(draw-plot-text-y-min-y-max env main-window (plot-text-settings-foreground plot-text-area) (plot-text-settings-background plot-text-area) (plot-text-settings-font-height plot-text-area) (plot-text-settings-xc-ymin-ymax plot-text-area) (plot-text-settings-yc-ymin plot-text-area) (plot-text-settings-yc-ymax plot-text-area))
+		(draw-vertical-grid env grid dx-grid x-shift plot-window plot-window-size)		     		     
+		(let ((pd (sb-concurrency:dequeue data-queue)))		      
+		  ;; process data from queue
+		  (if pd
+		      (plot-pd pd env screen grid plot-window t-max dt x-end dx-grid point-size x-shift data-length-max plot-window-size y-coords colormap)
+		      (push-NIL-data env data-length-max)))			   
+		(create-horizontal-grid-lines plot-window grid plot-window-size (- plot-window-size x-shift) y-coords)
+		(display-force-output display)
+		(sleep dt)))))))))
+
+;;(display-finish-output display)
+;;(close-display display)))))
+
+;; (defun test (n dt)
+;;   (loop for x = (sb-concurrency:dequeue *plot-queue*) do
+;;     (unless x
+;;       (return)))	
+;;   ;;(can-logger.can2data::read-can-data)
+;;   (can-logger.can2data::generate-data n)
+;;   (plot-loop n dt))
