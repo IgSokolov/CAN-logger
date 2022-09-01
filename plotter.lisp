@@ -268,7 +268,7 @@
   "Create plotting environment, fetch plot-data (pd) from a data queue and plot it."
   (setq *stop* NIL)
   ;;(multiple-value-bind (window-size x-start y-start x-end plot-window-size) (make-plot-window 1500 0.1 0.5 50)
-  (let ((plot-window-size (round (* size 0.6)))
+  (let ((plot-window-size (round (* size 0.8)))
 	(x-end (+ x-start size)))
    (multiple-value-bind (main-window plot-window grid) (make-x11-layers root-window screen (- x-end x-start) colormap x-start y-start plot-window-size)
       (let ((plot-text-area (make-plot-text-area main-window plot-window-size screen display colormap)))
