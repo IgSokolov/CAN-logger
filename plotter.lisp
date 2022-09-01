@@ -62,8 +62,8 @@
   "Create main windows and gcontexts"
   (let* ((main-window (create-window
 		       :parent root-window
-		       :x 10
-		       :y 10
+		       :x x-start
+		       :y y-start
 		       :width window-size
 		       :height window-size
 		       :border (screen-black-pixel screen)
@@ -74,7 +74,7 @@
 	 (plot-window (create-window
 		       :parent main-window
 		       :x 10
-		       :y 60
+		       :y 50
 		       :width plot-window-size
 		       :height plot-window-size
 		       :border (screen-black-pixel screen)
@@ -124,14 +124,13 @@
 
 (defun make-plot-text-area (window plot-window-size screen display colormap &optional (font "fixed"))
   (let* ((x-start (round (* (drawable-width window) 0.1)))
-	 (x-end (round (* (drawable-width window) 0.7)))
 	 (y-start 50))
     (make-plot-text-settings
      :background (create-gcontext
 		  :drawable window
 		  :line-style :solid
 		  :background (screen-white-pixel screen)
-		  :foreground (alloc-color colormap (lookup-color colormap "red")))
+		  :foreground (alloc-color colormap (lookup-color colormap "white")))
      :foreground (create-gcontext
 		  :drawable window
 		  :font (open-font display font)
@@ -141,7 +140,7 @@
      :font-height (font-ascent (open-font display font))
      :yc-ymax ( + y-start (font-ascent (open-font display font)))
      :yc-ymin (+ y-start plot-window-size)
-     :xc-ymin-ymax (+ x-end 2)
+     :xc-ymin-ymax (+ plot-window-size 20)
      :xc-title x-start
      :yc-title (- y-start (font-ascent (open-font display font))))))
 
@@ -265,12 +264,13 @@
 (defun close-widget-plot ()
   (setq *stop* t))
 
-(defun make-widget-plot (root-window display screen colormap x-start y-start x-end data-queue dt)
+(defun make-widget-plot (root-window display screen colormap x-start y-start size data-queue dt)
   "Create plotting environment, fetch plot-data (pd) from a data queue and plot it."
   (setq *stop* NIL)
   ;;(multiple-value-bind (window-size x-start y-start x-end plot-window-size) (make-plot-window 1500 0.1 0.5 50)
-  (let ((plot-window-size 200))
-   (multiple-value-bind (main-window plot-window grid) (make-x11-layers root-window screen (- x-end x-start) colormap x-start y-start plot-window-size) ;; 800 ?
+  (let ((plot-window-size (round (* size 0.6)))
+	(x-end (+ x-start size)))
+   (multiple-value-bind (main-window plot-window grid) (make-x11-layers root-window screen (- x-end x-start) colormap x-start y-start plot-window-size)
       (let ((plot-text-area (make-plot-text-area main-window plot-window-size screen display colormap)))
 	(let ((env (make-plot-env)) ;; the _env_ lexical environment is modified. The rest ist const.
 	      (n-yticks 10)
