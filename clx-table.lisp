@@ -230,68 +230,70 @@
           (put-image right-win right-g prev-image :x 0 :y 0 :width size :height size :bitmap-p t)	  
 	  (sb-thread:make-thread
 	   (lambda ()
-	     (loop until *stop* do
-				  (event-case (display :force-output-p t :timeout 0.1)
-				    (:button-press (window)						   
-						   (if (drawable-equal window left-win)
-						       (progn
-							 (put-image left-win left-g next-pressed-image :x 0 :y 0 :width size :height size :bitmap-p t)							 
-							 (sb-concurrency:enqueue :next task-queue))
-						       (progn
-							 (put-image right-win right-g prev-pressed-image :x 0 :y 0 :width size :height size :bitmap-p t)
-							 (sb-concurrency:enqueue :prev task-queue)))
-						   t)
-				    (:button-release (window)						     
-						     (if (drawable-equal window left-win)
-							 (put-image left-win left-g next-image :x 0 :y 0 :width size :height size :bitmap-p t)
-							 (put-image right-win right-g prev-image :x 0 :y 0 :width size :height size :bitmap-p t))
-						     t)
-				    (otherwise () t)))))
+	     (with-safe-exit-on-window-closed
+		 (loop until *stop* do
+		   (event-case (display :force-output-p t :timeout 0.1)
+		     (:button-press (window)						   
+				    (if (drawable-equal window left-win)
+					(progn
+					  (put-image left-win left-g next-pressed-image :x 0 :y 0 :width size :height size :bitmap-p t)							 
+					  (sb-concurrency:enqueue :next task-queue))
+					(progn
+					  (put-image right-win right-g prev-pressed-image :x 0 :y 0 :width size :height size :bitmap-p t)
+					  (sb-concurrency:enqueue :prev task-queue)))
+				    t)
+		     (:button-release (window)						     
+				      (if (drawable-equal window left-win)
+					  (put-image left-win left-g next-image :x 0 :y 0 :width size :height size :bitmap-p t)
+					  (put-image right-win right-g prev-image :x 0 :y 0 :width size :height size :bitmap-p t))
+				      t)
+		     (otherwise () t))))))	       
 	  (display-force-output display)))))
 
 ;; todo: add error signal
 (defun make-widget-table (main-window display screen colormap data-queue x-table y-table width heigth n-rows x-buttons y-buttons)
   (setq *stop* NIL)
-  (let ((wt-pool) ;; wt-pool is a list of wt-pool-units
-	(wt-stack (make-window-table-stack))
-	(paging-task-queue (sb-concurrency:make-queue :initial-contents NIL)))
-    ;; start table switch daemon
-    (sb-thread:make-thread
-     (lambda ()
-       (loop until *stop* do
-	 (let ((task (sb-concurrency:dequeue paging-task-queue)))
-	   (when task
-	     (show-table wt-stack task)))
-	 (sleep 0.1))))
-    ;; read data
-    (loop until *stop* for data = (sb-concurrency:dequeue data-queue) do
-      (when data
-	(let ((can-id (plot-data-can-id data))
-	      (label (plot-data-label data))
-	      (value (plot-data-value data)))
-	  (let ((wt-unit (find-wt-unit wt-pool label))) ;; wt-unit -> struct: label window table
-	    (if wt-unit
-		(write-value (wt-pool-unit-table wt-unit) (wt-pool-unit-label wt-unit) value)
-		(progn
-		  (if wt-pool
-		      (let ((free-wt-unit (car wt-pool)))
-			(setq wt-unit (make-wt-pool-unit :can-id can-id :label label :window (wt-pool-unit-window free-wt-unit) :table (wt-pool-unit-table free-wt-unit))))
-		      (multiple-value-bind (window table) (make-table-window-pair main-window screen display colormap x-table y-table width heigth n-rows)
-			(make-paging-buttons paging-task-queue main-window display x-buttons y-buttons screen colormap 100)
-			(let ((new-wt-unit (make-wt-pool-unit :can-id can-id :label label :window window :table table)))				   
-			  (add-wt-stack window table wt-stack) ;; for a switch button
-			  (setq wt-unit new-wt-unit))))
-		  (handler-case 
-		      (register-label (wt-pool-unit-table wt-unit) (wt-pool-unit-label wt-unit) (wt-pool-unit-can-id wt-unit))
-		    (empty-cache (c)
-		      (declare (ignore c))
-		      (multiple-value-bind (window table) (make-table-window-pair main-window screen display colormap x-table y-table width heigth n-rows)
-			(let ((new-wt-unit (make-wt-pool-unit :can-id can-id :label label :window window :table table)))				   
-			  (add-wt-stack window table wt-stack)
-			  (setq wt-unit new-wt-unit)
-			  (register-label (wt-pool-unit-table wt-unit) (wt-pool-unit-label wt-unit) (wt-pool-unit-can-id wt-unit))))))
-		  (write-value (wt-pool-unit-table wt-unit) (wt-pool-unit-label wt-unit) value)
-		  (push wt-unit wt-pool))))))
-      (sleep 0.01))))
+  (with-safe-exit-on-window-closed
+      (let ((wt-pool) ;; wt-pool is a list of wt-pool-units
+	    (wt-stack (make-window-table-stack))
+	    (paging-task-queue (sb-concurrency:make-queue :initial-contents NIL)))
+	;; start table switch daemon
+	(sb-thread:make-thread
+	 (lambda ()
+	   (loop until *stop* do
+	     (let ((task (sb-concurrency:dequeue paging-task-queue)))
+	       (when task
+		 (show-table wt-stack task)))
+	     (sleep 0.1))))
+	;; read data
+	(loop until *stop* for data = (sb-concurrency:dequeue data-queue) do
+	  (when data
+	    (let ((can-id (plot-data-can-id data))
+		  (label (plot-data-label data))
+		  (value (plot-data-value data)))
+	      (let ((wt-unit (find-wt-unit wt-pool label))) ;; wt-unit -> struct: label window table
+		(if wt-unit
+		    (write-value (wt-pool-unit-table wt-unit) (wt-pool-unit-label wt-unit) value)
+		    (progn
+		      (if wt-pool
+			  (let ((free-wt-unit (car wt-pool)))
+			    (setq wt-unit (make-wt-pool-unit :can-id can-id :label label :window (wt-pool-unit-window free-wt-unit) :table (wt-pool-unit-table free-wt-unit))))
+			  (multiple-value-bind (window table) (make-table-window-pair main-window screen display colormap x-table y-table width heigth n-rows)
+			    (make-paging-buttons paging-task-queue main-window display x-buttons y-buttons screen colormap 100)
+			    (let ((new-wt-unit (make-wt-pool-unit :can-id can-id :label label :window window :table table)))				   
+			      (add-wt-stack window table wt-stack) ;; for a switch button
+			      (setq wt-unit new-wt-unit))))
+		      (handler-case 
+			  (register-label (wt-pool-unit-table wt-unit) (wt-pool-unit-label wt-unit) (wt-pool-unit-can-id wt-unit))
+			(empty-cache (c)
+			  (declare (ignore c))
+			  (multiple-value-bind (window table) (make-table-window-pair main-window screen display colormap x-table y-table width heigth n-rows)
+			    (let ((new-wt-unit (make-wt-pool-unit :can-id can-id :label label :window window :table table)))				   
+			      (add-wt-stack window table wt-stack)
+			      (setq wt-unit new-wt-unit)
+			      (register-label (wt-pool-unit-table wt-unit) (wt-pool-unit-label wt-unit) (wt-pool-unit-can-id wt-unit))))))
+		      (write-value (wt-pool-unit-table wt-unit) (wt-pool-unit-label wt-unit) value)
+		      (push wt-unit wt-pool))))))
+	  (sleep 0.01)))))
 ;;(display-finish-output display)
 ;;(close-display display)

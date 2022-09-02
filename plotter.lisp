@@ -268,31 +268,32 @@
   "Create plotting environment, fetch plot-data (pd) from a data queue and plot it."
   (setq *stop* NIL)
   ;;(multiple-value-bind (window-size x-start y-start x-end plot-window-size) (make-plot-window 1500 0.1 0.5 50)
-  (let ((plot-window-size (round (* size 0.8)))
-	(x-end (+ x-start size)))
-   (multiple-value-bind (main-window plot-window grid) (make-x11-layers root-window screen (- x-end x-start) colormap x-start y-start plot-window-size)
-      (let ((plot-text-area (make-plot-text-area main-window plot-window-size screen display colormap)))
-	(let ((env (make-plot-env)) ;; the _env_ lexical environment is modified. The rest ist const.
-	      (n-yticks 10)
-	      (n-xticks 10)
-	      (t-max 10)
-	      (point-size 4))		 
-	  (multiple-value-bind (x-coords dx-grid) (linspace 0 plot-window-size n-xticks)
-	    (multiple-value-bind (y-coords x-shift data-length-max)
-		(init-coordinate-settings plot-window-size n-yticks t-max dt)		 
-	      (draw-initial-grid display plot-window grid plot-window-size x-coords y-coords)
-	      (draw-plot-text-plot-title main-window (plot-text-settings-foreground plot-text-area) (plot-text-settings-xc-title plot-text-area) (plot-text-settings-yc-title plot-text-area) dt t-max)
-	      (loop until *stop* do
-		(draw-plot-text-y-min-y-max env main-window (plot-text-settings-foreground plot-text-area) (plot-text-settings-background plot-text-area) (plot-text-settings-font-height plot-text-area) (plot-text-settings-xc-ymin-ymax plot-text-area) (plot-text-settings-yc-ymin plot-text-area) (plot-text-settings-yc-ymax plot-text-area))
-		(draw-vertical-grid env grid dx-grid x-shift plot-window plot-window-size)		     		     
-		(let ((pd (sb-concurrency:dequeue data-queue)))		      
-		  ;; process data from queue
-		  (if pd
-		      (plot-pd pd env screen grid plot-window t-max dt x-end dx-grid point-size x-shift data-length-max plot-window-size y-coords colormap)
-		      (push-NIL-data env data-length-max)))			   
-		(create-horizontal-grid-lines plot-window grid plot-window-size (- plot-window-size x-shift) y-coords)
-		(display-force-output display)
-		(sleep dt)))))))))
+  (with-safe-exit-on-window-closed
+    (let ((plot-window-size (round (* size 0.8)))
+	  (x-end (+ x-start size)))
+      (multiple-value-bind (main-window plot-window grid) (make-x11-layers root-window screen (- x-end x-start) colormap x-start y-start plot-window-size)
+	(let ((plot-text-area (make-plot-text-area main-window plot-window-size screen display colormap)))
+	  (let ((env (make-plot-env)) ;; the _env_ lexical environment is modified. The rest ist const.
+		(n-yticks 10)
+		(n-xticks 10)
+		(t-max 10)
+		(point-size 4))		 
+	    (multiple-value-bind (x-coords dx-grid) (linspace 0 plot-window-size n-xticks)
+	      (multiple-value-bind (y-coords x-shift data-length-max)
+		  (init-coordinate-settings plot-window-size n-yticks t-max dt)		 
+		(draw-initial-grid display plot-window grid plot-window-size x-coords y-coords)
+		(draw-plot-text-plot-title main-window (plot-text-settings-foreground plot-text-area) (plot-text-settings-xc-title plot-text-area) (plot-text-settings-yc-title plot-text-area) dt t-max)
+		(loop until *stop* do
+		  (draw-plot-text-y-min-y-max env main-window (plot-text-settings-foreground plot-text-area) (plot-text-settings-background plot-text-area) (plot-text-settings-font-height plot-text-area) (plot-text-settings-xc-ymin-ymax plot-text-area) (plot-text-settings-yc-ymin plot-text-area) (plot-text-settings-yc-ymax plot-text-area))
+		  (draw-vertical-grid env grid dx-grid x-shift plot-window plot-window-size)		     		     
+		  (let ((pd (sb-concurrency:dequeue data-queue)))		      
+		    ;; process data from queue
+		    (if pd
+			(plot-pd pd env screen grid plot-window t-max dt x-end dx-grid point-size x-shift data-length-max plot-window-size y-coords colormap)
+			(push-NIL-data env data-length-max)))			   
+		  (create-horizontal-grid-lines plot-window grid plot-window-size (- plot-window-size x-shift) y-coords)
+		  (display-force-output display)
+		  (sleep dt))))))))))
 
 ;;(display-finish-output display)
 ;;(close-display display)))))

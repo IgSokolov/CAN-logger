@@ -6,6 +6,7 @@
   :components ((:file "packages")
 	       (:file "config-parser")
 	       (:file "can-to-data")
+	       (:file "utils")
 	       (:file "clx-table")
 	       (:file "plotter")
 	       (:file "main"))	       
