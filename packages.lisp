@@ -1,7 +1,6 @@
 (defpackage :can-logger.parser
   (:use :cl)
   (:export
-
    :split-sequence-by-delimiter
    :can-id
    :signal-type
@@ -17,12 +16,12 @@
 (defpackage :can-logger.can2data
   (:use :cl :can-logger.parser :fsocket)
   (:export
-   
+   :read-can-data
+   :stop-reading-CAN-data
    :plot-data-value
    :plot-data-label
    :plot-data-can-id
-   :make-plot-data
-   :*plot-queue*))
+   :make-plot-data))
 
 (defpackage :can-logger.utils
   (:use :cl)

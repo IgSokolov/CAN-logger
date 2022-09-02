@@ -79,7 +79,7 @@
   (destructuring-bind (t-sec t-usec) can-timestamp
     (float (+ t-sec (/ t-usec 1000000))))) ;; full-time
     	
-(defun process-can-frame (can-frame output-queue)
+(defun process-can-frame (can-frame output-queues)
   "decode data and send it to plotter"
   (multiple-value-bind (can-id data timestamp origin) (parse-can-packet can-frame)
     (declare (ignore timestamp))
@@ -108,7 +108,7 @@
 						(bytes-to-integer bytes data-type endiannes)))
 				       :can-id can-id
 				       :label l)))
-		      (sb-concurrency:enqueue plot-value output-queue))		      
+		      (mapc #'(lambda (queue) (sb-concurrency:enqueue plot-value queue)) output-queues))
 		    (setq data rest)))))))) ;; todo multiplexed
 
 (defparameter *stop* NIL)
@@ -116,10 +116,13 @@
 (defun stop-reading-CAN-data ()
   (setq *stop* t))
 
-(defun read-can-data (can-interface output-queue)
+(defun multicast (value queues)
+  (mapc #'(lambda (queue) (sb-concurrency:enqueue value queue)) queues))
+
+(defun read-can-data (can-interface output-queues)
   (with-can-socket (sckt can-interface)
 		   (let ((frame (make-can-packet)))
 		     (loop until *stop* do
 		       (socket-recv sckt frame)		    
-		       (process-can-frame frame output-queue)))))
+		       (process-can-frame frame output-queues)))))
 
