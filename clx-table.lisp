@@ -251,7 +251,7 @@
 	  (display-force-output display)))))
 
 ;; todo: add error signal
-(defun make-widget-table (main-window display screen colormap data-queue x-table y-table width heigth n-rows x-buttons y-buttons)
+(defun make-widget-table (&key main-window display screen colormap data-queue x-table y-table width height n-rows x-buttons y-buttons)
   (setq *stop* NIL)
   (with-safe-exit-on-window-closed
       (let ((wt-pool) ;; wt-pool is a list of wt-pool-units
@@ -278,7 +278,7 @@
 		      (if wt-pool
 			  (let ((free-wt-unit (car wt-pool)))
 			    (setq wt-unit (make-wt-pool-unit :can-id can-id :label label :window (wt-pool-unit-window free-wt-unit) :table (wt-pool-unit-table free-wt-unit))))
-			  (multiple-value-bind (window table) (make-table-window-pair main-window screen display colormap x-table y-table width heigth n-rows)
+			  (multiple-value-bind (window table) (make-table-window-pair main-window screen display colormap x-table y-table width height n-rows)
 			    (make-paging-buttons paging-task-queue main-window display x-buttons y-buttons screen colormap 100)
 			    (let ((new-wt-unit (make-wt-pool-unit :can-id can-id :label label :window window :table table)))				   
 			      (add-wt-stack window table wt-stack) ;; for a switch button
@@ -287,7 +287,7 @@
 			  (register-label (wt-pool-unit-table wt-unit) (wt-pool-unit-label wt-unit) (wt-pool-unit-can-id wt-unit))
 			(empty-cache (c)
 			  (declare (ignore c))
-			  (multiple-value-bind (window table) (make-table-window-pair main-window screen display colormap x-table y-table width heigth n-rows)
+			  (multiple-value-bind (window table) (make-table-window-pair main-window screen display colormap x-table y-table width height n-rows)
 			    (let ((new-wt-unit (make-wt-pool-unit :can-id can-id :label label :window window :table table)))				   
 			      (add-wt-stack window table wt-stack)
 			      (setq wt-unit new-wt-unit)

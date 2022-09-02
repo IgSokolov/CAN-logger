@@ -72,13 +72,16 @@
       (map-window main-window)            
       (unwind-protect
 	   (progn
-	     (sb-thread:make-thread (lambda () (make-widget-plot main-window display screen colormap (round (* (screen-width screen) 0.01)) 50 800 *data-queue-1* 0.1)))
-	     ;; (sb-thread:make-thread (lambda () (make-widget-table main-window display screen colormap *data-queue-2*
-	     ;; 							  (round (* (screen-width screen) 0.7))
-	     ;; 							  50 400 600 3
-	     ;; 							  (+ 410 (round (* (screen-width screen) 0.7))) 50)))
-	     (sleep 3)
+	     (sb-thread:make-thread (lambda () (make-widget-plot :main-window main-window :display display :screen screen
+								 :colormap colormap :x-start (round (* (screen-width screen) 0.01))
+								 :y-start 50 :size 800 :data-queue *data-queue-1* :dt 0.1)))
+	     (sb-thread:make-thread (lambda ()
+				      (make-widget-table :main-window main-window :display display :screen screen :colormap colormap :data-queue *data-queue-2*
+							 :x-table (round (* (screen-width screen) 0.7))
+							 :y-table 50 :width 400 :height 600 :n-rows 3
+							 :x-buttons (+ 410 (round (* (screen-width screen) 0.7)))
+							 :y-buttons 50)))									      	     
+	     (sleep 5)
 	     (stop-gui))
-	(stop-gui)
-	(display-finish-output display)
+	(stop-gui)	
 	(close-display display)))))
