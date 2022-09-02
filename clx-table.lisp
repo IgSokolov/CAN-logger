@@ -13,12 +13,12 @@
    :y y-start
    :width x-size
    :height y-size
-   :border (screen-black-pixel screen)
-   :border-width 1
+   ;;:border (screen-black-pixel screen)
+   ;;:border-width 1
    :colormap colormap
    :event-mask '(:structure-notify)
    :save-under :on
-   :background (alloc-color colormap (lookup-color colormap "white"))))
+   :background (alloc-color colormap (lookup-color colormap "gray"))))
 
 (defstruct row
   cells
@@ -92,8 +92,8 @@
 	    (let ((xc (round (/ (- col-width string-width) 2)))
 		  (yc (round (/ (+ cell-height font-height) 2))))	    	    
 	      (clear-area window)
-	      (draw-glyphs window gcontext xc yc string)	      	      
-	      (display-force-output display)))	      
+	      (draw-glyphs window gcontext xc yc string)
+	      (display-force-output display)))
     row))
 
 (define-condition empty-cache (error)
@@ -112,7 +112,7 @@
     (let ((row (gethash label db)))
       (setf (row-value row) value)
       (setf (gethash label (table-content table))
-	    (write-to-row table row (list 2) (list (write-to-string value)))))))
+	    (write-to-row table row (list 2) (list (format NIL "~7,3F" value)))))))
 
 (defun add-titles (table)
   (let ((row (pop (table-cache table))))
@@ -123,6 +123,7 @@
   (let* ((window (make-table-window main-window screen colormap x y width height))
 	 (table (create-table screen display window colormap (list 60 200 60) 50 n-rows)))
     (add-titles table)
+    ;;(display-force-output display)
     (values window table)))
 
 (defun redraw-table (table)  
@@ -291,6 +292,6 @@
 			  (register-label (wt-pool-unit-table wt-unit) (wt-pool-unit-label wt-unit) (wt-pool-unit-can-id wt-unit))))))
 		  (write-value (wt-pool-unit-table wt-unit) (wt-pool-unit-label wt-unit) value)
 		  (push wt-unit wt-pool))))))
-	  (sleep 0.01))))
+      (sleep 0.01))))
 ;;(display-finish-output display)
 ;;(close-display display)
