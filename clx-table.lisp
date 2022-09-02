@@ -50,7 +50,7 @@
 			       :width w
 			       :height cell-height
 			       :border (screen-black-pixel screen)
-			       :border-width 1
+			       :border-width 2
 			       :bit-gravity :center
 			       :save-under :on
 			       :colormap colormap
@@ -250,7 +250,6 @@
 		     (otherwise () t))))))	       
 	  (display-force-output display)))))
 
-;; todo: add error signal
 (defun make-widget-table (&key main-window display screen colormap data-queue x-table y-table width height n-rows x-buttons y-buttons)
   (setq *stop* NIL)
   (with-safe-exit-on-window-closed
@@ -295,5 +294,3 @@
 		      (write-value (wt-pool-unit-table wt-unit) (wt-pool-unit-label wt-unit) value)
 		      (push wt-unit wt-pool))))))
 	  (sleep 0.01)))))
-;;(display-finish-output display)
-;;(close-display display)
