@@ -57,7 +57,7 @@
   (setq *stop* NIL)
   (mapc #'empty-queue (list *data-queue-1* *data-queue-2*))
   ;;(sb-thread:make-thread (lambda () (generate-data)))
-  (read-can-data "vcan0" (list *data-queue-1* *data-queue-2*))
+  (sb-thread:make-thread (lambda () (read-can-data "vcan0" (list *data-queue-1* *data-queue-2*))))
   (sleep 0.1)
   (multiple-value-bind (display screen colormap) (make-default-display-screen-colormap)
     (let ((main-window (create-window
@@ -83,7 +83,7 @@
 							 :y-table 50 :width 400 :height 600 :n-rows 20
 							 :x-buttons (+ 410 (round (* (screen-width screen) 0.7)))
 							 :y-buttons 50)))									      	     
-	     (sleep 10)
+	     (sleep 3)
 	     (stop-gui))
 	(stop-gui)	
 	(close-display display)))))

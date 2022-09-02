@@ -83,7 +83,7 @@
   "decode data and send it to plotter"
   (multiple-value-bind (can-id data timestamp origin) (parse-can-packet can-frame)
     (declare (ignore timestamp))
-    (format t "(do we need it ?) origin = ~a~%" origin)
+    ;;(format t "(do we need it ?) origin = ~a~%" origin)
     (let ((xnet-item (gethash can-id *can-db*)))
       (when xnet-item
 	(with-accessors ((signal-type signal-type)
@@ -94,7 +94,7 @@
 			 (physical-offset-mask physical-offset-mask)
 			 (label label)
 			 (multiplexed-p multiplexed-p)) xnet-item
-	  ;;(print xnet-item)
+	  (print xnet-item)
 	  (loop for data-type in data-type-mask		
 		for bit-factor in bit-factor-mask
 		for physical-factor in physical-factor-mask
@@ -120,6 +120,7 @@
   (mapc #'(lambda (queue) (sb-concurrency:enqueue value queue)) queues))
 
 (defun read-can-data (can-interface output-queues)
+  (setq *stop* NIL)
   (with-can-socket (sckt can-interface)
 		   (let ((frame (make-can-packet)))
 		     (loop until *stop* do
