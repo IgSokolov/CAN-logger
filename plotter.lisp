@@ -230,23 +230,21 @@
       ;; we consing NIL because we dont need absolute timestamp 99.9 % of time.
       ;; Only if we need to rescale and redraw the plot, NILs are filled with time values,
       ;; which are computed at every redraw cycle.
-      (push (cons NIL y0) (canvas-obj-data canvas-obj))
-      ;; keep fixed number of elements to plot
-      (trim-data env data-length-max)
-      (let ((y0-mapped (map-y0-to-plot y0 (plot-env-y-min env) (plot-env-y-max env) plot-window-size))
-	    (prev-point (cdadr (canvas-obj-data canvas-obj))))
- 	(if prev-point ;; is the dataset larger then ((NIL . 0.0d0)) ?
-	    (let ((prev-point-mapped (map-y0-to-plot prev-point (plot-env-y-min env) (plot-env-y-max env) plot-window-size)))
+      (push (cons NIL y0) (canvas-obj-data canvas-obj))      
+      (trim-data env data-length-max) ;; keep fixed number of elements to plot
+      (if (recompute-y-limits y0 env) ;; check if we need rescaling (bug here. see commit 0c04f5b)
+	(redraw-plot-window env plot-window point-size plot-window-size grid y-coords dx-grid x-end t-max dt)      
+	(let ((y0-mapped (map-y0-to-plot y0 (plot-env-y-min env) (plot-env-y-max env) plot-window-size))
+	      (prev-point (cdadr (canvas-obj-data canvas-obj))))
+ 	  (if prev-point ;; is the dataset larger then ((NIL . 0.0d0)) ?
+	      (let ((prev-point-mapped (map-y0-to-plot prev-point (plot-env-y-min env) (plot-env-y-max env) plot-window-size)))
+		(draw-arc plot-window (canvas-obj-canvas canvas-obj) (- (- plot-window-size (/ point-size 2)) 2)
+			  (- y0-mapped (/ point-size 2)) point-size point-size 0 (* 2 pi) :fill-p)
+		(draw-line plot-window (canvas-obj-canvas canvas-obj) (- plot-window-size x-shift)
+			   prev-point-mapped (- plot-window-size 2) y0-mapped))				     
 	      (draw-arc plot-window (canvas-obj-canvas canvas-obj) (- (- plot-window-size (/ point-size 2)) 2)
-			(- y0-mapped (/ point-size 2)) point-size point-size 0 (* 2 pi) :fill-p)
-	      (draw-line plot-window (canvas-obj-canvas canvas-obj) (- plot-window-size x-shift)
-			 prev-point-mapped (- plot-window-size 2) y0-mapped))				     
-	    (draw-arc plot-window (canvas-obj-canvas canvas-obj) (- (- plot-window-size (/ point-size 2)) 2)
-		      (- y0-mapped (/ point-size 2)) point-size point-size 0 (* 2 pi) :fill-p)))
-      ;; check if we need rescaling (bug here. see commit 0c04f5b)
-      (when (recompute-y-limits y0 env)
-	(redraw-plot-window env plot-window point-size plot-window-size grid y-coords dx-grid x-end t-max dt)))))
-	
+			(- y0-mapped (/ point-size 2)) point-size point-size 0 (* 2 pi) :fill-p)))))))
+
 (defun draw-vertical-grid (env grid dx-grid x-shift plot-window plot-window-size)
   (if (>= (plot-env-grid-c env) dx-grid)
       (progn

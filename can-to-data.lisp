@@ -94,7 +94,7 @@
 			 (physical-offset-mask physical-offset-mask)
 			 (label label)
 			 (multiplexed-p multiplexed-p)) xnet-item
-	  (print xnet-item)
+	  ;;(print xnet-item)
 	  (loop for data-type in data-type-mask		
 		for bit-factor in bit-factor-mask
 		for physical-factor in physical-factor-mask
