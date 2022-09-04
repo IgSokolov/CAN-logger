@@ -4,7 +4,7 @@
 	<img src=gui-demo.png width=100% height=100%>
 </p>
 I devote this project to Oliver Hartkopp - a man behind the ingenious idea of the SocketCAN API.
-This software is still under heavy development and is not production ready.
+`CAN-logger` is still under heavy development and is not production ready.
 
 ## How it works
 1. we access CAN bus via [SocketCAN](https://www.kernel.org/doc/html/latest/networking/can.html) (using FFI from [fsocket](https://github.com/fjames86/fsocket) library)
