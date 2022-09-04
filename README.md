@@ -1,7 +1,9 @@
 `CAN-logger` is a CAN bus monitor with advanced tuning features. This software is intended to be used for debugging of CAN buses in a laboratory environment.
 
 ## Introduction
-TBD
+<p align="center">
+	<img src=demo.png width=50% height=50%>
+</p>
 
 ## How it works
 1. we access CAN bus via [SocketCAN](https://www.kernel.org/doc/html/latest/networking/can.html) (using FFI from [fsocket](https://github.com/fjames86/fsocket) library)
@@ -20,6 +22,9 @@ TBD
 ```
 ## Tested
 SBCL 2.1.9
+
+## Todos
+
 
 ## Contribution:
 TBD
