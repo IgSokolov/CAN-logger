@@ -78,14 +78,18 @@
 (defun make-plot-timestamp (can-timestamp)
   (destructuring-bind (t-sec t-usec) can-timestamp
     (float (+ t-sec (/ t-usec 1000000))))) ;; full-time
-    	
+
+;; (defun can-frame-matches-xnet-layout-p (can-frame xnet-item)
+;;   (with-accessors ((payload-size payload-size)) xnet-itemm
+;;     (= (payload-size (length data)))))
+
 (defun process-can-frame (can-frame output-queues)
   "decode data and send it to plotter"
   (multiple-value-bind (can-id data timestamp origin) (parse-can-packet can-frame)
-    (declare (ignore timestamp))
+    (declare (ignore timestamp origin))
     ;;(format t "(do we need it ?) origin = ~a~%" origin)
-    (let ((xnet-item (gethash can-id *can-db*)))
-      (when xnet-item
+    (let ((xnet-item (gethash can-id *can-db*)))      
+      (when xnet-item	
 	(with-accessors ((signal-type signal-type)
 			 (endiannes endiannes)
 			 (data-type-mask data-type-mask)			 
@@ -93,23 +97,26 @@
 			 (physical-factor-mask physical-factor-mask)
 			 (physical-offset-mask physical-offset-mask)
 			 (label label)
+			 (payload-size payload-size)
 			 (multiplexed-p multiplexed-p)) xnet-item
-	  ;;(print xnet-item)
-	  (loop for data-type in data-type-mask		
-		for bit-factor in bit-factor-mask
-		for physical-factor in physical-factor-mask
-		for physical-offset in physical-offset-mask
-		for l in label do
-		  (multiple-value-bind (bytes rest) (pick-bytes data data-type)		   
-		    (let ((plot-value (make-plot-data
-				       :value (+ physical-offset
-					     (* bit-factor
-						physical-factor
-						(bytes-to-integer bytes data-type endiannes)))
-				       :can-id can-id
-				       :label l)))
-		      (mapc #'(lambda (queue) (sb-concurrency:enqueue plot-value queue)) output-queues))
-		    (setq data rest)))))))) ;; todo multiplexed
+	  ;; check if can-frame matches xnet layout	  
+	  (when (= payload-size (length data))
+	    ;; do processing
+	    (loop for data-type in data-type-mask		
+		  for bit-factor in bit-factor-mask
+		  for physical-factor in physical-factor-mask
+		  for physical-offset in physical-offset-mask
+		  for l in label do
+		    (multiple-value-bind (bytes rest) (pick-bytes data data-type)		   
+		      (let ((plot-value (make-plot-data
+					 :value (+ physical-offset
+						   (* bit-factor
+						      physical-factor
+						      (bytes-to-integer bytes data-type endiannes)))
+					 :can-id can-id
+					 :label l)))
+			(mapc #'(lambda (queue) (sb-concurrency:enqueue plot-value queue)) output-queues))
+		      (setq data rest))))))))) ;; todo multiplexed
 
 (defparameter *stop* NIL)
 

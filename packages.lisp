@@ -10,6 +10,7 @@
    :bit-factor-mask
    :physical-factor-mask
    :physical-offset-mask
+   :payload-size
    :label
    :*can-db*))
 

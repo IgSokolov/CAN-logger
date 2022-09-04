@@ -105,6 +105,17 @@
       (push (parse-integer (second pair)) result))
     (nreverse result)))
 
+(defun compute-expected-payload-size (data-type-mask)
+  "(:U8 :U16) -> 3"
+  (flet ((keyword-to-byte (data-type)
+	   (case data-type	     
+	     ((or :U8 :I8) 1)
+	     ((or :U16 :I16) 2)
+	     ((or :U32 :I32) 4))))
+	     ;;(or :U16 :I16 16)
+	 ;;(or :U32 :32 32))))
+    (reduce #'+ (mapcar #'keyword-to-byte data-type-mask))))
+
 ;; parsers
 
 (defun parse-can-id (string)
@@ -140,32 +151,35 @@
 
 (defclass xnet-data ()
    ((can-id
-    :accessor can-id
-    :type (unsigned-byte 32))
-   (signal-type
-    :accessor signal-type
-    :type symbol)
-   (endiannes
-    :accessor endiannes
-    :type symbol)
-   (data-type-mask
-    :accessor data-type-mask
-    :type cons)
-   (bit-factor-mask
-    :accessor bit-factor-mask
-    :type cons)
-   (physical-factor-mask
-    :accessor physical-factor-mask
-    :type cons)
-   (physical-offset-mask
-    :accessor physical-offset-mask
-    :type cons)
-   (label
-    :accessor label
-    :type cons)
-   (multiplexed-p
-    :accessor multiplexed-p
-    :type atom)))
+     :accessor can-id
+     :type (unsigned-byte 32))
+    (signal-type
+     :accessor signal-type
+     :type symbol)
+    (endiannes
+     :accessor endiannes
+     :type symbol)
+    (data-type-mask
+     :accessor data-type-mask
+     :type cons)
+    (bit-factor-mask
+     :accessor bit-factor-mask
+     :type cons)
+    (physical-factor-mask
+     :accessor physical-factor-mask
+     :type cons)
+    (physical-offset-mask
+     :accessor physical-offset-mask
+     :type cons)
+    (payload-size
+     :accessor payload-size
+     :type (unsigned-byte 8))
+    (label
+     :accessor label
+     :type cons)
+    (multiplexed-p
+     :accessor multiplexed-p
+     :type atom)))
 
 (defmethod print-object ((obj xnet-data) stream)
       (print-unreadable-object (obj stream :type t)
@@ -207,6 +221,7 @@
 	 (> (length (slot-value data 'label)) (length (slot-value data 'data-type-mask))))
 	(setf (slot-value data 'multiplexed-p) T)
 	(setf (slot-value data 'multiplexed-p) NIL))
+    (setf (slot-value data 'payload-size) (compute-expected-payload-size (slot-value data 'data-type-mask)))
     data))
 
 
