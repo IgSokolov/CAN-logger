@@ -272,10 +272,11 @@
       (multiple-value-bind (main-window plot-window grid) (make-x11-layers main-window screen (- x-end x-start) colormap x-start y-start plot-window-size)
 	(let ((plot-text-area (make-plot-text-area main-window plot-window-size screen display colormap)))
 	  (let ((env (make-plot-env)) ;; the _env_ lexical environment is modified. The rest ist const.
-		(n-yticks 10)
-		(n-xticks 10)
-		(t-max 10)
-		(point-size 4))		 
+		(n-yticks 10) ;; param
+		(n-xticks 10) ;; param
+		(t-max 10) ;; todo -> param
+		(point-size 4)
+		(NIL-canvas (make-canvas plot-window screen colormap)))
 	    (multiple-value-bind (x-coords dx-grid) (linspace 0 plot-window-size n-xticks)
 	      (multiple-value-bind (y-coords x-shift data-length-max)
 		  (init-coordinate-settings plot-window-size n-yticks t-max dt)		 
@@ -288,18 +289,10 @@
 		    ;; process data from queue
 		    (if pd
 			(plot-pd pd env screen grid plot-window t-max dt x-end dx-grid point-size x-shift data-length-max plot-window-size y-coords colormap)
-			(push-NIL-data env data-length-max)))			   
+			(progn
+			  (push-NIL-data env data-length-max)
+			  ;; shift plot without data
+			  (copy-area plot-window NIL-canvas x-shift 0 plot-window-size plot-window-size plot-window 0 0))))
 		  (create-horizontal-grid-lines plot-window grid plot-window-size (- plot-window-size x-shift) y-coords)
 		  (display-force-output display)
 		  (sleep dt))))))))))
-
-;;(display-finish-output display)
-;;(close-display display)))))
-
-;; (defun test (n dt)
-;;   (loop for x = (sb-concurrency:dequeue *plot-queue*) do
-;;     (unless x
-;;       (return)))	
-;;   ;;(can-logger.can2data::read-can-data)
-;;   (can-logger.can2data::generate-data n)
-;;   (plot-loop n dt))
