@@ -2,7 +2,7 @@
 
 ## Introduction
 <p align="center">
-	<img src=demo.png width=100% height=100%>
+	<img src=gui-demo.png width=100% height=100%>
 </p>
 
 ## How it works
