@@ -4,7 +4,6 @@
 	<img src=gui-demo.png width=100% height=100%>
 </p>
 I devote this project to Oliver Hartkopp - a man behind the ingenious idea of the SocketCAN API.
-`CAN-logger` is still under heavy development and is not production ready.
 
 ## How it works
 1. we access CAN bus via [SocketCAN](https://www.kernel.org/doc/html/latest/networking/can.html) (using FFI from [fsocket](https://github.com/fjames86/fsocket) library)
@@ -48,6 +47,7 @@ Provide the path to your config file as well the name of a CAN interface via CLI
 ```
 ./can-logger -p "path-to-config-file" -c "name-of-can-interface"
 ```
+Note that this software is still under heavy development and is not production ready.
 ## Tested
 SBCL 2.1.9
 
