@@ -262,7 +262,7 @@
 (defun close-widget-plot ()
   (setq *stop* t))
 
-(defun make-widget-plot (&key main-window display screen colormap x-start y-start size data-queue dt)
+(defun make-widget-plot (&key main-window display screen colormap x-start y-start size (grid-yticks 10) (grid-xticks 10) (t-max 10) data-queue dt)
   "Create plotting environment, fetch plot-data (pd) from a data queue and plot it."
   (setq *stop* NIL)
   ;;(multiple-value-bind (window-size x-start y-start x-end plot-window-size) (make-plot-window 1500 0.1 0.5 50)
@@ -272,14 +272,11 @@
       (multiple-value-bind (main-window plot-window grid) (make-x11-layers main-window screen (- x-end x-start) colormap x-start y-start plot-window-size)
 	(let ((plot-text-area (make-plot-text-area main-window plot-window-size screen display colormap)))
 	  (let ((env (make-plot-env)) ;; the _env_ lexical environment is modified. The rest ist const.
-		(n-yticks 10) ;; param
-		(n-xticks 10) ;; param
-		(t-max 10) ;; todo -> param
 		(point-size 4)
 		(NIL-canvas (make-canvas plot-window screen colormap)))
-	    (multiple-value-bind (x-coords dx-grid) (linspace 0 plot-window-size n-xticks)
+	    (multiple-value-bind (x-coords dx-grid) (linspace 0 plot-window-size grid-xticks)
 	      (multiple-value-bind (y-coords x-shift data-length-max)
-		  (init-coordinate-settings plot-window-size n-yticks t-max dt)		 
+		  (init-coordinate-settings plot-window-size grid-yticks t-max dt)		 
 		(draw-initial-grid display plot-window grid plot-window-size x-coords y-coords)
 		(draw-plot-text-plot-title main-window (plot-text-settings-foreground plot-text-area) (plot-text-settings-xc-title plot-text-area) (plot-text-settings-yc-title plot-text-area) dt t-max)
 		(loop until *stop* do
