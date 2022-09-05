@@ -137,7 +137,7 @@
 		     (write-to-row table row (list 0 1 2)
 				   (list (write-to-string (row-can-id row))
 					 label
-					 (write-to-string (row-value row))))))
+					 (format NIL "~7,3F" (row-value row))))))
 	     db)))
   
 (defstruct wt-pool-unit
