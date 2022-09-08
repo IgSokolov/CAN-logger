@@ -58,5 +58,5 @@ Linux kernel > 2.6.25
 - [ ] Make CLI interface with :unix-opts
 - [ ] Make _stop_ button
 - [ ] Make _reload config_ button
-- [ ] Add CAN-ids on the plot
+- [ ] Add CAN-ids or labels on the plot
 - [ ] Add relevant CAN-bus statistics

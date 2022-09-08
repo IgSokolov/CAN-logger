@@ -8,6 +8,7 @@
 	       (:file "can-to-data")
 	       (:file "utils")
 	       (:file "clx-table")
+	       (:file "clx-button")
 	       (:file "plotter")
 	       (:file "main"))	       
   :depends-on (:fsocket :clx))

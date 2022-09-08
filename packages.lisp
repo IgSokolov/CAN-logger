@@ -31,7 +31,10 @@
 (defpackage :can-logger.table
   (:use :cl :xlib :can-logger.can2data :can-logger.utils)
   (:export :make-widget-table :close-widget-table))
-  
+
+(defpackage :can-logger.button
+  (:use :cl :xlib :can-logger.utils)
+  (:export :close-widget-button :make-widget-button))
 
 (defpackage :can-logger.plotter
   (:use :cl :can-logger.can2data :xlib :can-logger.utils)
@@ -39,5 +42,5 @@
   (:export :make-widget-plot :close-widget-plot))
 
 (defpackage :can-logger.main
-  (:use :cl :xlib :can-logger.table :can-logger.plotter :can-logger.can2data))
+  (:use :cl :xlib :can-logger.table :can-logger.plotter :can-logger.can2data :can-logger.button))
   
