@@ -52,12 +52,11 @@
   (setq *stop* t)
   (stop-reading-CAN-data)
   (close-widget-table)
-  (close-widget-button)
   (close-widget-plot))
 
 (defun test ()
   (setq *stop* NIL)
-  (mapc #'empty-queue (list *data-queue-1* *data-queue-2*))
+  (mapc #'empty-queue (list *data-queue-1* *data-queue-2* *button-task-queue*))
   ;;(sb-thread:make-thread (lambda () (read-can-data "vcan0" (list *data-queue-1* *data-queue-2*))))
   (sb-thread:make-thread (lambda () (generate-data)))
   (sleep 0.1)
@@ -91,14 +90,11 @@
 	     
 	     (loop for stop = (sb-concurrency:dequeue *button-task-queue*) do	       
 	       (if stop
-		   (progn
+		   (progn		     
 		     (stop-gui)
 		     (return))
-		   (sleep 1)))
-	     (close-display display)
-	     ;;(destroy-window main-window)
-	     )	
+		   (sleep 1)))	     
+	     (close-display display))	     
 	(stop-gui)
-	;;(destroy-window main-window)
 	(close-display display)
 	))))

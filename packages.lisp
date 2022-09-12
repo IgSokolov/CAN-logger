@@ -34,7 +34,7 @@
 
 (defpackage :can-logger.button
   (:use :cl :xlib :can-logger.utils)
-  (:export :close-widget-button :make-widget-button))
+  (:export :make-widget-button))
 
 (defpackage :can-logger.plotter
   (:use :cl :can-logger.can2data :xlib :can-logger.utils)

@@ -231,17 +231,17 @@
 	  (sb-thread:make-thread
 	   (lambda ()
 	     (with-safe-exit-on-window-closed
-		 (loop until *stop* do
-		   (event-case (display :force-output-p t :timeout 0.1)
+	       (loop until *stop* do
+		   (event-case (display :force-output-p t :timeout 1)
 		     (:button-press (window)						   
-				    (when (drawable-equal window left-win)				      
+				    (when (drawable-equal window left-win)
 				      (put-image left-win left-g next-pressed-image :x 0 :y 0 :width size :height size :bitmap-p t)
 				      (sb-concurrency:enqueue :next task-queue))				      
 				    (when (drawable-equal window right-win)					
 				      (put-image right-win right-g prev-pressed-image :x 0 :y 0 :width size :height size :bitmap-p t)
 				      (sb-concurrency:enqueue :prev task-queue))
 				    t)
-		     (:button-release (window)
+		     (:button-release (window)				      
 				      (when (drawable-equal window left-win)
 					(put-image left-win left-g next-image :x 0 :y 0 :width size :height size :bitmap-p t))
 				      (when (drawable-equal window right-win)					
@@ -294,4 +294,3 @@
 		      (write-value (wt-pool-unit-table wt-unit) (wt-pool-unit-label wt-unit) value)
 		      (push wt-unit wt-pool))))))
 	  (sleep 0.01)))))
-
