@@ -33,8 +33,8 @@
       (display-force-output display)
       (with-safe-exit-on-window-closed
 	(loop named main until *stop* do
-	  (format t "stop button..~%")
-	  (event-case (display :force-output-p t :timeout 1)
+	  (format t "waiting for stop button..~%")
+	  (event-case (display :force-output-p t)
 	    (:button-press (window)
 			   (print "button pressed.1")
 			   (when (drawable-equal window button-window)
@@ -49,6 +49,7 @@
 			     t))
 	    (otherwise ()
 		       (print "otherwise")
-		       t)))))
+		       t))
+	      (sleep 0.1))))
       (display-force-output display)))
 

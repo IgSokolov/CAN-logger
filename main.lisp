@@ -54,11 +54,11 @@
   (close-widget-table)
   (close-widget-plot))
 
-(defun test ()
+(defun run-demo ()
   (setq *stop* NIL)
   (mapc #'empty-queue (list *data-queue-1* *data-queue-2* *button-task-queue*))
-  ;;(sb-thread:make-thread (lambda () (read-can-data "vcan0" (list *data-queue-1* *data-queue-2*))))
-  (sb-thread:make-thread (lambda () (generate-data)))
+  ;;(sb-thread:make-thread (lambda () (read-can-data "vcan0" (list *data-queue-1* *data-queue-2*)))) ;; uncomment to read CAN bus
+  (sb-thread:make-thread (lambda () (generate-data))) ;; comment to generate test data
   (sleep 0.1)
   (multiple-value-bind (display screen colormap) (make-default-display-screen-colormap)
     (let ((main-window (create-window
@@ -77,24 +77,27 @@
 	   (progn	     
 	     (sb-thread:make-thread (lambda () (make-widget-plot :main-window main-window :display display :screen screen
 								 :colormap colormap :x-start (round (* (screen-width screen) 0.01))
-								 :y-start 50 :size 800 :data-queue *data-queue-1* :dt 0.1))) ;; todo: dt opt ?
+								 :y-start 50 :size 800 :data-queue *data-queue-1* :dt 0.1)))
 	     (sb-thread:make-thread (lambda ()
 				      (make-widget-table :main-window main-window :display display :screen screen :colormap colormap :data-queue *data-queue-2*
-							 :x-table (round (* (screen-width screen) 0.7))
-							 :y-table 50 :width 400 :height 600 :n-rows 20
-							 :x-buttons (+ 410 (round (* (screen-width screen) 0.7)))
-							 :y-buttons 50)))	     
-	     (sb-thread:make-thread (lambda () (make-widget-button :main-window main-window :display display :screen screen
-								   :label "STOP" :task-queue *button-task-queue*
-								   :colormap colormap :x 1000 :y 500 :width 50 :height 50)))
+							 :x-table (round (* (screen-width screen) 0.5))
+							 :y-table 50 :width 400 :height 600 :n-rows 5
+							 :x-buttons (+ 410 (round (* (screen-width screen) 0.5)))
+							 :y-buttons 50)))
+
+	     (sleep 60)
+	     (stop-gui))	
+	     ;; (sb-thread:make-thread (lambda () (make-widget-button :main-window main-window :display display :screen screen
+	     ;; 							   :label "STOP" :task-queue *button-task-queue*
+	     ;; 							   :colormap colormap :x 1000 :y 500 :width 50 :height 50)))
 	     
-	     (loop for stop = (sb-concurrency:dequeue *button-task-queue*) do	       
-	       (if stop
-		   (progn		     
-		     (stop-gui)
-		     (return))
-		   (sleep 1)))	     
-	     (close-display display))	     
+	     ;; (loop for stop = (sb-concurrency:dequeue *button-task-queue*) do	       
+	     ;;   (if stop
+	     ;; 	   (progn		     
+	     ;; 	     (stop-gui)
+	     ;; 	     (return))
+	     ;; 	   (sleep 1)))	     
+	     ;; (close-display display))
+	     
 	(stop-gui)
-	(close-display display)
-	))))
+	(close-display display)))))

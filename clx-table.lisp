@@ -232,7 +232,7 @@
 	   (lambda ()
 	     (with-safe-exit-on-window-closed
 	       (loop until *stop* do
-		   (event-case (display :force-output-p t :timeout 1)
+		   (event-case (display :force-output-p t :timeout 0.1)
 		     (:button-press (window)						   
 				    (when (drawable-equal window left-win)
 				      (put-image left-win left-g next-pressed-image :x 0 :y 0 :width size :height size :bitmap-p t)
@@ -247,7 +247,8 @@
 				      (when (drawable-equal window right-win)					
 					(put-image right-win right-g prev-image :x 0 :y 0 :width size :height size :bitmap-p t))
 				      t)
-		     (otherwise () t))))))	       
+		     (otherwise () t))
+		     (sleep 0.1)))))	       
 	  (display-force-output display)))))
 
 (defun make-widget-table (&key main-window display screen colormap data-queue x-table y-table width height n-rows x-buttons y-buttons)
