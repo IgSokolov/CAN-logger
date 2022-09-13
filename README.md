@@ -43,7 +43,8 @@ one encodes just 0s and 1s.
 value to a physical unit (p): p = b*f + o
 * labels are tags for these units
 Note that CAN frames not listed in the config file are discarded by the logger.
-Provide the path to your config file as well the name of a CAN interface via CLI:
+
+Then provide the path to your config file as well the name of a CAN interface via CLI:
 ```
 ./can-logger -p "path-to-config-file" -c "name-of-can-interface"
 ```
@@ -55,7 +56,9 @@ SBCL 2.1.9
 Linux kernel > 2.6.25
 
 ## Todos
-- [ ] Make CLI interface with :unix-opts
+- [x] Make CLI interface with :unix-opts
+- [ ] Decode binary payload (valve postions, on/off flags, etc.)
+- [ ] Decode multiplexed payload
 - [ ] Make _stop_ button
 - [ ] Make _reload config_ button
 - [ ] Add CAN-ids or labels on the plot
