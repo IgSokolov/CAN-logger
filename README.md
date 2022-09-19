@@ -57,6 +57,7 @@ Linux kernel > 2.6.25
 
 ## Todos
 - [x] Make CLI interface with :unix-opts
+- [ ] Show CAN-IDs of the frames not listed in config file
 - [ ] Decode binary payload (valve postions, on/off flags, etc.)
 - [ ] Decode multiplexed payload
 - [ ] Make _stop_ button
