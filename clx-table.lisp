@@ -1,11 +1,5 @@
 (in-package :can-logger.table)
 
-(defun make-default-display-screen-colormap ()
-  (let* ((display (open-default-display))
-         (screen (display-default-screen display))
-         (colormap (screen-default-colormap screen)))
-    (values display screen colormap)))
-
 (defun make-table-window (main-window screen colormap x-start y-start x-size y-size)
   (create-window
    :parent main-window
@@ -234,7 +228,7 @@
 	       (loop until *stop* do
 		   (event-case (display :force-output-p t :timeout 0.1)
 		     (:button-press (window)						   
-				    (when (drawable-equal window left-win)
+				    (when (drawable-equal window left-win)				      
 				      (put-image left-win left-g next-pressed-image :x 0 :y 0 :width size :height size :bitmap-p t)
 				      (sb-concurrency:enqueue :next task-queue))				      
 				    (when (drawable-equal window right-win)					
@@ -248,7 +242,7 @@
 					(put-image right-win right-g prev-image :x 0 :y 0 :width size :height size :bitmap-p t))
 				      t)
 		     (otherwise () t))
-		     (sleep 0.1)))))	       
+		     (sleep 0.01)))))	       
 	  (display-force-output display)))))
 
 (defun make-widget-table (&key main-window display screen colormap data-queue x-table y-table width height n-rows x-buttons y-buttons)
@@ -279,7 +273,7 @@
 			  (let ((free-wt-unit (car wt-pool)))
 			    (setq wt-unit (make-wt-pool-unit :can-id can-id :label label :window (wt-pool-unit-window free-wt-unit) :table (wt-pool-unit-table free-wt-unit))))
 			  (multiple-value-bind (window table) (make-table-window-pair main-window screen display colormap x-table y-table width height n-rows)
-			    (make-paging-buttons paging-task-queue main-window display x-buttons y-buttons screen colormap 100)
+			    (make-paging-buttons paging-task-queue main-window display x-buttons y-buttons screen colormap 50)
 			    (let ((new-wt-unit (make-wt-pool-unit :can-id can-id :label label :window window :table table)))				   
 			      (add-wt-stack window table wt-stack) ;; for a switch button
 			      (setq wt-unit new-wt-unit))))
