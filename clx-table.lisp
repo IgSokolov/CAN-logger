@@ -116,8 +116,7 @@
 (defun make-table-window-pair (main-window screen display colormap x y width height n-rows)
   (let* ((window (make-table-window main-window screen colormap x y width height))
 	 (table (create-table screen display window colormap (list 60 200 60) 50 n-rows)))
-    (add-titles table)
-    ;;(display-force-output display)
+    (add-titles table)    
     (values window table)))
 
 (defun redraw-table (table)  

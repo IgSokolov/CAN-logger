@@ -64,3 +64,4 @@ Linux kernel > 2.6.25
 - [ ] Make _reload config_ button
 - [ ] Add CAN-ids or labels on the plot
 - [ ] Add relevant CAN-bus statistics
+- [ ] Dont't pick up dark colors for lines 
