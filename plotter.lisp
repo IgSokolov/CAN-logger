@@ -130,7 +130,7 @@
 		  :parent window
 		  :x (+ 30 plot-window-size)
 		  :y y-start
-		  :width (- (drawable-width window) x-start plot-window-size)
+		  :width (- (drawable-width window) 30 plot-window-size 10) ;; 10 pixels margin
 		  :height plot-window-size
 		  :border (screen-black-pixel screen)
 		  :border-width 2
