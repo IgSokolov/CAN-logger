@@ -50,7 +50,6 @@
 (defun create-vertical-grid-lines (win gcontext plot-window-size x-coords)
   (mapc (lambda (x) (draw-line win gcontext x 0 x plot-window-size)) x-coords))
 
-
 (defun get-plot-window-size (size start-offest-in-% end-offset-in-% y-start) ;; offsets are in % of window-size
   "Set plot-window size"
   (let* ((x-start (round (* start-offest-in-% size)))
@@ -113,6 +112,7 @@
    :foreground (alloc-color colormap (make-random-color))))
 
 (defstruct plot-text-settings
+  window
   background
   foreground
   font-height
@@ -126,6 +126,7 @@
   (let* ((x-start (round (* (drawable-width window) 0.1)))
 	 (y-start 50))
     (make-plot-text-settings
+     :window window
      :background (create-gcontext
 		  :drawable window
 		  :line-style :solid
@@ -190,6 +191,10 @@
       (mapc #'(lambda (obj) (setf (canvas-obj-data obj) (butlast (canvas-obj-data obj)))) (plot-env-canvas-obj-db env))
       (incf (plot-env-data-counter env))))
 
+(defun draw-rect-with-text (window background text-layer text x-coord y-coord font-ascent)
+  (draw-rectangle window background x-coord (- y-coord font-ascent) (text-width text-layer text) font-ascent :fill-p)
+  (draw-glyphs window text-layer x-coord y-coord text))
+
 (defun redraw-plot-window (env plot-window point-size plot-window-size grid y-coords dx-grid x-end t-max dt)
   (clear-area plot-window)  
   ;; redraw grid				     
@@ -217,7 +222,7 @@
 	      (draw-arc plot-window (canvas-obj-canvas canvas-obj) (- (first plot-buf-1) (/ point-size 2))
 			(- (second plot-buf-1) (/ point-size 2)) point-size point-size 0 (* 2 pi) :fill-p)))))))
 
-(defun plot-pd (pd env screen grid plot-window t-max dt x-end dx-grid point-size x-shift data-length-max plot-window-size y-coords colormap)
+(defun plot-pd (pd env plot-text-area screen grid plot-window t-max dt x-end dx-grid point-size x-shift data-length-max plot-window-size y-coords colormap)
   "Plot plot-data (pd). _env_ is modified."
   (let ((y0 (plot-data-value pd))
 	(label (plot-data-label pd)))
@@ -236,8 +241,21 @@
 	(redraw-plot-window env plot-window point-size plot-window-size grid y-coords dx-grid x-end t-max dt)      
 	(let ((y0-mapped (map-y0-to-plot y0 (plot-env-y-min env) (plot-env-y-max env) plot-window-size))
 	      (prev-point (cdadr (canvas-obj-data canvas-obj))))
- 	  (if prev-point ;; is the dataset larger then ((NIL . 0.0d0)) ?
+ 	  (if prev-point ;; is the dataset larger then ((NIL . 0.0d0)) ?	      
 	      (let ((prev-point-mapped (map-y0-to-plot prev-point (plot-env-y-min env) (plot-env-y-max env) plot-window-size)))
+		
+		(draw-rectangle (plot-text-settings-window plot-text-area)
+			        (plot-text-settings-background plot-text-area)
+				(plot-text-settings-xc-ymin-ymax plot-text-area)
+				(- prev-point-mapped (plot-text-settings-font-height plot-text-area))
+				(text-width (canvas-obj-canvas canvas-obj) (plot-data-label pd))
+				(plot-text-settings-font-height plot-text-area) :fill-p)
+		
+		(draw-rect-with-text (plot-text-settings-window plot-text-area)
+				     (plot-text-settings-background plot-text-area)
+				     (canvas-obj-canvas canvas-obj) (plot-data-label pd)
+				     (plot-text-settings-xc-ymin-ymax plot-text-area) y0-mapped (plot-text-settings-font-height plot-text-area))
+		
 		(draw-arc plot-window (canvas-obj-canvas canvas-obj) (- (- plot-window-size (/ point-size 2)) 2)
 			  (- y0-mapped (/ point-size 2)) point-size point-size 0 (* 2 pi) :fill-p)
 		(draw-line plot-window (canvas-obj-canvas canvas-obj) (- plot-window-size x-shift)
@@ -285,7 +303,7 @@
 		  (let ((pd (sb-concurrency:dequeue data-queue)))		      
 		    ;; process data from queue
 		    (if pd
-			(plot-pd pd env screen grid plot-window t-max dt x-end dx-grid point-size x-shift data-length-max plot-window-size y-coords colormap)
+			(plot-pd pd env plot-text-area screen grid plot-window t-max dt x-end dx-grid point-size x-shift data-length-max plot-window-size y-coords colormap)			
 			(progn
 			  (push-NIL-data env data-length-max)
 			  ;; shift plot without data
