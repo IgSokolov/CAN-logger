@@ -112,7 +112,8 @@
    :foreground (alloc-color colormap (make-random-color))))
 
 (defstruct plot-text-settings
-  window
+  labels-window
+  labels-background
   background
   foreground
   font-height
@@ -134,10 +135,15 @@
 		  :border (screen-black-pixel screen)
 		  :border-width 2
 		  :colormap colormap
-		  :background (alloc-color colormap (lookup-color colormap "white")))))
+		  :background (alloc-color colormap (lookup-color colormap "black")))))
     (map-window labels-window)
     (make-plot-text-settings
-     :window labels-window ;; todo: rename
+     :labels-window labels-window
+     :labels-background (create-gcontext
+		  :drawable labels-window
+		  :line-style :solid
+		  :background (screen-white-pixel screen)
+		  :foreground (alloc-color colormap (lookup-color colormap "black")))
      :background (create-gcontext
 		  :drawable window
 		  :line-style :solid
@@ -255,15 +261,14 @@
  	  (if prev-point ;; is the dataset larger then ((NIL . 0.0d0)) ?	      
 	      (let ((prev-point-mapped (map-y0-to-plot prev-point (plot-env-y-min env) (plot-env-y-max env) plot-window-size)))
 		
-		(draw-rectangle (plot-text-settings-window plot-text-area)
-			        (plot-text-settings-background plot-text-area)
-				0
-				(- prev-point-mapped (plot-text-settings-font-height plot-text-area))
+		(draw-rectangle (plot-text-settings-labels-window plot-text-area)
+			        (plot-text-settings-labels-background plot-text-area)
+				0 (- prev-point-mapped (plot-text-settings-font-height plot-text-area))
 				(text-width (canvas-obj-canvas canvas-obj) (plot-data-label pd))
 				(plot-text-settings-font-height plot-text-area) :fill-p)
 		
-		(draw-rect-with-text (plot-text-settings-window plot-text-area)
-				     (plot-text-settings-background plot-text-area)
+		(draw-rect-with-text (plot-text-settings-labels-window plot-text-area)
+				     (plot-text-settings-labels-background plot-text-area)
 				     (canvas-obj-canvas canvas-obj) (plot-data-label pd)
 				     0 y0-mapped (plot-text-settings-font-height plot-text-area))
 		
