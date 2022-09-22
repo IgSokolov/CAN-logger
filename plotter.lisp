@@ -130,7 +130,7 @@
 		  :parent window
 		  :x (+ 30 plot-window-size)
 		  :y y-start
-		  :width 50		  
+		  :width (- (drawable-width window) x-start plot-window-size)
 		  :height plot-window-size
 		  :border (screen-black-pixel screen)
 		  :border-width 2
@@ -144,7 +144,7 @@
 		  :line-style :solid
 		  :background (screen-white-pixel screen)
 		  :foreground (alloc-color colormap (lookup-color colormap "black")))
-     :background (create-gcontext
+     :background (create-gcontext ;; todo rename
 		  :drawable window
 		  :line-style :solid
 		  :background (screen-white-pixel screen)
