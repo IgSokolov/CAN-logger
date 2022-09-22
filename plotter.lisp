@@ -124,9 +124,20 @@
 
 (defun make-plot-text-area (window plot-window-size screen display colormap &optional (font "fixed"))
   (let* ((x-start (round (* (drawable-width window) 0.1)))
-	 (y-start 50))
+	 (y-start 50)
+	 (labels-window (create-window
+		  :parent window
+		  :x (+ 30 plot-window-size)
+		  :y y-start
+		  :width 50		  
+		  :height plot-window-size
+		  :border (screen-black-pixel screen)
+		  :border-width 2
+		  :colormap colormap
+		  :background (alloc-color colormap (lookup-color colormap "white")))))
+    (map-window labels-window)
     (make-plot-text-settings
-     :window window
+     :window labels-window ;; todo: rename
      :background (create-gcontext
 		  :drawable window
 		  :line-style :solid
@@ -139,9 +150,9 @@
 		  :background (screen-white-pixel screen)
 		  :foreground (alloc-color colormap (lookup-color colormap "black")))
      :font-height (font-ascent (open-font display font))
-     :yc-ymax ( + y-start (font-ascent (open-font display font)))
-     :yc-ymin (+ y-start plot-window-size)
-     :xc-ymin-ymax (+ plot-window-size 20)
+     :yc-ymax (- y-start (font-ascent (open-font display font)))
+     :yc-ymin (+ y-start plot-window-size (font-ascent (open-font display font)) 10)
+     :xc-ymin-ymax (- plot-window-size 20)
      :xc-title x-start
      :yc-title (- y-start (font-ascent (open-font display font))))))
 
@@ -246,7 +257,7 @@
 		
 		(draw-rectangle (plot-text-settings-window plot-text-area)
 			        (plot-text-settings-background plot-text-area)
-				(plot-text-settings-xc-ymin-ymax plot-text-area)
+				0
 				(- prev-point-mapped (plot-text-settings-font-height plot-text-area))
 				(text-width (canvas-obj-canvas canvas-obj) (plot-data-label pd))
 				(plot-text-settings-font-height plot-text-area) :fill-p)
@@ -254,7 +265,7 @@
 		(draw-rect-with-text (plot-text-settings-window plot-text-area)
 				     (plot-text-settings-background plot-text-area)
 				     (canvas-obj-canvas canvas-obj) (plot-data-label pd)
-				     (plot-text-settings-xc-ymin-ymax plot-text-area) y0-mapped (plot-text-settings-font-height plot-text-area))
+				     0 y0-mapped (plot-text-settings-font-height plot-text-area))
 		
 		(draw-arc plot-window (canvas-obj-canvas canvas-obj) (- (- plot-window-size (/ point-size 2)) 2)
 			  (- y0-mapped (/ point-size 2)) point-size point-size 0 (* 2 pi) :fill-p)
@@ -288,7 +299,7 @@
     (let ((plot-window-size (round (* size 0.8)))
 	  (x-end (+ x-start size)))
       (multiple-value-bind (main-window plot-window grid) (make-x11-layers main-window screen (- x-end x-start) colormap x-start y-start plot-window-size)
-	(let ((plot-text-area (make-plot-text-area main-window plot-window-size screen display colormap)))
+	(let ((plot-text-area (make-plot-text-area main-window plot-window-size screen display colormap)))	  
 	  (let ((env (make-plot-env)) ;; the _env_ lexical environment is modified. The rest ist const.
 		(point-size 4)
 		(NIL-canvas (make-canvas plot-window screen colormap)))
