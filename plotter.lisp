@@ -297,8 +297,13 @@
 		      ;; 	    :width (text-width canvas-foreground (plot-data-label pd))
 		    ;; 	    :height (plot-text-settings-font-height plot-text-area))
 
+
+		    ;;;;;;;;;;;;;
+		    ;; fixme 1. if we habe points, lables are not displayed, because here we have (if prev-point.
+		    ;; fixme 2. redraw.
+		    ;;;;;;;;;;;;;
 		    (if (canvas-obj-stale-p canvas-obj)
-			(progn
+			(progn ;; clean previous location when the label was on the plot
 			  (setf (canvas-obj-stale-p canvas-obj) NIL)
 			  (draw-rectangle (plot-text-settings-labels-window plot-text-area)
 					  canvas-background
