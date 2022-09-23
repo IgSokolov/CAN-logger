@@ -105,11 +105,17 @@
   (make-color :red (random 1.0) :blue (random 1.0) :green (random 1.0)))
 
 (defun make-canvas (plot-window screen colormap)
-  (create-gcontext
+  (list
+   (create-gcontext ;; main color for plot
    :drawable plot-window
    :fill-style :solid
    :background (screen-white-pixel screen)
-   :foreground (alloc-color colormap (make-random-color))))
+   :foreground (alloc-color colormap (make-random-color)))
+   (create-gcontext ;; background for label area
+   :drawable plot-window
+   :fill-style :solid
+   :background (screen-white-pixel screen)
+   :foreground (alloc-color colormap (lookup-color colormap "white")))))
 
 (defstruct plot-text-settings
   labels-window
@@ -225,38 +231,39 @@
   (create-vertical-grid-lines plot-window grid plot-window-size (linspace-2 (- dx-grid (plot-env-grid-c env)) x-end dx-grid))	    
   ;; redraw data
   (dolist (canvas-obj (plot-env-canvas-obj-db env))
-    (let* ((data (reset-data t-max dt (canvas-obj-data canvas-obj)))
-	   (data-list (split-data data)))
-      (dolist (data-item data-list)
-	(let ((plot-buf-1) ;; for draw-lines
-	      (plot-buf-2) ;; for draw-arcs
-	      (y0-mapped-list (mapcar #'(lambda (item) (map-y0-to-plot (cdr item) (plot-env-y-min env) (plot-env-y-max env) plot-window-size)) data-item))
-	      (t0-mapped-list (mapcar #'(lambda (item) (round (* plot-window-size (/ (car item) t-max)))) data-item)))
+    (destructuring-bind (canvas-foreground canvas-background) (canvas-obj-canvas canvas-obj)
+      (let* ((data (reset-data t-max dt (canvas-obj-data canvas-obj)))
+	     (data-list (split-data data)))
+	(dolist (data-item data-list)
+	  (let ((plot-buf-1) ;; for draw-lines
+		(plot-buf-2) ;; for draw-arcs
+		(y0-mapped-list (mapcar #'(lambda (item) (map-y0-to-plot (cdr item) (plot-env-y-min env) (plot-env-y-max env) plot-window-size)) data-item))
+		(t0-mapped-list (mapcar #'(lambda (item) (round (* plot-window-size (/ (car item) t-max)))) data-item)))
 	  ;;;;;;;;;;;;;
-	  (when (second y0-mapped-list)
-	    (clear-area (plot-text-settings-labels-window plot-text-area))
+	    ;; (when (second y0-mapped-list)
+	    ;;   (clear-area (plot-text-settings-labels-window plot-text-area))
 
-	    (draw-rectangle (plot-text-settings-labels-window plot-text-area)
-			    ;;(canvas-obj-canvas canvas-obj)
-			    (plot-text-settings-labels-background plot-text-area)
-			    0 (- (first y0-mapped-list) (plot-text-settings-font-height plot-text-area))
-			    (text-width (canvas-obj-canvas canvas-obj) (canvas-obj-label canvas-obj))
-			    (plot-text-settings-font-height plot-text-area) :fill-p)
+	    ;;   (draw-rectangle (plot-text-settings-labels-window plot-text-area)
+	    ;; 		    ;;canvas-foreground
+	    ;; 		    (plot-text-settings-labels-background plot-text-area)
+	    ;; 		    0 (- (first y0-mapped-list) (plot-text-settings-font-height plot-text-area))
+	    ;; 		    (text-width canvas-foreground (canvas-obj-label canvas-obj))
+	    ;; 		    (plot-text-settings-font-height plot-text-area) :fill-p)
 
-	    (draw-glyphs (plot-text-settings-labels-window plot-text-area) (canvas-obj-canvas canvas-obj) 0 (first y0-mapped-list) (canvas-obj-label canvas-obj)))
+	    ;;   (draw-glyphs (plot-text-settings-labels-window plot-text-area) canvas-foreground 0 (first y0-mapped-list) (canvas-obj-label canvas-obj)))
 	  ;;;;;;;;;;;;;	  
-	  (loop for y0 in y0-mapped-list
-		for t0 in t0-mapped-list do
-		  (push y0 plot-buf-1)
-		  (push t0 plot-buf-1)
-		  (loop for x in (list (* 2 pi) 0 point-size point-size (- y0 (/ point-size 2)) (- t0 (/ point-size 2))) do
-		    (push x plot-buf-2)))						     						   
-	  (if (> (list-length plot-buf-1) 2)
-	      (progn
-		(draw-lines plot-window (canvas-obj-canvas canvas-obj) plot-buf-1)
-		(draw-arcs plot-window (canvas-obj-canvas canvas-obj) plot-buf-2 :fill-p))						   
-	      (draw-arc plot-window (canvas-obj-canvas canvas-obj) (- (first plot-buf-1) (/ point-size 2))
-			(- (second plot-buf-1) (/ point-size 2)) point-size point-size 0 (* 2 pi) :fill-p)))))))
+	    (loop for y0 in y0-mapped-list
+		  for t0 in t0-mapped-list do
+		    (push y0 plot-buf-1)
+		    (push t0 plot-buf-1)
+		    (loop for x in (list (* 2 pi) 0 point-size point-size (- y0 (/ point-size 2)) (- t0 (/ point-size 2))) do
+		      (push x plot-buf-2)))						     						   
+	    (if (> (list-length plot-buf-1) 2)
+		(progn
+		  (draw-lines plot-window canvas-foreground plot-buf-1)
+		  (draw-arcs plot-window canvas-foreground plot-buf-2 :fill-p))						   
+		(draw-arc plot-window canvas-foreground (- (first plot-buf-1) (/ point-size 2))
+			  (- (second plot-buf-1) (/ point-size 2)) point-size point-size 0 (* 2 pi) :fill-p))))))))
 
 (defun plot-pd (pd env plot-text-area screen grid plot-window t-max dt x-end dx-grid point-size x-shift data-length-max plot-window-size y-coords colormap)
   "Plot plot-data (pd). _env_ is modified."
@@ -267,51 +274,49 @@
       (mapc #'(lambda (obj) (push NIL (canvas-obj-data obj))) rest-canvas-objs)			       
       (unless canvas-obj
 	(setq canvas-obj (add-canvas-obj env label screen colormap plot-window)))
-      (copy-area plot-window (canvas-obj-canvas canvas-obj) x-shift 0 plot-window-size plot-window-size plot-window 0 0)
-      ;; we consing NIL because we dont need absolute timestamp 99.9 % of time.
-      ;; Only if we need to rescale and redraw the plot, NILs are filled with time values,
-      ;; which are computed at every redraw cycle.
-      (push (cons NIL y0) (canvas-obj-data canvas-obj))      
-      (trim-data env data-length-max) ;; keep fixed number of elements to plot
-      (if (recompute-y-limits y0 env) ;; check if we need rescaling (bug here. see commit 0c04f5b)
-	(redraw-plot-window env plot-text-area plot-window point-size plot-window-size grid y-coords dx-grid x-end t-max dt)      
-	(let ((y0-mapped (map-y0-to-plot y0 (plot-env-y-min env) (plot-env-y-max env) plot-window-size))
-	      (prev-point (cdadr (canvas-obj-data canvas-obj))))
- 	  (if prev-point ;; is the dataset larger then ((NIL . 0.0d0)) ?	      
-	      (let ((prev-point-mapped (map-y0-to-plot prev-point (plot-env-y-min env) (plot-env-y-max env) plot-window-size)))
-		
-		;; (draw-rectangle (plot-text-settings-labels-window plot-text-area)
-		;; 	        (plot-text-settings-labels-background plot-text-area)
-		;; 		0 (- prev-point-mapped (plot-text-settings-font-height plot-text-area))
-		;; 		(text-width (canvas-obj-canvas canvas-obj) (plot-data-label pd))
-		;; 		(plot-text-settings-font-height plot-text-area) :fill-p)
-		(clear-area (plot-text-settings-labels-window plot-text-area)
-			    :x 0
-			    :y (- prev-point-mapped (plot-text-settings-font-height plot-text-area))
-			    :width (text-width (canvas-obj-canvas canvas-obj) (plot-data-label pd))
-			    :height (plot-text-settings-font-height plot-text-area))
+      (destructuring-bind (canvas-foreground canvas-background) (canvas-obj-canvas canvas-obj)
+	(copy-area plot-window canvas-foreground x-shift 0 plot-window-size plot-window-size plot-window 0 0)
+	;; we consing NIL because we dont need absolute timestamp 99.9 % of time.
+	;; Only if we need to rescale and redraw the plot, NILs are filled with time values,
+	;; which are computed at every redraw cycle.
+	(push (cons NIL y0) (canvas-obj-data canvas-obj))      
+	(trim-data env data-length-max) ;; keep fixed number of elements to plot
+	(if (recompute-y-limits y0 env) ;; check if we need rescaling (bug here. see commit 0c04f5b)
+	    (redraw-plot-window env plot-text-area plot-window point-size plot-window-size grid y-coords dx-grid x-end t-max dt)      
+	    (let ((y0-mapped (map-y0-to-plot y0 (plot-env-y-min env) (plot-env-y-max env) plot-window-size))
+		  (prev-point (cdadr (canvas-obj-data canvas-obj))))
+ 	      (if prev-point ;; is the dataset larger then ((NIL . 0.0d0)) ?	      
+		  (let ((prev-point-mapped (map-y0-to-plot prev-point (plot-env-y-min env) (plot-env-y-max env) plot-window-size)))
+		      
+		      (draw-rectangle (plot-text-settings-labels-window plot-text-area)
+			              canvas-background
+				      0 (- prev-point-mapped (plot-text-settings-font-height plot-text-area))
+				      (text-width canvas-background (plot-data-label pd))
+				      (plot-text-settings-font-height plot-text-area) :fill-p)
+		      
+		      ;; (clear-area (plot-text-settings-labels-window plot-text-area)
+		      ;; 	    :x 0
+		      ;; 	    :y (- prev-point-mapped (plot-text-settings-font-height plot-text-area))
+		      ;; 	    :width (text-width canvas-foreground (plot-data-label pd))
+		      ;; 	    :height (plot-text-settings-font-height plot-text-area))
 
 
-		(draw-rectangle (plot-text-settings-labels-window plot-text-area)
-				;;(canvas-obj-canvas canvas-obj)
-				(plot-text-settings-labels-background plot-text-area)
-				0 (- y0-mapped (plot-text-settings-font-height plot-text-area))
-				(text-width (canvas-obj-canvas canvas-obj) (plot-data-label pd))
-				(plot-text-settings-font-height plot-text-area) :fill-p)
+		      (draw-rectangle (plot-text-settings-labels-window plot-text-area)
+				      ;;canvas-foreground
+				      canvas-background
+				      0 (- y0-mapped (plot-text-settings-font-height plot-text-area))
+				      (text-width canvas-background (plot-data-label pd))
+				      (plot-text-settings-font-height plot-text-area) :fill-p)
 
-		(draw-glyphs (plot-text-settings-labels-window plot-text-area) (canvas-obj-canvas canvas-obj) 0 y0-mapped (canvas-obj-label canvas-obj))
-		
-		 ;; (draw-rect-with-text (plot-text-settings-labels-window plot-text-area)
-		 ;; 		     (plot-text-settings-labels-background plot-text-area)
-		 ;; 		     (canvas-obj-canvas canvas-obj) (plot-data-label pd)
-		 ;; 		     0 y0-mapped (plot-text-settings-font-height plot-text-area))
-		
-		(draw-arc plot-window (canvas-obj-canvas canvas-obj) (- (- plot-window-size (/ point-size 2)) 2)
-			  (- y0-mapped (/ point-size 2)) point-size point-size 0 (* 2 pi) :fill-p)
-		(draw-line plot-window (canvas-obj-canvas canvas-obj) (- plot-window-size x-shift)
-			   prev-point-mapped (- plot-window-size 2) y0-mapped))				     
-	      (draw-arc plot-window (canvas-obj-canvas canvas-obj) (- (- plot-window-size (/ point-size 2)) 2)
-			(- y0-mapped (/ point-size 2)) point-size point-size 0 (* 2 pi) :fill-p)))))))
+		    (draw-glyphs (plot-text-settings-labels-window plot-text-area) canvas-foreground 0 y0-mapped (canvas-obj-label canvas-obj))
+		    
+		    
+		    (draw-arc plot-window canvas-foreground (- (- plot-window-size (/ point-size 2)) 2)
+			      (- y0-mapped (/ point-size 2)) point-size point-size 0 (* 2 pi) :fill-p)
+		    (draw-line plot-window canvas-foreground (- plot-window-size x-shift)
+			       prev-point-mapped (- plot-window-size 2) y0-mapped))				     
+		  (draw-arc plot-window canvas-foreground (- (- plot-window-size (/ point-size 2)) 2)
+			    (- y0-mapped (/ point-size 2)) point-size point-size 0 (* 2 pi) :fill-p))))))))
 
 (defun draw-vertical-grid (env grid dx-grid x-shift plot-window plot-window-size)
   (if (>= (plot-env-grid-c env) dx-grid)
