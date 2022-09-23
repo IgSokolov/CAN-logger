@@ -28,14 +28,14 @@
 	(i 0))
     (loop until *stop* do
       (let ((plot-value-1 (make-plot-data
-			   :value (* i (sin (* 2 pi 0.01 i)))
-			   ;;:value (random 10)
+			   ;;:value (* 1 (sin (* 2 pi 0.01 i)))
+			   :value (+ 50 (random 10))
 			   ;;:value 0.5
 			   :can-id #x112
 			   :label "label-1"))
 	    (plot-value-2 (make-plot-data
-			   :value (* i (sin (* 2 pi 0.01 i)))
-			   ;;:value (random 10)
+			   ;;:value (* 1 (sin (* 2 pi 0.01 i)))
+			   :value (+ 10 (random 10))
 			   ;;:value 0.5
 			   :can-id #x222
 			   :label "label-2")))

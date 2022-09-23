@@ -92,14 +92,15 @@
 (defstruct canvas-obj
   canvas
   label
-  data)
+  data
+  (stale-p NIL))
 
 (defstruct plot-env
   canvas-obj-db
   (data-counter 0)
   (grid-c 0)  
-  (y-min -1)
-  (y-max 1))
+  (y-min 0)
+  (y-max 100))
 
 (defun make-random-color ()
   (make-color :red (random 1.0) :blue (random 1.0) :green (random 1.0)))
@@ -271,7 +272,8 @@
 	(label (plot-data-label pd)))
     (multiple-value-bind (canvas-obj rest-canvas-objs) (fetch-canvas-obj label (plot-env-canvas-obj-db env))			       
       ;; push NIL-data to the rest of canvasses
-      (mapc #'(lambda (obj) (push NIL (canvas-obj-data obj))) rest-canvas-objs)			       
+      (mapc #'(lambda (obj) (push NIL (canvas-obj-data obj))) rest-canvas-objs)
+      (mapc #'(lambda (obj) (setf (canvas-obj-stale-p obj) t)) rest-canvas-objs)
       (unless canvas-obj
 	(setq canvas-obj (add-canvas-obj env label screen colormap plot-window)))
       (destructuring-bind (canvas-foreground canvas-background) (canvas-obj-canvas canvas-obj)
@@ -287,26 +289,36 @@
 		  (prev-point (cdadr (canvas-obj-data canvas-obj))))
  	      (if prev-point ;; is the dataset larger then ((NIL . 0.0d0)) ?	      
 		  (let ((prev-point-mapped (map-y0-to-plot prev-point (plot-env-y-min env) (plot-env-y-max env) plot-window-size)))
-		      
-		      (draw-rectangle (plot-text-settings-labels-window plot-text-area)
-			              canvas-background
-				      0 (- prev-point-mapped (plot-text-settings-font-height plot-text-area))
-				      (text-width canvas-background (plot-data-label pd))
-				      (plot-text-settings-font-height plot-text-area) :fill-p)
-		      
-		      ;; (clear-area (plot-text-settings-labels-window plot-text-area)
+
+
+		    ;; (clear-area (plot-text-settings-labels-window plot-text-area)
 		      ;; 	    :x 0
 		      ;; 	    :y (- prev-point-mapped (plot-text-settings-font-height plot-text-area))
 		      ;; 	    :width (text-width canvas-foreground (plot-data-label pd))
-		      ;; 	    :height (plot-text-settings-font-height plot-text-area))
+		    ;; 	    :height (plot-text-settings-font-height plot-text-area))
 
+		    (if (canvas-obj-stale-p canvas-obj)
+			(progn
+			  (setf (canvas-obj-stale-p canvas-obj) NIL)
+			  (draw-rectangle (plot-text-settings-labels-window plot-text-area)
+					  canvas-background
+					  0 (- (map-y0-to-plot (cdar (canvas-obj-data canvas-obj)) (plot-env-y-min env) (plot-env-y-max env) plot-window-size)
+					       (plot-text-settings-font-height plot-text-area))
+					  (text-width canvas-background (plot-data-label pd))
+					  (plot-text-settings-font-height plot-text-area) :fill-p))
+			(draw-rectangle (plot-text-settings-labels-window plot-text-area)
+					canvas-background
+					0 (- prev-point-mapped (plot-text-settings-font-height plot-text-area))
+					(text-width canvas-background (plot-data-label pd))
+					(plot-text-settings-font-height plot-text-area) :fill-p))
+		    
 
-		      (draw-rectangle (plot-text-settings-labels-window plot-text-area)
-				      ;;canvas-foreground
-				      canvas-background
-				      0 (- y0-mapped (plot-text-settings-font-height plot-text-area))
-				      (text-width canvas-background (plot-data-label pd))
-				      (plot-text-settings-font-height plot-text-area) :fill-p)
+		    (draw-rectangle (plot-text-settings-labels-window plot-text-area)
+				    ;;canvas-foreground
+				    canvas-background
+				    0 (- y0-mapped (plot-text-settings-font-height plot-text-area))
+				    (text-width canvas-background (plot-data-label pd))
+				    (plot-text-settings-font-height plot-text-area) :fill-p)
 
 		    (draw-glyphs (plot-text-settings-labels-window plot-text-area) canvas-foreground 0 y0-mapped (canvas-obj-label canvas-obj))
 		    
