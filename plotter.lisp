@@ -114,6 +114,7 @@
 (defstruct plot-text-settings
   labels-window
   labels-background
+  labels-foreground
   background
   foreground
   font-height
@@ -128,14 +129,14 @@
 	 (y-start 50)
 	 (labels-window (create-window
 		  :parent window
-		  :x (+ 30 plot-window-size)
+		  :x (+ 20 plot-window-size)
 		  :y y-start
-		  :width (- (drawable-width window) 30 plot-window-size 10) ;; 10 pixels margin
+		  :width (- (drawable-width window) 20 plot-window-size 10) ;; 10 pixels margin
 		  :height plot-window-size
 		  :border (screen-black-pixel screen)
 		  :border-width 2
 		  :colormap colormap
-		  :background (alloc-color colormap (lookup-color colormap "black")))))
+		  :background (alloc-color colormap (lookup-color colormap "white")))))
     (map-window labels-window)
     (make-plot-text-settings
      :labels-window labels-window
@@ -143,7 +144,12 @@
 		  :drawable labels-window
 		  :line-style :solid
 		  :background (screen-white-pixel screen)
-		  :foreground (alloc-color colormap (lookup-color colormap "black")))
+		  :foreground (alloc-color colormap (lookup-color colormap "white")))
+     :labels-foreground (create-gcontext
+		  :drawable labels-window
+		  :line-style :solid
+		  :background (screen-white-pixel screen)
+		  :foreground (alloc-color colormap (lookup-color colormap "white")))
      :background (create-gcontext ;; todo rename
 		  :drawable window
 		  :line-style :solid
@@ -212,7 +218,7 @@
   (draw-rectangle window background x-coord (- y-coord font-ascent) (text-width text-layer text) font-ascent :fill-p)
   (draw-glyphs window text-layer x-coord y-coord text))
 
-(defun redraw-plot-window (env plot-window point-size plot-window-size grid y-coords dx-grid x-end t-max dt)
+(defun redraw-plot-window (env plot-text-area plot-window point-size plot-window-size grid y-coords dx-grid x-end t-max dt)
   (clear-area plot-window)  
   ;; redraw grid				     
   (create-horizontal-grid-lines plot-window grid plot-window-size 0 y-coords)
@@ -226,6 +232,19 @@
 	      (plot-buf-2) ;; for draw-arcs
 	      (y0-mapped-list (mapcar #'(lambda (item) (map-y0-to-plot (cdr item) (plot-env-y-min env) (plot-env-y-max env) plot-window-size)) data-item))
 	      (t0-mapped-list (mapcar #'(lambda (item) (round (* plot-window-size (/ (car item) t-max)))) data-item)))
+	  ;;;;;;;;;;;;;
+	  (when (second y0-mapped-list)
+	    (clear-area (plot-text-settings-labels-window plot-text-area))
+
+	    (draw-rectangle (plot-text-settings-labels-window plot-text-area)
+			    ;;(canvas-obj-canvas canvas-obj)
+			    (plot-text-settings-labels-background plot-text-area)
+			    0 (- (first y0-mapped-list) (plot-text-settings-font-height plot-text-area))
+			    (text-width (canvas-obj-canvas canvas-obj) (canvas-obj-label canvas-obj))
+			    (plot-text-settings-font-height plot-text-area) :fill-p)
+
+	    (draw-glyphs (plot-text-settings-labels-window plot-text-area) (canvas-obj-canvas canvas-obj) 0 (first y0-mapped-list) (canvas-obj-label canvas-obj)))
+	  ;;;;;;;;;;;;;	  
 	  (loop for y0 in y0-mapped-list
 		for t0 in t0-mapped-list do
 		  (push y0 plot-buf-1)
@@ -255,22 +274,37 @@
       (push (cons NIL y0) (canvas-obj-data canvas-obj))      
       (trim-data env data-length-max) ;; keep fixed number of elements to plot
       (if (recompute-y-limits y0 env) ;; check if we need rescaling (bug here. see commit 0c04f5b)
-	(redraw-plot-window env plot-window point-size plot-window-size grid y-coords dx-grid x-end t-max dt)      
+	(redraw-plot-window env plot-text-area plot-window point-size plot-window-size grid y-coords dx-grid x-end t-max dt)      
 	(let ((y0-mapped (map-y0-to-plot y0 (plot-env-y-min env) (plot-env-y-max env) plot-window-size))
 	      (prev-point (cdadr (canvas-obj-data canvas-obj))))
  	  (if prev-point ;; is the dataset larger then ((NIL . 0.0d0)) ?	      
 	      (let ((prev-point-mapped (map-y0-to-plot prev-point (plot-env-y-min env) (plot-env-y-max env) plot-window-size)))
 		
+		;; (draw-rectangle (plot-text-settings-labels-window plot-text-area)
+		;; 	        (plot-text-settings-labels-background plot-text-area)
+		;; 		0 (- prev-point-mapped (plot-text-settings-font-height plot-text-area))
+		;; 		(text-width (canvas-obj-canvas canvas-obj) (plot-data-label pd))
+		;; 		(plot-text-settings-font-height plot-text-area) :fill-p)
+		(clear-area (plot-text-settings-labels-window plot-text-area)
+			    :x 0
+			    :y (- prev-point-mapped (plot-text-settings-font-height plot-text-area))
+			    :width (text-width (canvas-obj-canvas canvas-obj) (plot-data-label pd))
+			    :height (plot-text-settings-font-height plot-text-area))
+
+
 		(draw-rectangle (plot-text-settings-labels-window plot-text-area)
-			        (plot-text-settings-labels-background plot-text-area)
-				0 (- prev-point-mapped (plot-text-settings-font-height plot-text-area))
+				;;(canvas-obj-canvas canvas-obj)
+				(plot-text-settings-labels-background plot-text-area)
+				0 (- y0-mapped (plot-text-settings-font-height plot-text-area))
 				(text-width (canvas-obj-canvas canvas-obj) (plot-data-label pd))
 				(plot-text-settings-font-height plot-text-area) :fill-p)
+
+		(draw-glyphs (plot-text-settings-labels-window plot-text-area) (canvas-obj-canvas canvas-obj) 0 y0-mapped (canvas-obj-label canvas-obj))
 		
-		(draw-rect-with-text (plot-text-settings-labels-window plot-text-area)
-				     (plot-text-settings-labels-background plot-text-area)
-				     (canvas-obj-canvas canvas-obj) (plot-data-label pd)
-				     0 y0-mapped (plot-text-settings-font-height plot-text-area))
+		 ;; (draw-rect-with-text (plot-text-settings-labels-window plot-text-area)
+		 ;; 		     (plot-text-settings-labels-background plot-text-area)
+		 ;; 		     (canvas-obj-canvas canvas-obj) (plot-data-label pd)
+		 ;; 		     0 y0-mapped (plot-text-settings-font-height plot-text-area))
 		
 		(draw-arc plot-window (canvas-obj-canvas canvas-obj) (- (- plot-window-size (/ point-size 2)) 2)
 			  (- y0-mapped (/ point-size 2)) point-size point-size 0 (* 2 pi) :fill-p)
