@@ -93,10 +93,22 @@
 			  :border-width 2
 			  :bit-gravity :center
 			  :colormap colormap
+			  :background (alloc-color colormap (lookup-color colormap "gray"))))
+	   (tile-window (create-window
+			  :parent top-level
+			  :x (round (* (screen-width screen) 0.8))
+			  :y 50
+			  :width 200
+			  :height 400
+			  :border (screen-black-pixel screen)
+			  :border-width 2
+			  :bit-gravity :center
+			  :colormap colormap
 			  :background (alloc-color colormap (lookup-color colormap "gray")))))
       (map-window top-level)
       (map-window plot-window)
       (map-window table-window)
+      (map-window tile-window)
       (unwind-protect
 	   (progn	     
 	     (sb-thread:make-thread (lambda () (make-widget-plot :main-window plot-window :display display :screen screen

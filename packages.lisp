@@ -41,6 +41,10 @@
   (:import-from :can-logger.parser :split-sequence-by-delimiter)
   (:export :make-widget-plot :close-widget-plot))
 
+(defpackage :can-logger.tiles
+  (:use :cl :can-logger.can2data :xlib :can-logger.utils)
+  (:export :make-widget-tiles :close-widget-tiles))
+
 (defpackage :can-logger.main
   (:use :cl :xlib :can-logger.table :can-logger.plotter :can-logger.can2data :can-logger.button))
   
