@@ -266,6 +266,39 @@
 		(draw-arc plot-window canvas-foreground (- (first plot-buf-1) (/ point-size 2))
 			  (- (second plot-buf-1) (/ point-size 2)) point-size point-size 0 (* 2 pi) :fill-p))))))))
 
+
+(defun draw-label (env pd canvas-obj plot-text-area canvas-foreground canvas-background y0-mapped prev-point-mapped plot-window-size)
+  ;; (clear-area (plot-text-settings-labels-window plot-text-area)
+  ;; 	    :x 0
+  ;; 	    :y (- prev-point-mapped (plot-text-settings-font-height plot-text-area))
+  ;; 	    :width (text-width canvas-foreground (plot-data-label pd))
+  ;; 	    :height (plot-text-settings-font-height plot-text-area))
+
+  (if (canvas-obj-stale-p canvas-obj)
+      (progn ;; clean previous location when the label was on the plot
+	(setf (canvas-obj-stale-p canvas-obj) NIL)
+	(draw-rectangle (plot-text-settings-labels-window plot-text-area)
+			canvas-background
+			0 (- (map-y0-to-plot (cdar (canvas-obj-data canvas-obj)) (plot-env-y-min env) (plot-env-y-max env) plot-window-size)
+			     (plot-text-settings-font-height plot-text-area))
+			(text-width canvas-background (plot-data-label pd))
+			(plot-text-settings-font-height plot-text-area) :fill-p))
+      (draw-rectangle (plot-text-settings-labels-window plot-text-area)
+		      canvas-background
+		      0 (- prev-point-mapped (plot-text-settings-font-height plot-text-area))
+		      (text-width canvas-background (plot-data-label pd))
+		      (plot-text-settings-font-height plot-text-area) :fill-p))
+  
+
+  (draw-rectangle (plot-text-settings-labels-window plot-text-area)
+		  ;;canvas-foreground
+		  canvas-background
+		  0 (- y0-mapped (plot-text-settings-font-height plot-text-area))
+		  (text-width canvas-background (plot-data-label pd))
+		  (plot-text-settings-font-height plot-text-area) :fill-p)
+
+  (draw-glyphs (plot-text-settings-labels-window plot-text-area) canvas-foreground 0 y0-mapped (canvas-obj-label canvas-obj)))
+
 (defun plot-pd (pd env plot-text-area screen grid plot-window t-max dt x-end dx-grid point-size x-shift data-length-max plot-window-size y-coords colormap)
   "Plot plot-data (pd). _env_ is modified."
   (let ((y0 (plot-data-value pd))
@@ -289,43 +322,11 @@
 		  (prev-point (cdadr (canvas-obj-data canvas-obj))))
  	      (if prev-point ;; is the dataset larger then ((NIL . 0.0d0)) ?	      
 		  (let ((prev-point-mapped (map-y0-to-plot prev-point (plot-env-y-min env) (plot-env-y-max env) plot-window-size)))
-
-
-		    ;; (clear-area (plot-text-settings-labels-window plot-text-area)
-		      ;; 	    :x 0
-		      ;; 	    :y (- prev-point-mapped (plot-text-settings-font-height plot-text-area))
-		      ;; 	    :width (text-width canvas-foreground (plot-data-label pd))
-		    ;; 	    :height (plot-text-settings-font-height plot-text-area))
-
-
 		    ;;;;;;;;;;;;;
 		    ;; fixme 1. if we habe points, lables are not displayed, because here we have (if prev-point.
 		    ;; fixme 2. redraw.
 		    ;;;;;;;;;;;;;
-		    (if (canvas-obj-stale-p canvas-obj)
-			(progn ;; clean previous location when the label was on the plot
-			  (setf (canvas-obj-stale-p canvas-obj) NIL)
-			  (draw-rectangle (plot-text-settings-labels-window plot-text-area)
-					  canvas-background
-					  0 (- (map-y0-to-plot (cdar (canvas-obj-data canvas-obj)) (plot-env-y-min env) (plot-env-y-max env) plot-window-size)
-					       (plot-text-settings-font-height plot-text-area))
-					  (text-width canvas-background (plot-data-label pd))
-					  (plot-text-settings-font-height plot-text-area) :fill-p))
-			(draw-rectangle (plot-text-settings-labels-window plot-text-area)
-					canvas-background
-					0 (- prev-point-mapped (plot-text-settings-font-height plot-text-area))
-					(text-width canvas-background (plot-data-label pd))
-					(plot-text-settings-font-height plot-text-area) :fill-p))
-		    
-
-		    (draw-rectangle (plot-text-settings-labels-window plot-text-area)
-				    ;;canvas-foreground
-				    canvas-background
-				    0 (- y0-mapped (plot-text-settings-font-height plot-text-area))
-				    (text-width canvas-background (plot-data-label pd))
-				    (plot-text-settings-font-height plot-text-area) :fill-p)
-
-		    (draw-glyphs (plot-text-settings-labels-window plot-text-area) canvas-foreground 0 y0-mapped (canvas-obj-label canvas-obj))
+		    (draw-label env pd canvas-obj plot-text-area canvas-foreground canvas-background y0-mapped prev-point-mapped plot-window-size)
 		    
 		    
 		    (draw-arc plot-window canvas-foreground (- (- plot-window-size (/ point-size 2)) 2)
