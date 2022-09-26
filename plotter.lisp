@@ -266,7 +266,7 @@
 			  (- (second plot-buf-1) (/ point-size 2)) point-size point-size 0 (* 2 pi) :fill-p))))))))
 
 
-(defun draw-label (env pd canvas-obj plot-text-area canvas-foreground canvas-background y0-mapped plot-window-size)
+(defun draw-label (env pd canvas-obj plot-text-area canvas-foreground canvas-background y0-mapped plot-window-size) ;; todo: separate canvas-obj ans backgroudn???
   (let ((butlast-point (cdr (find-if #'consp (cdr (canvas-obj-data canvas-obj))))))
     (when butlast-point
       (draw-rectangle (plot-text-settings-labels-window plot-text-area)
@@ -276,9 +276,7 @@
 		      (text-width canvas-background (plot-data-label pd))
 		      (plot-text-settings-font-height plot-text-area) :fill-p))
     
-
     (draw-rectangle (plot-text-settings-labels-window plot-text-area)
-		    ;;canvas-foreground
 		    canvas-background
 		    0 (- y0-mapped (plot-text-settings-font-height plot-text-area))
 		    (text-width canvas-background (plot-data-label pd))
@@ -303,18 +301,16 @@
 	(push (cons NIL y0) (canvas-obj-data canvas-obj))      
 	(trim-data env data-length-max) ;; keep fixed number of elements to plot
 	(if (recompute-y-limits y0 env) ;; check if we need rescaling (bug here. see commit 0c04f5b)
-	    (redraw-plot-window env plot-text-area plot-window point-size plot-window-size grid y-coords dx-grid x-end t-max dt)      
+	    (progn
+	      (clear-area (plot-text-settings-labels-window plot-text-area)) ;; delete lables when redraw
+	      (redraw-plot-window env plot-text-area plot-window point-size plot-window-size grid y-coords dx-grid x-end t-max dt))
 	    (let ((y0-mapped (map-y0-to-plot y0 (plot-env-y-min env) (plot-env-y-max env) plot-window-size))
 		  (prev-point (cdadr (canvas-obj-data canvas-obj))))
 	      (draw-label env pd canvas-obj plot-text-area canvas-foreground canvas-background y0-mapped plot-window-size)
 	      (draw-arc plot-window canvas-foreground (- (- plot-window-size (/ point-size 2)) 2)
 			      (- y0-mapped (/ point-size 2)) point-size point-size 0 (* 2 pi) :fill-p)
  	      (when prev-point ;; is the dataset larger then ((NIL . 0.0d0)) ?	      
-		  (let ((prev-point-mapped (map-y0-to-plot prev-point (plot-env-y-min env) (plot-env-y-max env) plot-window-size)))
-		    ;;;;;;;;;;;;;
-		    ;; fixme 1. if we habe points, lables are not displayed, because here we have (if prev-point.
-		    ;; fixme 2. redraw.
-		    ;;;;;;;;;;;;;		    
+		  (let ((prev-point-mapped (map-y0-to-plot prev-point (plot-env-y-min env) (plot-env-y-max env) plot-window-size)))		    
 		    (draw-line plot-window canvas-foreground (- plot-window-size x-shift)
 			       prev-point-mapped (- plot-window-size 2) y0-mapped)))))))))
 
