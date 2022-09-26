@@ -267,13 +267,14 @@
 
 
 (defun draw-label (env pd canvas-obj plot-text-area canvas-foreground canvas-background y0-mapped plot-window-size)
-  (let ((butlast-point (cdadr (canvas-obj-data canvas-obj))))
-    (draw-rectangle (plot-text-settings-labels-window plot-text-area)
-		    canvas-background
-		    0 (- (map-y0-to-plot butlast-point (plot-env-y-min env) (plot-env-y-max env) plot-window-size)
-			 (plot-text-settings-font-height plot-text-area))
-		    (text-width canvas-background (plot-data-label pd))
-		    (plot-text-settings-font-height plot-text-area) :fill-p)
+  (let ((butlast-point (cdr (find-if #'consp (cdr (canvas-obj-data canvas-obj))))))
+    (when butlast-point
+      (draw-rectangle (plot-text-settings-labels-window plot-text-area)
+		      canvas-background
+		      0 (- (map-y0-to-plot butlast-point (plot-env-y-min env) (plot-env-y-max env) plot-window-size)
+			   (plot-text-settings-font-height plot-text-area))
+		      (text-width canvas-background (plot-data-label pd))
+		      (plot-text-settings-font-height plot-text-area) :fill-p))
     
 
     (draw-rectangle (plot-text-settings-labels-window plot-text-area)
@@ -305,6 +306,7 @@
 	    (redraw-plot-window env plot-text-area plot-window point-size plot-window-size grid y-coords dx-grid x-end t-max dt)      
 	    (let ((y0-mapped (map-y0-to-plot y0 (plot-env-y-min env) (plot-env-y-max env) plot-window-size))
 		  (prev-point (cdadr (canvas-obj-data canvas-obj))))
+	      (draw-label env pd canvas-obj plot-text-area canvas-foreground canvas-background y0-mapped plot-window-size)
 	      (draw-arc plot-window canvas-foreground (- (- plot-window-size (/ point-size 2)) 2)
 			      (- y0-mapped (/ point-size 2)) point-size point-size 0 (* 2 pi) :fill-p)
  	      (when prev-point ;; is the dataset larger then ((NIL . 0.0d0)) ?	      
@@ -312,8 +314,7 @@
 		    ;;;;;;;;;;;;;
 		    ;; fixme 1. if we habe points, lables are not displayed, because here we have (if prev-point.
 		    ;; fixme 2. redraw.
-		    ;;;;;;;;;;;;;
-		    (draw-label env pd canvas-obj plot-text-area canvas-foreground canvas-background y0-mapped plot-window-size)		    		    		    
+		    ;;;;;;;;;;;;;		    
 		    (draw-line plot-window canvas-foreground (- plot-window-size x-shift)
 			       prev-point-mapped (- plot-window-size 2) y0-mapped)))))))))
 
