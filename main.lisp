@@ -38,14 +38,18 @@
 			   ;;:value (* 1 (sin (* 2 pi 0.01 i)))
 			   :value (+ 10 (random 10))
 			   ;;:value 0.5
-			   :can-id #x222
+			   :can-id #x113
 			   :label "label-2")))
-	(when (= 0 (mod i 50))
+	(when (= 0 (mod i 10))
 	  (setq switch (not switch)))
 	(if switch
 	    ;;(sb-concurrency:enqueue NIL *plot-queue*)
-	    (multicast plot-value-1 (list *data-queue-1* *data-queue-2*))
-	    (multicast plot-value-2 (list *data-queue-1* *data-queue-2*))))
+	    (progn
+	      (multicast plot-value-1 (list *data-queue-1* *data-queue-2*))
+	      (sb-concurrency:enqueue (plot-data-can-id plot-value-1) *data-queue-3*))
+	    (progn
+	      (multicast plot-value-2 (list *data-queue-1* *data-queue-2*))
+	      (sb-concurrency:enqueue (plot-data-can-id plot-value-2) *data-queue-3*))))
       (incf i)
       (sleep 0.1))))
 
@@ -54,7 +58,7 @@
   (stop-reading-CAN-data)
   (close-widget-table)
   (close-widget-plot)
-  (close-widget-tile))
+  (close-widget-tiles))
 
 (defun run-demo ()
   (setq *stop* NIL)
