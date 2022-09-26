@@ -43,8 +43,8 @@
 
 (defpackage :can-logger.tiles
   (:use :cl :can-logger.can2data :xlib :can-logger.utils)
-  (:export :make-widget-tiles :close-widget-tiles))
+  (:export :make-widget-tile :close-widget-tile))
 
 (defpackage :can-logger.main
-  (:use :cl :xlib :can-logger.table :can-logger.plotter :can-logger.can2data :can-logger.button))
+  (:use :cl :xlib :can-logger.table :can-logger.plotter :can-logger.can2data :can-logger.button :can-logger.tiles))
   

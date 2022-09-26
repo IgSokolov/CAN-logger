@@ -11,6 +11,7 @@
 
 (defparameter *data-queue-1* (sb-concurrency:make-queue :initial-contents NIL))
 (defparameter *data-queue-2* (sb-concurrency:make-queue :initial-contents NIL))
+(defparameter *data-queue-3* (sb-concurrency:make-queue :initial-contents NIL))
 (defparameter *button-task-queue* (sb-concurrency:make-queue :initial-contents NIL))
 
 (defparameter *stop* NIL)
@@ -52,11 +53,12 @@
   (setq *stop* t)
   (stop-reading-CAN-data)
   (close-widget-table)
-  (close-widget-plot))
+  (close-widget-plot)
+  (close-widget-tile))
 
 (defun run-demo ()
   (setq *stop* NIL)
-  (mapc #'empty-queue (list *data-queue-1* *data-queue-2* *button-task-queue*))
+  (mapc #'empty-queue (list *data-queue-1* *data-queue-2* *data-queue-3* *button-task-queue*))
   ;;(sb-thread:make-thread (lambda () (read-can-data "vcan0" (list *data-queue-1* *data-queue-2*)))) ;; uncomment to read CAN bus
   (sb-thread:make-thread (lambda () (generate-data))) ;; comment to generate test data
   (sleep 0.1)
@@ -120,6 +122,9 @@
 							 :y-table 0 :width 360 :height 800 :n-rows 20
 							 :x-buttons 360
 							 :y-buttons 0)))
+	     (sb-thread:make-thread (lambda ()
+				      (make-widget-tiles :main-window tile-window :display display :screen screen :colormap colormap :data-queue *data-queue-3*)))
+							 
 
 	     (sleep 60)
 	     (stop-gui))	
