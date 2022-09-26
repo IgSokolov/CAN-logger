@@ -27,9 +27,9 @@
   font
   cell-height
   col-width-list
-  (titles-list (list "can-id" "label" "value")))
+  titles-list)
 
-(defun create-table (screen display window colormap col-width-list cell-height n-of-rows &optional (font "fixed"))
+(defun create-table (screen display window colormap col-width-list cell-height n-of-rows titles &optional (font "fixed"))
   (let ((y 0)
 	(cache)
 	(db (make-hash-table :test 'equal)))
@@ -69,7 +69,8 @@
 		:cache (nreverse cache)
 		:font (open-font display font)
 		:cell-height cell-height
-		:col-width-list col-width-list)))
+		:col-width-list col-width-list
+		:titles-list titles)))
 
 (defun write-to-row (table row columns-list string-list)
   (let ((display (table-display table))
@@ -113,9 +114,9 @@
     (setf (gethash "titles" (table-content table))
 	  (write-to-row table row (list 0 1 2) (table-titles-list table)))))
 
-(defun make-table-window-pair (main-window screen display colormap x y width height n-rows)
+(defun make-table-window-pair (main-window screen display colormap x y width height n-rows titles)
   (let* ((window (make-table-window main-window screen colormap x y width height))
-	 (table (create-table screen display window colormap (list 60 200 60) 50 n-rows)))
+	 (table (create-table screen display window colormap (list 60 200 60) 50 n-rows titles)))
     (add-titles table)    
     (values window table)))
 
@@ -244,7 +245,7 @@
 		     (sleep 0.01)))))	       
 	  (display-force-output display)))))
 
-(defun make-widget-table (&key main-window display screen colormap data-queue x-table y-table width height n-rows x-buttons y-buttons)
+(defun make-widget-table (&key main-window display screen colormap data-queue x-table y-table width height n-rows titles x-buttons y-buttons)
   (setq *stop* NIL)
   (with-safe-exit-on-window-closed
       (let ((wt-pool) ;; wt-pool is a list of wt-pool-units
@@ -271,7 +272,7 @@
 		      (if wt-pool
 			  (let ((free-wt-unit (car wt-pool)))
 			    (setq wt-unit (make-wt-pool-unit :can-id can-id :label label :window (wt-pool-unit-window free-wt-unit) :table (wt-pool-unit-table free-wt-unit))))
-			  (multiple-value-bind (window table) (make-table-window-pair main-window screen display colormap x-table y-table width height n-rows)
+			  (multiple-value-bind (window table) (make-table-window-pair main-window screen display colormap x-table y-table width height n-rows titles)
 			    (make-paging-buttons paging-task-queue main-window display x-buttons y-buttons screen colormap 50)
 			    (let ((new-wt-unit (make-wt-pool-unit :can-id can-id :label label :window window :table table)))				   
 			      (add-wt-stack window table wt-stack) ;; for a switch button
@@ -280,7 +281,7 @@
 			  (register-label (wt-pool-unit-table wt-unit) (wt-pool-unit-label wt-unit) (wt-pool-unit-can-id wt-unit))
 			(empty-cache (c)
 			  (declare (ignore c))
-			  (multiple-value-bind (window table) (make-table-window-pair main-window screen display colormap x-table y-table width height n-rows)
+			  (multiple-value-bind (window table) (make-table-window-pair main-window screen display colormap x-table y-table width height n-rows titles)
 			    (let ((new-wt-unit (make-wt-pool-unit :can-id can-id :label label :window window :table table)))				   
 			      (add-wt-stack window table wt-stack)
 			      (setq wt-unit new-wt-unit)

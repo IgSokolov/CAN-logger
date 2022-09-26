@@ -28,18 +28,18 @@
 	(i 0))
     (loop until *stop* do
       (let ((plot-value-1 (make-plot-data
-			   ;;:value (* 1 (sin (* 2 pi 0.01 i)))
-			   :value (+ 50 (random 10))
+			   ;;:value (* i (sin (* 2 pi 0.01 i)))
+			   :value (+ 10 (random 10))
 			   ;;:value 0.5
 			   :can-id #x112
 			   :label "label-1"))
 	    (plot-value-2 (make-plot-data
-			   ;;:value (* 1 (sin (* 2 pi 0.01 i)))
-			   :value (+ 10 (random 10))
+			   ;;:value (* i (sin (* 2 pi 0.01 i)))
+			   :value (+ 40 (random 10))
 			   ;;:value 0.5
 			   :can-id #x222
 			   :label "label-2")))
-	(when (= 0 (mod i 50))
+	(when (= 0 (mod i 30))
 	  (setq switch (not switch)))
 	(if switch
 	    ;;(sb-concurrency:enqueue NIL *plot-queue*)
@@ -105,7 +105,7 @@
 	     (sb-thread:make-thread (lambda ()
 				      (make-widget-table :main-window table-window :display display :screen screen :colormap colormap :data-queue *data-queue-2*
 							 :x-table 0
-							 :y-table 0 :width 360 :height 800 :n-rows 20
+							 :y-table 0 :width 360 :height 800 :n-rows 20 :titles '("can-id" "label" "value")
 							 :x-buttons 360
 							 :y-buttons 0)))
 
