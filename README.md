@@ -1,7 +1,7 @@
 ## Introduction
 `CAN-logger` is a CAN bus monitor, which is intended to be used for debugging of CAN buses in a laboratory environment.
 <p align="center">
-	<img src=demo.png width=100% height=100%>
+	<img src=demo.gif width=100% height=100%>
 </p>
 I devote this project to Oliver Hartkopp - a man behind the ingenious idea of the SocketCAN API.
 
