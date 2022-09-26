@@ -26,13 +26,13 @@
   (sleep 0.1)
   (draw-tile tile))
 
-(defun create-tile (can-id window screen display colormap x0 y0 &optional (font "fixed"))
+(defun create-tile (can-id window screen display colormap x0 y0 width height &optional (font "fixed"))
   (let* ((tile-window (create-window
 		       :parent window
 		       :x x0
 		       :y y0
-		       :width 30
-		       :height 10
+		       :width width
+		       :height height
 		       :border (screen-black-pixel screen)
 		       :border-width 2
 		       :bit-gravity :center
@@ -71,10 +71,10 @@
 		      :background (alloc-color colormap (lookup-color colormap "white")))))
     (let ((tile-width 80)
 	  (tile-height 40)
-	  (max-x (- (drawable-width window) 5))
+	  (max-x (- (drawable-width window) 15))
 	  ;;(max-y (drawable-height window))
 	  (xc 0)
-	  (yc 0 ));; (list (cons can-id tile))
+	  (yc 0 ));; (list (cons can-id tile)
       (map-window main-window)
       (map-window window)
       (loop until *stop* for can-id = (sb-concurrency:dequeue data-queue) do
@@ -82,12 +82,11 @@
 	    (let ((tile (cdar (member can-id db :key #'car))))
 	      (if tile
 		  (highlight tile)
-		  (let ((new-tile (create-tile can-id window screen display colormap xc yc)))		    
-		    (if (> (- max-x xc) tile-width)
-			(incf xc tile-width)
-			(progn
-			  (setq xc 0)
-			  (incf yc (+ 5 tile-height))))
+		  (let ((new-tile (create-tile can-id window screen display colormap xc yc tile-width tile-height)))
+		    (incf xc (+ tile-width 5))
+		    (when (< (- max-x xc tile-width) tile-width)			
+		      (setq xc 0)
+		      (incf yc (+ 5 tile-height)))
 		    (push (cons can-id new-tile) db)
 		    (draw-tile new-tile)))
 	      (display-force-output display))
