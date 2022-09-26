@@ -92,8 +92,7 @@
 (defstruct canvas-obj
   canvas
   label
-  data
-  (stale-p NIL))
+  data)
 
 (defstruct plot-env
   canvas-obj-db
@@ -267,37 +266,24 @@
 			  (- (second plot-buf-1) (/ point-size 2)) point-size point-size 0 (* 2 pi) :fill-p))))))))
 
 
-(defun draw-label (env pd canvas-obj plot-text-area canvas-foreground canvas-background y0-mapped prev-point-mapped plot-window-size)
-  ;; (clear-area (plot-text-settings-labels-window plot-text-area)
-  ;; 	    :x 0
-  ;; 	    :y (- prev-point-mapped (plot-text-settings-font-height plot-text-area))
-  ;; 	    :width (text-width canvas-foreground (plot-data-label pd))
-  ;; 	    :height (plot-text-settings-font-height plot-text-area))
+(defun draw-label (env pd canvas-obj plot-text-area canvas-foreground canvas-background y0-mapped plot-window-size)
+  (let ((butlast-point (cdadr (canvas-obj-data canvas-obj))))
+    (draw-rectangle (plot-text-settings-labels-window plot-text-area)
+		    canvas-background
+		    0 (- (map-y0-to-plot butlast-point (plot-env-y-min env) (plot-env-y-max env) plot-window-size)
+			 (plot-text-settings-font-height plot-text-area))
+		    (text-width canvas-background (plot-data-label pd))
+		    (plot-text-settings-font-height plot-text-area) :fill-p)
+    
 
-  (if (canvas-obj-stale-p canvas-obj)
-      (progn ;; clean previous location when the label was on the plot
-	(setf (canvas-obj-stale-p canvas-obj) NIL)
-	(draw-rectangle (plot-text-settings-labels-window plot-text-area)
-			canvas-background
-			0 (- (map-y0-to-plot (cdar (canvas-obj-data canvas-obj)) (plot-env-y-min env) (plot-env-y-max env) plot-window-size)
-			     (plot-text-settings-font-height plot-text-area))
-			(text-width canvas-background (plot-data-label pd))
-			(plot-text-settings-font-height plot-text-area) :fill-p))
-      (draw-rectangle (plot-text-settings-labels-window plot-text-area)
-		      canvas-background
-		      0 (- prev-point-mapped (plot-text-settings-font-height plot-text-area))
-		      (text-width canvas-background (plot-data-label pd))
-		      (plot-text-settings-font-height plot-text-area) :fill-p))
-  
+    (draw-rectangle (plot-text-settings-labels-window plot-text-area)
+		    ;;canvas-foreground
+		    canvas-background
+		    0 (- y0-mapped (plot-text-settings-font-height plot-text-area))
+		    (text-width canvas-background (plot-data-label pd))
+		    (plot-text-settings-font-height plot-text-area) :fill-p)
 
-  (draw-rectangle (plot-text-settings-labels-window plot-text-area)
-		  ;;canvas-foreground
-		  canvas-background
-		  0 (- y0-mapped (plot-text-settings-font-height plot-text-area))
-		  (text-width canvas-background (plot-data-label pd))
-		  (plot-text-settings-font-height plot-text-area) :fill-p)
-
-  (draw-glyphs (plot-text-settings-labels-window plot-text-area) canvas-foreground 0 y0-mapped (canvas-obj-label canvas-obj)))
+    (draw-glyphs (plot-text-settings-labels-window plot-text-area) canvas-foreground 0 y0-mapped (canvas-obj-label canvas-obj))))
 
 (defun plot-pd (pd env plot-text-area screen grid plot-window t-max dt x-end dx-grid point-size x-shift data-length-max plot-window-size y-coords colormap)
   "Plot plot-data (pd). _env_ is modified."
@@ -306,7 +292,6 @@
     (multiple-value-bind (canvas-obj rest-canvas-objs) (fetch-canvas-obj label (plot-env-canvas-obj-db env))			       
       ;; push NIL-data to the rest of canvasses
       (mapc #'(lambda (obj) (push NIL (canvas-obj-data obj))) rest-canvas-objs)
-      (mapc #'(lambda (obj) (setf (canvas-obj-stale-p obj) t)) rest-canvas-objs)
       (unless canvas-obj
 	(setq canvas-obj (add-canvas-obj env label screen colormap plot-window)))
       (destructuring-bind (canvas-foreground canvas-background) (canvas-obj-canvas canvas-obj)
@@ -320,21 +305,17 @@
 	    (redraw-plot-window env plot-text-area plot-window point-size plot-window-size grid y-coords dx-grid x-end t-max dt)      
 	    (let ((y0-mapped (map-y0-to-plot y0 (plot-env-y-min env) (plot-env-y-max env) plot-window-size))
 		  (prev-point (cdadr (canvas-obj-data canvas-obj))))
- 	      (if prev-point ;; is the dataset larger then ((NIL . 0.0d0)) ?	      
+	      (draw-arc plot-window canvas-foreground (- (- plot-window-size (/ point-size 2)) 2)
+			      (- y0-mapped (/ point-size 2)) point-size point-size 0 (* 2 pi) :fill-p)
+ 	      (when prev-point ;; is the dataset larger then ((NIL . 0.0d0)) ?	      
 		  (let ((prev-point-mapped (map-y0-to-plot prev-point (plot-env-y-min env) (plot-env-y-max env) plot-window-size)))
 		    ;;;;;;;;;;;;;
 		    ;; fixme 1. if we habe points, lables are not displayed, because here we have (if prev-point.
 		    ;; fixme 2. redraw.
 		    ;;;;;;;;;;;;;
-		    (draw-label env pd canvas-obj plot-text-area canvas-foreground canvas-background y0-mapped prev-point-mapped plot-window-size)
-		    
-		    
-		    (draw-arc plot-window canvas-foreground (- (- plot-window-size (/ point-size 2)) 2)
-			      (- y0-mapped (/ point-size 2)) point-size point-size 0 (* 2 pi) :fill-p)
+		    (draw-label env pd canvas-obj plot-text-area canvas-foreground canvas-background y0-mapped plot-window-size)		    		    		    
 		    (draw-line plot-window canvas-foreground (- plot-window-size x-shift)
-			       prev-point-mapped (- plot-window-size 2) y0-mapped))				     
-		  (draw-arc plot-window canvas-foreground (- (- plot-window-size (/ point-size 2)) 2)
-			    (- y0-mapped (/ point-size 2)) point-size point-size 0 (* 2 pi) :fill-p))))))))
+			       prev-point-mapped (- plot-window-size 2) y0-mapped)))))))))
 
 (defun draw-vertical-grid (env grid dx-grid x-shift plot-window plot-window-size)
   (if (>= (plot-env-grid-c env) dx-grid)
