@@ -18,12 +18,13 @@
 	(string-width (text-width (tile-gcontext tile) (format NIL "7FF")))
 	(font-height (font-ascent (tile-font tile))))
     (let ((xc (round (/ (- width string-width) 2)))
-	  (yc (round (/ (+ height font-height) 2))))	    	    
+	  (yc (round (/ (+ height font-height) 2))))      
       (draw-glyphs (tile-window tile) (tile-gcontext tile) xc yc (format NIL "~x" (tile-label tile))))))
         
 (defun highlight (tile)
   (draw-rectangle (tile-window tile) (tile-gcontext-selected tile) 0 0 (drawable-width (tile-window tile)) (drawable-height (tile-window tile)) :fill-p)
   (sleep 0.1)
+  (clear-area (tile-window tile))
   (draw-tile tile))
 
 (defun create-tile (can-id window screen display colormap x0 y0 width height &optional (font "fixed"))
@@ -50,7 +51,7 @@
 			 :font (open-font display font)
 			 :line-style :solid
 			 :background (screen-white-pixel screen)
-			 :foreground (alloc-color colormap (lookup-color colormap "red")))))
+			 :foreground (alloc-color colormap (lookup-color colormap "gray")))))
     (map-window tile-window)
     (make-tile :window tile-window :gcontext tile-gcontext :gcontext-selected tile-gcontext-selected :label can-id :font (open-font display font))))  
   
@@ -72,16 +73,18 @@
     (let ((tile-width 80)
 	  (tile-height 40)
 	  (max-x (- (drawable-width window) 15))
-	  ;;(max-y (drawable-height window))
 	  (xc 0)
-	  (yc 0 ));; (list (cons can-id tile)
+	  (yc 0 )
+	  (most-recent-can-id 0))
       (map-window main-window)
       (map-window window)
       (loop until *stop* for can-id = (sb-concurrency:dequeue data-queue) do
 	(if can-id
 	    (let ((tile (cdar (member can-id db :key #'car))))
 	      (if tile
-		  (highlight tile)
+		  (unless (= can-id most-recent-can-id)
+		    (setq most-recent-can-id can-id)
+		    (highlight tile))
 		  (let ((new-tile (create-tile can-id window screen display colormap xc yc tile-width tile-height)))
 		    (incf xc (+ tile-width 5))
 		    (when (< (- max-x xc tile-width) tile-width)			
