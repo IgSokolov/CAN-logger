@@ -10,6 +10,7 @@
 	       (:file "clx-table")
 	       (:file "clx-button")
 	       (:file "plotter")
+	       (:file "clx-tiles")
 	       (:file "main"))	       
   :depends-on (:fsocket :clx))
 	       
