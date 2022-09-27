@@ -3,7 +3,7 @@
 <p align="center">
 	<img src=demo.gif width=100% height=100%>
 </p>
-I devote this project to Oliver Hartkopp - a man behind the ingenious idea of the SocketCAN API.
+I devote this project to Oliver Hartkopp - the man behind the ingenious idea of the SocketCAN API.
 
 ## How it works
 1. we access CAN bus via [SocketCAN](https://www.kernel.org/doc/html/latest/networking/can.html) (using FFI from [fsocket](https://github.com/fjames86/fsocket) library)
@@ -57,7 +57,8 @@ Linux kernel > 2.6.25
 
 ## Todos
 - [x] Make CLI interface with :unix-opts
-- [ ] Show CAN-IDs of the frames not listed in config file
+- [x] Show CAN-IDs of the frames not listed in config file
+- [ ] Open congif manager when a user clicks on a tile with unknown CAN id
 - [ ] Decode binary payload (valve postions, on/off flags, etc.)
 - [ ] Decode multiplexed payload
 - [ ] Make _stop_ button
