@@ -9,7 +9,7 @@
          (colormap (screen-default-colormap screen)))
     (values display screen colormap)))
 
-(defparameter *data-queue-1* (sb-concurrency:make-queue :initial-contents NIL))
+(defparameter *data-queue-1* (sb-concurrency:make-queue :initial-contents NIL)) ;; todo rename.
 (defparameter *data-queue-2* (sb-concurrency:make-queue :initial-contents NIL))
 (defparameter *data-queue-3* (sb-concurrency:make-queue :initial-contents NIL))
 (defparameter *button-task-queue* (sb-concurrency:make-queue :initial-contents NIL))
@@ -104,7 +104,7 @@
 			  :parent top-level
 			  :x (round (* (screen-width screen) 0.8))
 			  :y 50
-			  :width 200
+			  :width 320
 			  :height 400
 			  :border (screen-black-pixel screen)
 			  :border-width 2
@@ -117,18 +117,29 @@
       (map-window tile-window)
       (unwind-protect
 	   (progn	     
-	     (sb-thread:make-thread (lambda () (make-widget-plot :main-window plot-window :display display :screen screen
-								 :colormap colormap :x-start 0
-								 :y-start 0 :size 800 :data-queue *data-queue-1* :dt 0.1)))
-	     (sb-thread:make-thread (lambda ()
-				      (make-widget-table :main-window table-window :display display :screen screen :colormap colormap :data-queue *data-queue-2*
-							 :x-table 0
-							 :y-table 0 :width 360 :height 800 :n-rows 20
-							 :x-buttons 360
-							 :y-buttons 0)))
-	     (sb-thread:make-thread (lambda ()
-				      (make-widget-tiles :main-window tile-window :display display :screen screen :colormap colormap :data-queue *data-queue-3*)))
-							 
+	     (sb-thread:make-thread (lambda () (make-widget-plot
+						:main-window plot-window
+						:display display
+						:screen screen
+						:colormap colormap
+						:x-start 0 :y-start 0 :size 800
+						:data-queue *data-queue-1* :dt 0.1)))
+	     (sb-thread:make-thread (lambda () (make-widget-table
+						:main-window table-window
+						:display display
+						:screen screen
+						:colormap colormap
+						:data-queue *data-queue-2*
+						:x-table 0 :y-table 0
+						:width 360 :height 800 :n-rows 20
+						:x-buttons 360
+						:y-buttons 0)))
+	     (sb-thread:make-thread (lambda () (make-widget-tiles
+						:main-window tile-window
+						:display display
+						:screen screen
+						:colormap colormap
+						:data-queue *data-queue-3*)))							 
 
 	     (sleep 60)
 	     (stop-gui))	
