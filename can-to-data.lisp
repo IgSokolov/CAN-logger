@@ -75,6 +75,17 @@
       ((or :u32 :i32) (setq n 4)))
     (values (subseq buffer 0 n) (subseq buffer n))))
 
+;; idea from https://www.lispforum.com/viewtopic.php?t=1205
+(defun byte-to-bits (n)
+  "Convert byte to list with bits.
+   Ex.: #xF8 -> '(1 1 1 1 1 0 0 0)"
+  (labels ((rec (n)
+	     (multiple-value-bind (q r) (floor n 2)
+	       (if (and (zerop q) (zerop r)) nil
+		   (cons r (rec q))))))
+    (let ((bit-list (rec n)))
+      (append (make-list (- 8 (list-length bit-list)) :initial-element 0) (reverse bit-list)))))
+
 (defun make-plot-timestamp (can-timestamp)
   (destructuring-bind (t-sec t-usec) can-timestamp
     (float (+ t-sec (/ t-usec 1000000))))) ;; full-time
@@ -102,21 +113,34 @@
 	  ;; check if can-frame matches xnet layout	  
 	  (when (= payload-size (length data))
 	    ;; do processing
-	    (loop for data-type in data-type-mask		
-		  for bit-factor in bit-factor-mask
-		  for physical-factor in physical-factor-mask
-		  for physical-offset in physical-offset-mask
-		  for l in label do
-		    (multiple-value-bind (bytes rest) (pick-bytes data data-type)		   
-		      (let ((plot-value (make-plot-data
-					 :value (+ physical-offset
-						   (* bit-factor
-						      physical-factor
-						      (bytes-to-integer bytes data-type endiannes)))
-					 :can-id can-id
-					 :label l)))
-			(mapc #'(lambda (queue) (sb-concurrency:enqueue plot-value queue)) output-queues))
-		      (setq data rest))))))))) ;; todo multiplexed
+	    (ccase signal-type
+	      (:analog
+	       (loop for data-type in data-type-mask		
+		     for bit-factor in bit-factor-mask
+		     for physical-factor in physical-factor-mask
+		     for physical-offset in physical-offset-mask
+		     for l in label do
+		       (multiple-value-bind (bytes rest) (pick-bytes data data-type)		   
+			 (let ((plot-value (make-plot-data
+					    :value (+ physical-offset
+						      (* bit-factor
+							 physical-factor
+							 (bytes-to-integer bytes data-type endiannes)))
+					    :can-id can-id
+					    :label l)))
+			   (mapc #'(lambda (queue) (sb-concurrency:enqueue plot-value queue)) output-queues))
+			 (setq data rest))))
+	      (:digital
+		(loop for byte across data do
+		  (let ((bit-list (byte-to-bits byte)))
+		    (loop for bit in bit-list
+			  for l in label do
+			    (let ((plot-value (make-plot-data
+					       :value bit
+					       :can-id can-id
+					       :label l)))
+			      (mapc #'(lambda (queue) (sb-concurrency:enqueue plot-value queue)) output-queues)))))))))))))	       
+	        ;; todo multiplexed
 
 (defparameter *stop* NIL)
 

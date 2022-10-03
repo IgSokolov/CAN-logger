@@ -108,12 +108,11 @@
 (defun compute-expected-payload-size (data-type-mask)
   "(:U8 :U16) -> 3"
   (flet ((keyword-to-byte (data-type)
-	   (case data-type	     
-	     ((or :U8 :I8) 1)
+	   (case data-type
+	     (:bool 1)        ;; digital data (0/1) 
+	     ((or :U8 :I8) 1) ;; analog data ... 
 	     ((or :U16 :I16) 2)
 	     ((or :U32 :I32) 4))))
-	     ;;(or :U16 :I16 16)
-	 ;;(or :U32 :32 32))))
     (reduce #'+ (mapcar #'keyword-to-byte data-type-mask))))
 
 ;; parsers

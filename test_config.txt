@@ -24,3 +24,13 @@ bit_factor_mask = {305.1e-6, 305.1e-6, 305.2e-6, 305.2e-6}
 physical_factor_mask = {12.5, 10.0, 1.0, 1}
 physical_offset_mask = {-25.0, 0, 0, 0}
 label = {Kuehlmit_3WG_Ventil_Zustand_Ist_Prozent,Kuehlmobil_3WG_Ventil_Zustand_Ist_Prozent,None,None}
+
+can_id = {205}
+signal = {digital}
+byte_swap = {true}
+data_type_mask = {bool,bool}
+bit_factor_mask = {1,1}
+physical_factor_mask = {1,1}
+physical_offset_mask = {0,0}
+label = {D1, D2, D3, D4, D5, D6, D7, D8, D9, D10, D11, D12, D13, D14, D15, D16}
+
