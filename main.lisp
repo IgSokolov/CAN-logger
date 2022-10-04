@@ -9,10 +9,11 @@
          (colormap (screen-default-colormap screen)))
     (values display screen colormap)))
 
-(defparameter *data-queue-1* (sb-concurrency:make-queue :initial-contents NIL)) ;; todo rename.
-(defparameter *data-queue-2* (sb-concurrency:make-queue :initial-contents NIL))
-(defparameter *data-queue-3* (sb-concurrency:make-queue :initial-contents NIL))
+(defparameter *plot-queue* (sb-concurrency:make-queue :initial-contents NIL)) ;; todo rename.
+(defparameter *table-queue* (sb-concurrency:make-queue :initial-contents NIL))
+(defparameter *tiles-queue* (sb-concurrency:make-queue :initial-contents NIL))
 (defparameter *button-task-queue* (sb-concurrency:make-queue :initial-contents NIL))
+(defparameter *on-off-queue* (sb-concurrency:make-queue :initial-contents NIL))
 
 (defparameter *stop* NIL)
 
@@ -39,19 +40,33 @@
 			   :value (+ 40 (random 10))
 			   ;;:value 0.5
 			   :can-id #x113
-			   :label "label-2")))
+			   :label "label-2"))
+	    (plot-value-3 (make-plot-data
+			   ;;:value (* i (sin (* 2 pi 0.01 i)))
+			   :value 0
+			   ;;:value 0.5
+			   :can-id #x205
+			   :label "D2"))
+	    (plot-value-4 (make-plot-data
+			   ;;:value (* i (sin (* 2 pi 0.01 i)))
+			   :value 1
+			   ;;:value 0.5
+			   :can-id #x205
+			   :label "D2")))
 	(when (= 0 (mod i 10))
 	  (setq switch (not switch)))
 	(if switch
 	    ;;(sb-concurrency:enqueue NIL *plot-queue*)
 	    (progn
-	      (multicast plot-value-1 (list *data-queue-1* *data-queue-2*))
-	      (sb-concurrency:enqueue (plot-data-can-id plot-value-1) *data-queue-3*))
+	      (multicast plot-value-1 (list *plot-queue* *table-queue*))
+	      (sb-concurrency:enqueue (plot-data-can-id plot-value-1) *tiles-queue*)
+	      (sb-concurrency:enqueue plot-value-3 *on-off-queue*))
 	    (progn
-	      (multicast plot-value-2 (list *data-queue-1* *data-queue-2*))
-	      (sb-concurrency:enqueue (plot-data-can-id plot-value-2) *data-queue-3*))))
-      (incf i)
-      (sleep 0.1))))
+	      (multicast plot-value-2 (list *plot-queue* *table-queue*))
+	      (sb-concurrency:enqueue (plot-data-can-id plot-value-2) *tiles-queue*)
+	      (sb-concurrency:enqueue plot-value-4 *on-off-queue*)))
+	(incf i)
+	(sleep 0.1)))))
 
 (defun stop-gui ()
   (setq *stop* t)
@@ -62,8 +77,8 @@
 
 (defun run-demo ()
   (setq *stop* NIL)
-  (mapc #'empty-queue (list *data-queue-1* *data-queue-2* *data-queue-3* *button-task-queue*))
-  ;;(sb-thread:make-thread (lambda () (read-can-data "vcan0" (list *data-queue-1* *data-queue-2*)))) ;; uncomment to read CAN bus
+  (mapc #'empty-queue (list *plot-queue* *table-queue* *tiles-queue* *button-task-queue* *on-off-queue*))
+  ;;(sb-thread:make-thread (lambda () (read-can-data "vcan0" (list *plot-queue* *table-queue*)))) ;; uncomment to read CAN bus
   (sb-thread:make-thread (lambda () (generate-data))) ;; comment to generate test data
   (sleep 0.1)
   (multiple-value-bind (display screen colormap) (make-default-display-screen-colormap)
@@ -123,13 +138,13 @@
 						:screen screen
 						:colormap colormap
 						:x-start 0 :y-start 0 :size 800
-						:data-queue *data-queue-1* :dt 0.1)))
+						:data-queue *plot-queue* :dt 0.1)))
 	     (sb-thread:make-thread (lambda () (make-widget-table
 						:main-window table-window
 						:display display
 						:screen screen
 						:colormap colormap
-						:data-queue *data-queue-2*
+						:data-queue *table-queue*
 						:x-table 0 :y-table 0
 						:width 360 :height 800 :n-rows 20
 						:x-buttons 360
@@ -139,7 +154,11 @@
 						:display display
 						:screen screen
 						:colormap colormap
-						:data-queue *data-queue-3*)))
+						:data-queue *tiles-queue*)))
+	     (sb-thread:make-thread (lambda ()
+				      (loop for data = (sb-concurrency:dequeue *on-off-queue*) until *stop* do
+					(format t "el = ~a~%" data)
+					(sleep 0.5))))
 	     (sleep 60)
 	     (stop-gui))	
 	;; (sb-thread:make-thread (lambda () (make-widget-button :main-window main-window :display display :screen screen

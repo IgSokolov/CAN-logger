@@ -94,7 +94,7 @@
 ;;   (with-accessors ((payload-size payload-size)) xnet-itemm
 ;;     (= (payload-size (length data)))))
 
-(defun process-can-frame (can-frame output-queues)
+(defun process-can-frame (can-frame output-queues-analog output-queues-digital)
   "decode data and send it to plotter"
   (multiple-value-bind (can-id data timestamp origin) (parse-can-packet can-frame)
     (declare (ignore timestamp origin))
@@ -128,7 +128,7 @@
 							 (bytes-to-integer bytes data-type endiannes)))
 					    :can-id can-id
 					    :label l)))
-			   (mapc #'(lambda (queue) (sb-concurrency:enqueue plot-value queue)) output-queues))
+			   (mapc #'(lambda (queue) (sb-concurrency:enqueue plot-value queue)) output-queues-analog))
 			 (setq data rest))))
 	      (:digital
 		(loop for byte across data do
@@ -139,7 +139,7 @@
 					       :value bit
 					       :can-id can-id
 					       :label l)))
-			      (mapc #'(lambda (queue) (sb-concurrency:enqueue plot-value queue)) output-queues)))))))))))))	       
+			      (mapc #'(lambda (queue) (sb-concurrency:enqueue plot-value queue)) output-queues-digital)))))))))))))	       
 	        ;; todo multiplexed
 
 (defparameter *stop* NIL)
@@ -150,11 +150,11 @@
 (defun multicast (value queues)
   (mapc #'(lambda (queue) (sb-concurrency:enqueue value queue)) queues))
 
-(defun read-can-data (can-interface output-queues)
+(defun read-can-data (can-interface output-queues-analog output-queues-digital)
   (setq *stop* NIL)
   (with-can-socket (sckt can-interface)
 		   (let ((frame (make-can-packet)))
 		     (loop until *stop* do
 		       (socket-recv sckt frame)		    
-		       (process-can-frame frame output-queues)))))
+		       (process-can-frame frame output-queues-analog output-queues-digital)))))
 
