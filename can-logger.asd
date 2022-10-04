@@ -11,6 +11,7 @@
 	       (:file "clx-button")
 	       (:file "plotter")
 	       (:file "clx-tiles")
+	       (:file "on-off")
 	       (:file "main"))	       
   :depends-on (:fsocket :clx))
 	       

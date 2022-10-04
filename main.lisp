@@ -73,7 +73,8 @@
   (stop-reading-CAN-data)
   (close-widget-table)
   (close-widget-plot)
-  (close-widget-tiles))
+  (close-widget-tiles)
+  (close-widget-on-off))
 
 (defun run-demo ()
   (setq *stop* NIL)
@@ -125,11 +126,23 @@
 			  :border-width 2
 			  :bit-gravity :center
 			  :colormap colormap
+			  :background (alloc-color colormap (lookup-color colormap "gray"))))
+	   (on-off-window (create-window
+			  :parent top-level
+			  :x (round (* (screen-width screen) 0.8))
+			  :y 500
+			  :width 320
+			  :height 400
+			  :border (screen-black-pixel screen)
+			  :border-width 2
+			  :bit-gravity :center
+			  :colormap colormap
 			  :background (alloc-color colormap (lookup-color colormap "gray")))))
       (map-window top-level)
       (map-window plot-window)
       (map-window table-window)
       (map-window tile-window)
+      (map-window on-off-window)
       (unwind-protect
 	   (progn	     
 	     (sb-thread:make-thread (lambda () (make-widget-plot
@@ -155,10 +168,12 @@
 						:screen screen
 						:colormap colormap
 						:data-queue *tiles-queue*)))
-	     (sb-thread:make-thread (lambda ()
-				      (loop for data = (sb-concurrency:dequeue *on-off-queue*) until *stop* do
-					(format t "el = ~a~%" data)
-					(sleep 0.5))))
+	     (sb-thread:make-thread (lambda () (make-widget-on-off
+						:main-window on-off-window
+						:display display
+						:screen screen
+						:colormap colormap
+						:data-queue *on-off-queue*)))
 	     (sleep 60)
 	     (stop-gui))	
 	;; (sb-thread:make-thread (lambda () (make-widget-button :main-window main-window :display display :screen screen
