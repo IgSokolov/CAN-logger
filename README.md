@@ -66,3 +66,4 @@ Linux kernel > 2.6.25
 - [x] Add CAN-ids or labels on the plot
 - [ ] Add relevant CAN-bus statistics
 - [ ] Dont't pick up dark colors for lines 
+- [ ] Add widget names
