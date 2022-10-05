@@ -43,13 +43,13 @@
 			   :label "label-2"))
 	    (plot-value-3 (make-plot-data
 			   ;;:value (* i (sin (* 2 pi 0.01 i)))
-			   :value 0
+			   :value (random 2)
 			   ;;:value 0.5
 			   :can-id #x205
-			   :label "D2"))
+			   :label "D1"))
 	    (plot-value-4 (make-plot-data
 			   ;;:value (* i (sin (* 2 pi 0.01 i)))
-			   :value 1
+			   :value (random 2)
 			   ;;:value 0.5
 			   :can-id #x205
 			   :label "D2")))

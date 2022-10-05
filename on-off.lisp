@@ -51,17 +51,19 @@
       (draw-glyphs (bit-field-window bit-field) (bit-field-gcontext bit-field) xc yc (bit-field-label bit-field)))))
         
 (defun update (bit-field new-bit)
-  (setf (bit-field-bit bit-field) new-bit)
-  (if (= new-bit 0)
-      (clear-area (bit-field-window bit-field))      
-      (draw-rectangle (bit-field-window bit-field) (bit-field-gcontext-selected bit-field) 0 0 (drawable-width (bit-field-window bit-field)) (drawable-height (bit-field-window bit-field)) :fill-p))
-  (sleep 0.1)
-  (draw-bit-field bit-field))
+  (unless (= (bit-field-bit bit-field) new-bit)
+    (setf (bit-field-bit bit-field) new-bit)    
+    (if (= new-bit 0)
+	(clear-area (bit-field-window bit-field))      
+	(draw-rectangle (bit-field-window bit-field) (bit-field-gcontext-selected bit-field) 0 0 (drawable-width (bit-field-window bit-field)) (drawable-height (bit-field-window bit-field)) :fill-p))
+    (sleep 0.1)
+    (draw-bit-field bit-field)))
 
 (defun make-widget-on-off (&key main-window display screen colormap data-queue)
   (setq *stop* NIL)
   (let ((db)
-	(yc 0))
+	(yc 0)
+	(y-margin 5))
     (loop until *stop*
 	  for pv = (sb-concurrency:dequeue data-queue) do
 	    (if pv
@@ -70,7 +72,7 @@
 		  (let ((bit-field (cdar (member label db :key #'car))))
 		    (unless bit-field
 		      (setq bit-field (create-bit-field label main-window screen display colormap 0 yc))
-		      (incf yc (font-ascent (bit-field-font bit-field)))			
+		      (incf yc (+ y-margin (font-ascent (bit-field-font bit-field))))
 		      (push (cons label bit-field) db))
 		    (update bit-field bit)			
 		    (display-force-output display)))
