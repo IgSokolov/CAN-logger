@@ -42,7 +42,6 @@ one encodes just 0s and 1s.
 * bit factors (b), physical factors (f) and physical offset (o) tell you how to convert the raw interger
 value to a physical unit (p): p = b*f + o
 * labels are tags for these units
-Note that CAN frames not listed in the config file are discarded by the logger.
 
 Then provide the path to your config file as well the name of a CAN interface via CLI:
 ```

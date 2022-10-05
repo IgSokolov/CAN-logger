@@ -25,7 +25,7 @@
 		       :border-width 2
 		       :bit-gravity :center
 		       :colormap colormap
-		       :background (alloc-color colormap (lookup-color colormap "white"))))
+		       :background (alloc-color colormap (lookup-color colormap "gray"))))
 	 (bit-field-gcontext (create-gcontext
 			 :drawable bit-field-window
 			 :font (open-font display font)
@@ -37,7 +37,7 @@
 			 :font (open-font display font)
 			 :line-style :solid
 			 :background (screen-white-pixel screen)
-			 :foreground (alloc-color colormap (lookup-color colormap "gray")))))
+			 :foreground (alloc-color colormap (lookup-color colormap "green")))))
     (map-window bit-field-window)
     (make-bit-field :window bit-field-window :gcontext bit-field-gcontext :gcontext-selected bit-field-gcontext-selected :label label :font (open-font display font))))
 
