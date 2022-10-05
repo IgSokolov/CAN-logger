@@ -67,3 +67,6 @@ Linux kernel > 2.6.25
 - [ ] Add relevant CAN-bus statistics
 - [ ] Dont't pick up dark colors for lines 
 - [ ] Add widget names
+
+## BUGS
+- [ ] Table widget doesn't show headers
