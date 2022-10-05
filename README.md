@@ -59,7 +59,7 @@ Linux kernel > 2.6.25
 - [x] Make CLI interface with :unix-opts
 - [x] Show CAN-IDs of the frames not listed in config file
 - [ ] Open congif manager when a user clicks on a tile with unknown CAN id
-- [ ] Decode binary payload (valve postions, on/off flags, etc.)
+- [x] Decode binary payload (valve postions, on/off flags, etc.)
 - [ ] Decode multiplexed payload
 - [ ] Make _stop_ button
 - [ ] Make _reload config_ button
