@@ -76,6 +76,16 @@
   (close-widget-tiles)
   (close-widget-on-off))
 
+(defun show-widget-header (top-level-window top-level-gcontext widget-window header)
+  (let ((x0 (drawable-x widget-window))
+	(y0 (drawable-y widget-window))
+	(width (drawable-width widget-window))
+	(header-width (text-width (gcontext-font top-level-gcontext) header))
+	(font-height (font-ascent (gcontext-font top-level-gcontext))))
+    (let ((xc (+ x0 (round (/ (- width header-width) 2))))
+	  (yc (- y0 font-height 5)))      
+      (draw-glyphs top-level-window top-level-gcontext xc yc header))))
+
 (defun run-demo ()
   (setq *stop* NIL)
   (mapc #'empty-queue (list *plot-queue* *table-queue* *tiles-queue* *button-task-queue* *on-off-queue*))
@@ -83,7 +93,7 @@
   (sb-thread:make-thread (lambda () (generate-data))) ;; comment to generate test data
   (sleep 0.1)
   (multiple-value-bind (display screen colormap) (make-default-display-screen-colormap)
-    (let* ((top-level (create-window
+    (let* ((top-level  (create-window
 		       :parent (screen-root screen)
 		       :x 0
 		       :y 0
@@ -92,20 +102,28 @@
 		       :border (screen-black-pixel screen)
 		       :border-width 2
 		       :bit-gravity :center
-		       :colormap colormap
-		       :background (alloc-color colormap (lookup-color colormap "gray"))))
-	   (plot-window (create-window
-			 :parent top-level
-			 :x 0
-			 :y 50
-			 :width 800
-			 :height 800
-			 :border (screen-black-pixel screen)
-			 :border-width 2
-			 :bit-gravity :center
-			 :colormap colormap
-			 :background (alloc-color colormap (lookup-color colormap "gray"))))
-	   (table-window (create-window
+		       :colormap colormap		       
+		       :background (alloc-color colormap (lookup-color colormap "white"))))
+	   (top-level-gcontext (create-gcontext
+				:drawable top-level
+				:font (open-font display "fixed")
+				:line-style :solid
+				:background (screen-white-pixel screen)
+				:foreground (alloc-color colormap (lookup-color colormap "black"))))
+	   (plot-window (cons "Monitor"
+			      (create-window
+			       :parent top-level
+			       :x 0
+			       :y 50
+			       :width 800
+			       :height 800
+			       :border (screen-black-pixel screen)
+			       :border-width 2
+			       :bit-gravity :center
+			       :colormap colormap
+			       :background (alloc-color colormap (lookup-color colormap "gray")))))
+	   (table-window (cons "Valid frames"
+			  (create-window
 			  :parent top-level
 			  :x (round (* (screen-width screen) 0.5))
 			  :y 50
@@ -115,8 +133,9 @@
 			  :border-width 2
 			  :bit-gravity :center
 			  :colormap colormap
-			  :background (alloc-color colormap (lookup-color colormap "gray"))))
-	   (tile-window (create-window
+			  :background (alloc-color colormap (lookup-color colormap "gray")))))
+	   (tile-window (cons "Uknown frames"
+			 (create-window
 			  :parent top-level
 			  :x (round (* (screen-width screen) 0.8))
 			  :y 50
@@ -126,8 +145,9 @@
 			  :border-width 2
 			  :bit-gravity :center
 			  :colormap colormap
-			  :background (alloc-color colormap (lookup-color colormap "gray"))))
-	   (on-off-window (create-window
+			  :background (alloc-color colormap (lookup-color colormap "gray")))))
+	   (on-off-window (cons "Binary data"
+			   (create-window
 			  :parent top-level
 			  :x (round (* (screen-width screen) 0.8))
 			  :y 500
@@ -137,23 +157,25 @@
 			  :border-width 2
 			  :bit-gravity :center
 			  :colormap colormap
-			  :background (alloc-color colormap (lookup-color colormap "gray")))))
+			  :background (alloc-color colormap (lookup-color colormap "gray"))))))
       (map-window top-level)
-      (map-window plot-window)
-      (map-window table-window)
-      (map-window tile-window)
-      (map-window on-off-window)
+      (map-subwindows top-level)
+      (mapc #'(lambda (obj)
+		(show-widget-header top-level top-level-gcontext (cdr obj) (car obj))
+		(sleep 0.1) ;; without sleep clx doesn't produce output
+		(display-force-output display))		 
+	    (list plot-window table-window tile-window on-off-window))            
       (unwind-protect
 	   (progn	     
 	     (sb-thread:make-thread (lambda () (make-widget-plot
-						:main-window plot-window
+						:main-window (cdr plot-window)
 						:display display
 						:screen screen
 						:colormap colormap
 						:x-start 0 :y-start 0 :size 800
 						:data-queue *plot-queue* :dt 0.1)))
 	     (sb-thread:make-thread (lambda () (make-widget-table
-						:main-window table-window
+						:main-window (cdr table-window)
 						:display display
 						:screen screen
 						:colormap colormap
@@ -163,18 +185,18 @@
 						:x-buttons 360
 						:y-buttons 0)))
 	     (sb-thread:make-thread (lambda () (make-widget-tiles
-						:main-window tile-window
+						:main-window (cdr tile-window)
 						:display display
 						:screen screen
 						:colormap colormap
 						:data-queue *tiles-queue*)))
 	     (sb-thread:make-thread (lambda () (make-widget-on-off
-						:main-window on-off-window
+						:main-window (cdr on-off-window)
 						:display display
 						:screen screen
 						:colormap colormap
 						:data-queue *on-off-queue*)))
-	     (sleep 60)
+	     (sleep 20)
 	     (stop-gui))	
 	;; (sb-thread:make-thread (lambda () (make-widget-button :main-window main-window :display display :screen screen
 	;; 							   :label "STOP" :task-queue *button-task-queue*
