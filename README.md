@@ -66,6 +66,7 @@ Linux kernel > 2.6.25
 - [ ] Add relevant CAN-bus statistics
 - [ ] Dont't pick up dark colors for lines 
 - [ ] Add widget names
+- [ ] If config file doesn't exist, create one
 
 ## BUGS
 - [ ] Table widget doesn't show headers
