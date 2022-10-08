@@ -10,6 +10,7 @@
 	       (:file "clx-table")
 	       (:file "clx-button")
 	       (:file "plotter")
+	       (:file "config-manager")
 	       (:file "clx-tiles")
 	       (:file "on-off")
 	       (:file "main"))	       

@@ -55,11 +55,8 @@
     (map-window tile-window)
     (make-tile :window tile-window :gcontext tile-gcontext :gcontext-selected tile-gcontext-selected :label can-id :font (open-font display font))))  
   
-(defun open-config-manager (can-id config-path)
-  (print can-id))
-
 (defun make-frame-valid (can-id db)
-  (print "deleting"...))
+  (print "deleting"))
 
 (defun make-widget-tiles (&key main-window display screen colormap data-queue)
   (setq *stop* NIL)
@@ -92,10 +89,10 @@
 	       (loop until *stop* do
 		   (event-case (display :force-output-p t :timeout 0.1)
 		     (:button-press (window)
-				    (let ((can-id (tile-label (cdr (find window db :key #'(lambda (x) (tile-window (cdr x))) :test 'equal))))
-					  (open-config-manager can-id config-path)
-					  (make-frame-valid can-id db)))
-				    t)		     
+				    (let ((can-id (tile-label (cdr (find window db :key #'(lambda (x) (tile-window (cdr x))) :test 'equal)))))
+				      (open-config-manager can-id config-path)
+				      (make-frame-valid can-id db))
+				    t) 
 		     (otherwise () t))
 		     (sleep 0.01)))))
       
