@@ -69,4 +69,4 @@ Linux kernel > 2.6.25
 - [ ] If config file doesn't exist, create one
 
 ## BUGS
-- [ ] Table widget doesn't show headers
+- [x] Table widget doesn't show headers
