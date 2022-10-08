@@ -37,7 +37,7 @@
 		       :border (screen-black-pixel screen)
 		       :border-width 2
 		       :bit-gravity :center
-		       ;;:event-mask '(:button-press :button-release)
+		       :event-mask '(:button-press)
 		       :colormap colormap
 		       :background (alloc-color colormap (lookup-color colormap "white"))))
 	 (tile-gcontext (create-gcontext
@@ -55,6 +55,12 @@
     (map-window tile-window)
     (make-tile :window tile-window :gcontext tile-gcontext :gcontext-selected tile-gcontext-selected :label can-id :font (open-font display font))))  
   
+(defun open-config-manager (can-id config-path)
+  (print can-id))
+
+(defun make-frame-valid (can-id db)
+  (print "deleting"...))
+
 (defun make-widget-tiles (&key main-window display screen colormap data-queue)
   (setq *stop* NIL)
   (let ((db)
@@ -78,6 +84,21 @@
 	  (most-recent-can-id 0))
       (map-window main-window)
       (map-window window)
+      ;; when a user clicks on a tile, the config window opens
+      ;; and the use can create a new entry
+      (sb-thread:make-thread
+	   (lambda ()
+	     (with-safe-exit-on-window-closed
+	       (loop until *stop* do
+		   (event-case (display :force-output-p t :timeout 0.1)
+		     (:button-press (window)
+				    (let ((can-id (tile-label (cdr (find window db :key #'(lambda (x) (tile-window (cdr x))) :test 'equal))))
+					  (open-config-manager can-id config-path)
+					  (make-frame-valid can-id db)))
+				    t)		     
+		     (otherwise () t))
+		     (sleep 0.01)))))
+      
       (loop until *stop* for can-id = (sb-concurrency:dequeue data-queue) do
 	(if can-id
 	    (let ((tile (cdar (member can-id db :key #'car))))
