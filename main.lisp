@@ -103,7 +103,7 @@
 		       :border-width 2
 		       :bit-gravity :center
 		       :colormap colormap		       
-		       :background (alloc-color colormap (lookup-color colormap "white"))))
+		       :background (alloc-color colormap (lookup-color colormap "gray"))))
 	   (top-level-gcontext (create-gcontext
 				:drawable top-level
 				:font (open-font display "fixed")
@@ -182,6 +182,7 @@
 						:data-queue *table-queue*
 						:x-table 0 :y-table 0
 						:width 360 :height 800 :n-rows 20
+						:titles '("CAN-ID" "Label" "Value")
 						:x-buttons 360
 						:y-buttons 0)))
 	     (sb-thread:make-thread (lambda () (make-widget-tiles
@@ -196,7 +197,7 @@
 						:screen screen
 						:colormap colormap
 						:data-queue *on-off-queue*)))
-	     (sleep 20)
+	     (sleep 60)
 	     (stop-gui))	
 	;; (sb-thread:make-thread (lambda () (make-widget-button :main-window main-window :display display :screen screen
 	;; 							   :label "STOP" :task-queue *button-task-queue*
