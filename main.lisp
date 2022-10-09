@@ -190,7 +190,8 @@
 						:display display
 						:screen screen
 						:colormap colormap
-						:data-queue *tiles-queue*)))
+						:data-queue *tiles-queue*
+						:config-path "config")))
 	     (sb-thread:make-thread (lambda () (make-widget-on-off
 						:main-window (cdr on-off-window)
 						:display display

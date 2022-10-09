@@ -58,7 +58,7 @@
 (defun make-frame-valid (can-id db)
   (print "deleting"))
 
-(defun make-widget-tiles (&key main-window display screen colormap data-queue)
+(defun make-widget-tiles (&key main-window display screen colormap data-queue config-path)
   (setq *stop* NIL)
   (let ((db)
 	(window (create-window
@@ -89,9 +89,13 @@
 	       (loop until *stop* do
 		   (event-case (display :force-output-p t :timeout 0.1)
 		     (:button-press (window)
-				    (let ((can-id (tile-label (cdr (find window db :key #'(lambda (x) (tile-window (cdr x))) :test 'equal)))))
-				      (open-config-manager can-id config-path)
-				      (make-frame-valid can-id db))
+				    (let* ((tile (find window db :key #'(lambda (x) (tile-window (cdr x))) :test 'equal))
+					   (can-id (car tile)))
+				      (destroy-window (tile-window (cdr tile)))
+				      (setf db (remove tile db))
+				      (open-config-manager can-id config-path) 
+				      ;;(make-frame-valid can-id db)
+				      )
 				    t) 
 		     (otherwise () t))
 		     (sleep 0.01)))))
