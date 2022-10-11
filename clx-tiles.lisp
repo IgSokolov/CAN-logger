@@ -78,7 +78,7 @@
 		(setq new-xc old-xc
 		      new-yc old-yc))))))
 
-(defun make-widget-tiles (&key main-window display screen colormap data-queue config-path)
+(defun make-widget-tiles (&key can-db can-db-lock main-window display screen colormap data-queue config-path)
   (setq *stop* NIL)
   (let ((db)
 	(db-lock (sb-thread:make-mutex))
@@ -117,7 +117,8 @@
 					  (open-config-manager can-id config-path)
 					  (redraw-tile-window (cdr tile) db)
 					  (destroy-window (tile-window (cdr tile)))
-					  ;; todo: inform msbd no to send data here!
+					  (sb-thread:with-mutex (can-db-lock)
+					    (setf can-db (make-can-db config-path)))
 					  ))
 				    t) 
 		     (otherwise () t))

@@ -12,7 +12,7 @@
    :physical-offset-mask
    :payload-size
    :label
-   :make-xnet-db))
+   :make-can-db))
 
 (defpackage :can-logger.can2data
   (:use :cl :can-logger.parser :fsocket)

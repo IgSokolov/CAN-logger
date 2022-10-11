@@ -242,7 +242,7 @@
 				   'physical-offset-mask
 				   'label))
 
-(defun make-xnet-db (config-path)
+(defun make-can-db (config-path)
   (let ((content (read-file config-path))
 	(can-db (make-hash-table))) ;; todo cli
     (dolist (item (split-list-of-strings-by-keyword content "can_id"))
