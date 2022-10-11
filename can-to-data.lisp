@@ -113,7 +113,7 @@
 	  ;; check if can-frame matches xnet layout	  
 	  (if (= payload-size (length data))
 	    ;; do processing
-	    (ccase signal-type
+	    (case signal-type
 	      (:analog
 	       (loop for data-type in data-type-mask		
 		     for bit-factor in bit-factor-mask
@@ -128,7 +128,7 @@
 							 (bytes-to-integer bytes data-type endiannes)))
 					    :can-id can-id
 					    :label l)))
-			   (mapc #'(lambda (queue) (sb-concurrency:enqueue plot-value queue)) output-queues-analog))
+			   (multicast plot-value output-queues-analog))			   
 			 (setq data rest))))
 	      (:digital
 		(loop for byte across data do
@@ -139,9 +139,10 @@
 					       :value bit
 					       :can-id can-id
 					       :label l)))
-			      (mapc #'(lambda (queue) (sb-concurrency:enqueue plot-value queue)) output-queues-digital)))))))
-	    (mapc #'(lambda (queue) (sb-concurrency:enqueue can-id queue)) output-queues-unknown))))
-	(mapc #'(lambda (queue) (sb-concurrency:enqueue can-id queue)) output-queues-unknown))))
+			      (multicast plot-value output-queues-digital))))))
+	      (otherwise (multicast can-id output-queues-unknown)))
+	    (multicast can-id output-queues-unknown))))
+	(multicast can-id output-queues-unknown))))
 ;; todo multiplexed
 
 (defparameter *stop* NIL)
