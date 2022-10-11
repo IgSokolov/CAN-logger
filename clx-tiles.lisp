@@ -118,8 +118,7 @@
 					  (redraw-tile-window (cdr tile) db)
 					  (destroy-window (tile-window (cdr tile)))
 					  (sb-thread:with-mutex (can-db-lock)
-					    (setf can-db (make-can-db config-path)))
-					  ))
+					    (setf can-db (make-can-db config-path))))) ;; error handling, because user gives wrong input.
 				    t) 
 		     (otherwise () t))
 		     (sleep 0.01)))))

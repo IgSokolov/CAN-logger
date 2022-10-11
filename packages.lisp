@@ -14,8 +14,12 @@
    :label
    :make-can-db))
 
+(defpackage :can-logger.utils
+  (:use :cl)
+  (:export :with-safe-exit-on-window-closed :multicast))
+
 (defpackage :can-logger.can2data
-  (:use :cl :can-logger.parser :fsocket)
+  (:use :cl :can-logger.parser :fsocket :can-logger.utils)
   (:export
    :read-can-data
    :stop-reading-CAN-data
@@ -23,10 +27,6 @@
    :plot-data-label
    :plot-data-can-id
    :make-plot-data))
-
-(defpackage :can-logger.utils
-  (:use :cl)
-  (:export :with-safe-exit-on-window-closed :multicast))
 	   
 (defpackage :can-logger.table
   (:use :cl :xlib :can-logger.can2data :can-logger.utils)
@@ -46,7 +46,7 @@
   (:export :open-config-manager))
 
 (defpackage :can-logger.tiles
-  (:use :cl :can-logger.can2data :xlib :can-logger.utils :can-logger.config-manager)
+  (:use :cl :can-logger.can2data :xlib :can-logger.utils :can-logger.config-manager :can-logger.parser)
   (:export :make-widget-tiles :close-widget-tiles))
 
 (defpackage :can-logger.on-off
@@ -54,5 +54,5 @@
   (:export :make-widget-on-off :close-widget-on-off))
 
 (defpackage :can-logger.main
-  (:use :cl :xlib :can-logger.table :can-logger.plotter :can-logger.can2data :can-logger.button :can-logger.tiles :can-logger.on-off))
+  (:use :cl :xlib :can-logger.table :can-logger.parser :can-logger.plotter :can-logger.can2data :can-logger.button :can-logger.tiles :can-logger.on-off))
   

@@ -146,54 +146,12 @@
 (defun stop-reading-CAN-data ()
   (setq *stop* t))
 
-(defun read-can-data (&key can-interface can-db can-db-lock output-queues-analog output-queues-digital output-queues-unknown no-can-test)
+(defun read-can-data (&key can-interface can-db can-db-lock output-queues-analog output-queues-digital output-queues-unknown)
   (setq *stop* NIL)
-  (if no-can-test
-      (let ((switch t)
-	(i 0))
-	(loop until *stop* do
-	  (let ((plot-value-1 (make-plot-data
-			       ;;:value (* i (sin (* 2 pi 0.01 i)))
-			       :value (+ 10 (random 10))
-			       ;;:value 0.5
-			       :can-id #x112
-			       :label "label-1"))
-		(plot-value-2 (make-plot-data
-			       ;;:value (* i (sin (* 2 pi 0.01 i)))
-			       :value (+ 40 (random 10))
-			       ;;:value 0.5
-			       :can-id #x113
-			       :label "label-2"))
-		(plot-value-3 (make-plot-data
-			       ;;:value (* i (sin (* 2 pi 0.01 i)))
-			       :value (random 2)
-			       ;;:value 0.5
-			       :can-id #x205
-			       :label "D1"))
-		(plot-value-4 (make-plot-data
-			       ;;:value (* i (sin (* 2 pi 0.01 i)))
-			       :value (random 2)
-			       ;;:value 0.5
-			       :can-id #x205
-			       :label "D2")))
-	    (when (= 0 (mod i 10))
-	      (setq switch (not switch)))
-	    (if switch
-		;;(sb-concurrency:enqueue NIL *plot-queue*)
-		(progn
-		  (multicast plot-value-1 (list *plot-queue* *table-queue*))
-		  (sb-concurrency:enqueue (plot-data-can-id plot-value-1) *tiles-queue*)
-		  (sb-concurrency:enqueue plot-value-3 *on-off-queue*))
-		(progn
-		  (multicast plot-value-2 (list *plot-queue* *table-queue*))
-		  (sb-concurrency:enqueue (plot-data-can-id plot-value-2) *tiles-queue*)
-		  (sb-concurrency:enqueue plot-value-4 *on-off-queue*)))
-	    (incf i)
-	    (sleep 0.1))))
-      (with-can-socket (sckt can-interface)
-		       (let ((frame (make-can-packet)))
-			 (loop until *stop* do
-			   (socket-recv sckt frame)
-			   (sb-thread:with-mutex (can-db-lock)
-			     (process-can-frame frame can-db output-queues-analog output-queues-digital output-queues-unknown)))))))
+  (with-can-socket (sckt can-interface)
+		   (let ((frame (make-can-packet)))
+		     (loop until *stop* do
+		       (socket-recv sckt frame)
+		       (sb-thread:with-mutex (can-db-lock)
+			 (process-can-frame frame can-db output-queues-analog output-queues-digital output-queues-unknown))))))
 
