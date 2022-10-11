@@ -55,12 +55,36 @@
     (map-window tile-window)
     (make-tile :window tile-window :gcontext tile-gcontext :gcontext-selected tile-gcontext-selected :label can-id :font (open-font display font))))  
   
-(defun make-frame-valid (can-id db)
-  (print "deleting"))
+
+(defun change-tile-position (tile-obj new-xc new-yc)
+  (let ((old-xc (drawable-x (tile-window (cdr tile-obj))))
+	(old-yc (drawable-y (tile-window (cdr tile-obj)))))
+    ;;(format t "~a->~a; ~a->~a~%" old-xc new-xc old-yc new-yc)
+    (setf (drawable-x (tile-window (cdr tile-obj))) new-xc)
+    (setf (drawable-y (tile-window (cdr tile-obj))) new-yc)
+    ;;(format t "~a->~a; ~a->~a~%" old-xc new-xc old-yc new-yc)
+    (values old-xc old-yc)))
+
+(defun redraw-tile-window (dead-tile db)
+  (let ((free-x0 (drawable-x (tile-window dead-tile)))
+	(free-y0 (drawable-y (tile-window dead-tile))))
+    (let ((new-xc free-x0)
+	  (new-yc free-y0))
+      (loop for tile-obj in db
+	    for window = (tile-window (cdr tile-obj))	    
+	    for xc = (drawable-x window)
+	    for yc = (drawable-y window) do
+	      ;;(unmap-window window)
+	      (multiple-value-bind (old-xc old-yc) (change-tile-position tile-obj new-xc new-yc)
+		(setq new-xc old-xc
+		      new-yc old-yc)
+		;;(map-window window)
+		)))))
 
 (defun make-widget-tiles (&key main-window display screen colormap data-queue config-path)
   (setq *stop* NIL)
   (let ((db)
+	(db-lock (sb-thread:make-mutex))
 	(window (create-window
 		      :parent main-window
 		      :x 5
@@ -89,32 +113,35 @@
 	       (loop until *stop* do
 		   (event-case (display :force-output-p t :timeout 0.1)
 		     (:button-press (window)
-				    (let* ((tile (find window db :key #'(lambda (x) (tile-window (cdr x))) :test 'equal))
-					   (can-id (car tile)))
-				      (destroy-window (tile-window (cdr tile)))
-				      (setf db (remove tile db))
-				      (open-config-manager can-id config-path) 
-				      ;;(make-frame-valid can-id db)
-				      )
+				    (sb-thread:with-mutex (db-lock)				      
+					(let* ((tile (find window db :key #'(lambda (x) (tile-window (cdr x))) :test 'equal))
+					       (can-id (car tile)))					  
+					  (setf db (remove tile db))
+					  (open-config-manager can-id config-path)
+					  (redraw-tile-window (cdr tile) db)
+					  (destroy-window (tile-window (cdr tile)))
+					  ;; todo: inform msbd no to send data here!
+					  ))
 				    t) 
 		     (otherwise () t))
 		     (sleep 0.01)))))
       
       (loop until *stop* for can-id = (sb-concurrency:dequeue data-queue) do
 	(if can-id
-	    (let ((tile (cdar (member can-id db :key #'car))))
-	      (if tile
-		  (unless (= can-id most-recent-can-id)
-		    (setq most-recent-can-id can-id)
-		    (highlight tile))
-		  (let ((new-tile (create-tile can-id window screen display colormap xc yc tile-width tile-height)))
-		    (incf xc (+ tile-width 5))
-		    (when (< (- max-x xc tile-width) tile-width)			
-		      (setq xc 0)
-		      (incf yc (+ 5 tile-height)))
-		    (push (cons can-id new-tile) db)
-		    (draw-tile new-tile)))
-	      (display-force-output display))
+	    (sb-thread:with-mutex (db-lock) 
+	      (let ((tile (cdar (member can-id db :key #'car))))
+		(if tile
+		    (unless (= can-id most-recent-can-id)
+		      (setq most-recent-can-id can-id)
+		      (highlight tile))
+		    (let ((new-tile (create-tile can-id window screen display colormap xc yc tile-width tile-height)))
+		      (incf xc (+ tile-width 5))
+		      (when (< (- max-x xc tile-width) tile-width)			
+			(setq xc 0)
+			(incf yc (+ 5 tile-height)))
+		      (push (cons can-id new-tile) db)
+		      (draw-tile new-tile)))
+		(display-force-output display)))
 	    (sleep 0.01))))))
 	    
 			     
