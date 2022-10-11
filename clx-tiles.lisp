@@ -74,12 +74,9 @@
 	    for window = (tile-window (cdr tile-obj))	    
 	    for xc = (drawable-x window)
 	    for yc = (drawable-y window) do
-	      ;;(unmap-window window)
 	      (multiple-value-bind (old-xc old-yc) (change-tile-position tile-obj new-xc new-yc)
 		(setq new-xc old-xc
-		      new-yc old-yc)
-		;;(map-window window)
-		)))))
+		      new-yc old-yc))))))
 
 (defun make-widget-tiles (&key main-window display screen colormap data-queue config-path)
   (setq *stop* NIL)

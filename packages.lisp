@@ -26,7 +26,7 @@
 
 (defpackage :can-logger.utils
   (:use :cl)
-  (:export :with-safe-exit-on-window-closed))
+  (:export :with-safe-exit-on-window-closed :multicast))
 	   
 (defpackage :can-logger.table
   (:use :cl :xlib :can-logger.can2data :can-logger.utils)

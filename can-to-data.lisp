@@ -94,13 +94,13 @@
 ;;   (with-accessors ((payload-size payload-size)) xnet-itemm
 ;;     (= (payload-size (length data)))))
 
-(defun process-can-frame (can-frame output-queues-analog output-queues-digital)
+(defun process-can-frame (can-frame output-queues-analog output-queues-digital output-queues-unknown)
   "decode data and send it to plotter"
   (multiple-value-bind (can-id data timestamp origin) (parse-can-packet can-frame)
     (declare (ignore timestamp origin))
     ;;(format t "(do we need it ?) origin = ~a~%" origin)
     (let ((xnet-item (gethash can-id *can-db*)))      
-      (when xnet-item	
+      (if xnet-item	
 	(with-accessors ((signal-type signal-type)
 			 (endiannes endiannes)
 			 (data-type-mask data-type-mask)			 
@@ -111,7 +111,7 @@
 			 (payload-size payload-size)
 			 (multiplexed-p multiplexed-p)) xnet-item
 	  ;; check if can-frame matches xnet layout	  
-	  (when (= payload-size (length data))
+	  (if (= payload-size (length data))
 	    ;; do processing
 	    (ccase signal-type
 	      (:analog
@@ -139,8 +139,10 @@
 					       :value bit
 					       :can-id can-id
 					       :label l)))
-			      (mapc #'(lambda (queue) (sb-concurrency:enqueue plot-value queue)) output-queues-digital)))))))))))))	       
-	        ;; todo multiplexed
+			      (mapc #'(lambda (queue) (sb-concurrency:enqueue plot-value queue)) output-queues-digital)))))))
+	    (mapc #'(lambda (queue) (sb-concurrency:enqueue can-id queue)) output-queues-unknown))))
+	(mapc #'(lambda (queue) (sb-concurrency:enqueue can-id queue)) output-queues-unknown))))
+;; todo multiplexed
 
 (defparameter *stop* NIL)
 

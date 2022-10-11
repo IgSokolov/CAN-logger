@@ -17,9 +17,6 @@
 
 (defparameter *stop* NIL)
 
-(defun multicast (value queues)
-  (mapc #'(lambda (queue) (sb-concurrency:enqueue value queue)) queues))
-
 (defun empty-queue (queue)
   (loop for data = (sb-concurrency:dequeue queue) do
     (unless data
