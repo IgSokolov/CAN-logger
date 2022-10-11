@@ -1,6 +1,6 @@
 (defpackage :can-logger.parser
   (:use :cl)
-  (:export
+  (:export ;; really needed???
    :split-sequence-by-delimiter
    :can-id
    :signal-type
@@ -12,7 +12,7 @@
    :physical-offset-mask
    :payload-size
    :label
-   :*can-db*))
+   :make-xnet-db))
 
 (defpackage :can-logger.can2data
   (:use :cl :can-logger.parser :fsocket)

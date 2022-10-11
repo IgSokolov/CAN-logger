@@ -90,16 +90,12 @@
   (destructuring-bind (t-sec t-usec) can-timestamp
     (float (+ t-sec (/ t-usec 1000000))))) ;; full-time
 
-;; (defun can-frame-matches-xnet-layout-p (can-frame xnet-item)
-;;   (with-accessors ((payload-size payload-size)) xnet-itemm
-;;     (= (payload-size (length data)))))
-
-(defun process-can-frame (can-frame output-queues-analog output-queues-digital output-queues-unknown)
+(defun process-can-frame (can-frame xnet-db output-queues-analog output-queues-digital output-queues-unknown)
   "decode data and send it to plotter"
   (multiple-value-bind (can-id data timestamp origin) (parse-can-packet can-frame)
     (declare (ignore timestamp origin))
     ;;(format t "(do we need it ?) origin = ~a~%" origin)
-    (let ((xnet-item (gethash can-id *can-db*)))      
+    (let ((xnet-item (gethash can-id xnet-db)))      
       (if xnet-item	
 	(with-accessors ((signal-type signal-type)
 			 (endiannes endiannes)
@@ -153,11 +149,11 @@
 (defun multicast (value queues)
   (mapc #'(lambda (queue) (sb-concurrency:enqueue value queue)) queues))
 
-(defun read-can-data (can-interface output-queues-analog output-queues-digital)
+(defun read-can-data (can-interface can-db output-queues-analog output-queues-digital output-queues-unknown)
   (setq *stop* NIL)
   (with-can-socket (sckt can-interface)
 		   (let ((frame (make-can-packet)))
 		     (loop until *stop* do
 		       (socket-recv sckt frame)		    
-		       (process-can-frame frame output-queues-analog output-queues-digital)))))
+		       (process-can-frame frame can-db output-queues-analog output-queues-digital output-queues-unknown)))))
 

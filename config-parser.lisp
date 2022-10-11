@@ -242,11 +242,11 @@
 				   'physical-offset-mask
 				   'label))
 
-
-(defparameter *can-db* (make-hash-table))
-
-(let ((content (read-file "./test_config.txt"))) ;; todo cli
-  (dolist (item (split-list-of-strings-by-keyword content "can_id"))
-    (let ((xnet-obj (map-item-to-xnet-data item *list-of-parsers* *list-of-tags*)))
-      (with-accessors ((can-id can-id)) xnet-obj
-	(setf (gethash can-id *can-db*) xnet-obj)))))
+(defun make-xnet-db (config-path)
+  (let ((content (read-file config-path))
+	(can-db (make-hash-table))) ;; todo cli
+    (dolist (item (split-list-of-strings-by-keyword content "can_id"))
+      (let ((xnet-obj (map-item-to-xnet-data item *list-of-parsers* *list-of-tags*)))
+	(with-accessors ((can-id can-id)) xnet-obj
+	  (setf (gethash can-id can-db) xnet-obj))))
+    can-db))
