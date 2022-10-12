@@ -11,7 +11,7 @@
 	     (format stream "Token \"~a\" not found in \"~a\" ~&" (token condition) (item condition)))))
 
 (defun read-file (filename)
-  (with-open-file (stream filename)
+  (with-open-file (stream filename :if-does-not-exist :create)
     (loop for line = (read-line stream nil)
        while line
        collect line)))
@@ -42,15 +42,6 @@
 (defun parse-float (string)
   (with-input-from-string (in string)
     (read in)))
-
-;; https://stackoverflow.com/questions/15393797/lisp-splitting-input-into-separate-strings
-(defun split-sequence-by-delimiter (sequence delimiterp)
-  "Lisp-is-cool-> (Lisp is cool) as strings. Delimiterp is a predicate."
-  (loop :for beg = (position-if-not delimiterp sequence)
-     :then (position-if-not delimiterp sequence :start (1+ end))
-     :for end = (and beg (position-if delimiterp sequence :start beg))
-     :when beg :collect (subseq sequence beg end)
-     :while end))
 
 (defun trim-spaces (string)
   (string-trim '(#\Space #\Newline #\Backspace #\Tab 

@@ -1,22 +1,13 @@
-(defpackage :can-logger.parser
-  (:use :cl)
-  (:export ;; really needed???
-   :split-sequence-by-delimiter
-   :can-id
-   :signal-type
-   :endiannes
-   :data-type-mask
-   :byte-number-mask
-   :bit-factor-mask
-   :physical-factor-mask
-   :physical-offset-mask
-   :payload-size
-   :label
-   :make-can-db))
-
 (defpackage :can-logger.utils
   (:use :cl)
-  (:export :with-safe-exit-on-window-closed :multicast))
+  (:export
+   :with-safe-exit-on-window-closed
+   :multicast
+   :split-sequence-by-delimiter))
+
+(defpackage :can-logger.parser
+  (:use :cl :can-logger.utils)
+  (:export :make-can-db))
 
 (defpackage :can-logger.can2data
   (:use :cl :can-logger.parser :fsocket :can-logger.utils)
@@ -38,7 +29,6 @@
 
 (defpackage :can-logger.plotter
   (:use :cl :can-logger.can2data :xlib :can-logger.utils)
-  (:import-from :can-logger.parser :split-sequence-by-delimiter)
   (:export :make-widget-plot :close-widget-plot))
 
 (defpackage :can-logger.config-manager

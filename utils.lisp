@@ -13,5 +13,14 @@
        (declare (ignore c))
        NIL)))
 
+;; https://stackoverflow.com/questions/15393797/lisp-splitting-input-into-separate-strings
+(defun split-sequence-by-delimiter (sequence delimiterp)
+  "Lisp-is-cool-> (Lisp is cool) as strings. Delimiterp is a predicate."
+  (loop :for beg = (position-if-not delimiterp sequence)
+     :then (position-if-not delimiterp sequence :start (1+ end))
+     :for end = (and beg (position-if delimiterp sequence :start beg))
+     :when beg :collect (subseq sequence beg end)
+     :while end))
+
 (defun multicast (value queues)
   (mapc #'(lambda (queue) (sb-concurrency:enqueue value queue)) queues))
