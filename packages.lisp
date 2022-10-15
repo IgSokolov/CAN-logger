@@ -8,6 +8,7 @@
 (defpackage :can-logger.parser
   (:use :cl :can-logger.utils)
   (:export
+   :endiannes
    :make-can-db
    :payload-size
    :can-id
