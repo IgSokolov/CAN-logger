@@ -68,7 +68,7 @@ Linux kernel > 2.6.25
 - [x] Add widget names
 - [ ] If config file doesn't exist, create one
 - [ ] Read from CAN bus faster, ensure queues do not get full
-- [ ] Start with empty config file
+- [x] Start with empty config file
 
 ## BUGS
 - [x] Table widget doesn't show headers

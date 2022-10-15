@@ -158,7 +158,7 @@
 						  :screen screen
 						  :colormap colormap
 						  :data-queue *on-off-queue*)))
-	       (sleep 60)
+	       (sleep 6000)
 	       (stop-gui))	
 	  ;; (sb-thread:make-thread (lambda () (make-widget-button :main-window main-window :display display :screen screen
 	  ;; 							   :label "STOP" :task-queue *button-task-queue*

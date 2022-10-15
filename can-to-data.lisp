@@ -95,49 +95,51 @@
   (multiple-value-bind (can-id data timestamp origin) (parse-can-packet can-frame)
     (declare (ignore timestamp origin))
     ;;(format t "(do we need it ?) origin = ~a~%" origin)
-    (let ((xnet-item (gethash can-id xnet-db)))      
-      (if xnet-item	
-	(with-accessors ((signal-type signal-type)
-			 (endiannes endiannes)
-			 (data-type-mask data-type-mask)			 
-			 (bit-factor-mask bit-factor-mask)
-			 (physical-factor-mask physical-factor-mask)
-			 (physical-offset-mask physical-offset-mask)
-			 (label label)
-			 (payload-size payload-size)
-			 (multiplexed-p multiplexed-p)) xnet-item
-	  ;; check if can-frame matches xnet layout	  
-	  (if (= payload-size (length data))
-	    ;; do processing
-	    (case signal-type
-	      (:analog
-	       (loop for data-type in data-type-mask		
-		     for bit-factor in bit-factor-mask
-		     for physical-factor in physical-factor-mask
-		     for physical-offset in physical-offset-mask
-		     for l in label do
-		       (multiple-value-bind (bytes rest) (pick-bytes data data-type)		   
-			 (let ((plot-value (make-plot-data
-					    :value (+ physical-offset
-						      (* bit-factor
-							 physical-factor
-							 (bytes-to-integer bytes data-type endiannes)))
-					    :can-id can-id
-					    :label l)))
-			   (multicast plot-value output-queues-analog))			   
-			 (setq data rest))))
-	      (:digital
-		(loop for byte across data do
-		  (let ((bit-list (byte-to-bits byte)))
-		    (loop for bit in bit-list
-			  for l in label do
-			    (let ((plot-value (make-plot-data
-					       :value bit
-					       :can-id can-id
-					       :label l)))
-			      (multicast plot-value output-queues-digital))))))
-	      (otherwise (multicast can-id output-queues-unknown)))
-	    (multicast can-id output-queues-unknown))))
+    (if xnet-db
+	(let ((xnet-item (gethash can-id xnet-db)))      
+	  (if xnet-item	
+	      (with-accessors ((signal-type signal-type)
+			       (endiannes endiannes)
+			       (data-type-mask data-type-mask)			 
+			       (bit-factor-mask bit-factor-mask)
+			       (physical-factor-mask physical-factor-mask)
+			       (physical-offset-mask physical-offset-mask)
+			       (label label)
+			       (payload-size payload-size)
+			       (multiplexed-p multiplexed-p)) xnet-item
+		;; check if can-frame matches xnet layout
+		(if (= payload-size (length data))
+		    ;; do processing
+		    (case signal-type
+		      (:analog
+		       (loop for data-type in data-type-mask		
+			     for bit-factor in bit-factor-mask
+			     for physical-factor in physical-factor-mask
+			     for physical-offset in physical-offset-mask
+			     for l in label do
+			       (multiple-value-bind (bytes rest) (pick-bytes data data-type)		   
+				 (let ((plot-value (make-plot-data
+						    :value (+ physical-offset
+							      (* bit-factor
+								 physical-factor
+								 (bytes-to-integer bytes data-type endiannes)))
+						    :can-id can-id
+						    :label l)))
+				   (multicast plot-value output-queues-analog))
+				 (setq data rest))))
+		      (:digital
+		       (loop for byte across data do
+			 (let ((bit-list (byte-to-bits byte)))
+			   (loop for bit in bit-list
+				 for l in label do
+				   (let ((plot-value (make-plot-data
+						      :value bit
+						      :can-id can-id
+						      :label l)))
+				     (multicast plot-value output-queues-digital))))))
+		      (otherwise (multicast can-id output-queues-unknown)))
+		    (multicast can-id output-queues-unknown)))
+	      (multicast can-id output-queues-unknown)))
 	(multicast can-id output-queues-unknown))))
 ;; todo multiplexed
 
