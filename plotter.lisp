@@ -342,7 +342,7 @@
 	(let ((plot-text-area (make-plot-text-area main-window plot-window-size screen display colormap)))	  
 	  (let ((env (make-plot-env)) ;; the _env_ lexical environment is modified. The rest ist const.
 		(point-size 4)
-		(NIL-canvas (make-canvas plot-window screen colormap)))
+		(NIL-canvas (car (make-canvas plot-window screen colormap))))
 	    (multiple-value-bind (x-coords dx-grid) (linspace 0 plot-window-size grid-xticks)
 	      (multiple-value-bind (y-coords x-shift data-length-max)
 		  (init-coordinate-settings plot-window-size grid-yticks t-max dt)		 
