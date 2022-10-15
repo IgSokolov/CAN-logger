@@ -67,6 +67,7 @@ Linux kernel > 2.6.25
 - [ ] Dont't pick up dark colors for lines 
 - [x] Add widget names
 - [ ] If config file doesn't exist, create one
+- [ ] Read from CAN bus faster, ensure queues do not get full
 
 ## BUGS
 - [x] Table widget doesn't show headers
