@@ -7,7 +7,17 @@
 
 (defpackage :can-logger.parser
   (:use :cl :can-logger.utils)
-  (:export :make-can-db))
+  (:export
+   :make-can-db
+   :payload-size
+   :can-id
+   :signal-type
+   :data-type-mask
+   :bit-factor-mask
+   :physical-factor-mask
+   :physical-offset-mask
+   :label
+   :multiplexed-p))
 
 (defpackage :can-logger.can2data
   (:use :cl :can-logger.parser :fsocket :can-logger.utils)
