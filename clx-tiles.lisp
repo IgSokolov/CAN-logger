@@ -78,9 +78,9 @@
 		(setq new-xc old-xc
 		      new-yc old-yc))))))
 
-(defun make-widget-tiles (&key can-db can-db-lock main-window display screen colormap data-queue config-path)
+(defun make-widget-tiles (&key can-db-obj main-window display screen colormap data-queue config-path)
   (setq *stop* NIL)
-  (let ((db)
+  (let ((db) ;; todo: comment diff db vs can-db
 	(db-lock (sb-thread:make-mutex))
 	(window (create-window
 		      :parent main-window
@@ -117,8 +117,8 @@
 					  (open-config-manager can-id config-path)
 					  (redraw-tile-window (cdr tile) db)
 					  (destroy-window (tile-window (cdr tile)))
-					  (sb-thread:with-mutex (can-db-lock)
-					    (setf can-db (make-can-db config-path))))) ;; error handling, because user gives wrong input.
+					  (sb-thread:with-mutex ((can-db-obj-lock can-db-obj))
+					    (setf (can-db-obj-db can-db-obj) (make-can-db config-path))))) ;; todo: error handling, because user gives wrong input.
 				    t) 
 		     (otherwise () t))
 		     (sleep 0.01)))))

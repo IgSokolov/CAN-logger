@@ -24,3 +24,7 @@
 
 (defun multicast (value queues)
   (mapc #'(lambda (queue) (sb-concurrency:enqueue value queue)) queues))
+
+(defstruct can-db-obj
+  db
+  (lock (sb-thread:make-mutex)))

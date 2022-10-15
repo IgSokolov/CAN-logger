@@ -42,10 +42,12 @@
 
 (defun run-demo (config-file)
   (setq *stop* NIL)
-  (let ((can-db (make-can-db config-file)) ;; can be modified on demand by the widget-tiles
-	(can-db-lock (sb-thread:make-mutex))) 
+  (let ((can-db-obj (make-can-db-obj :db (make-can-db config-file)))) ;; can be modified on demand by the widget-tiles	
+    ;; (sb-thread:make-thread (lambda () (loop until *stop* do
+    ;;   (print can-db)
+    ;;   (sleep 0.5))))
     (mapc #'empty-queue (list *plot-queue* *table-queue* *tiles-queue* *on-off-queue*))  
-    (sb-thread:make-thread (lambda () (read-can-data :can-interface "vcan0" :can-db can-db :can-db-lock can-db-lock
+    (sb-thread:make-thread (lambda () (read-can-data :can-interface "vcan0" :can-db-obj can-db-obj
 						     :output-queues-analog (list *plot-queue* *table-queue*)
 						     :output-queues-digital (list *on-off-queue*)
 						     :output-queues-unknown (list *tiles-queue*))))
@@ -149,8 +151,7 @@
 						  :screen screen
 						  :colormap colormap
 						  :data-queue *tiles-queue*
-						  :can-db can-db
-						  :can-db-lock can-db-lock
+						  :can-db-obj can-db-obj
 						  :config-path "config")))
 	       (sb-thread:make-thread (lambda () (make-widget-on-off
 						  :main-window (cdr on-off-window)

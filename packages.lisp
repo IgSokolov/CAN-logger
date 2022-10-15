@@ -3,7 +3,11 @@
   (:export
    :with-safe-exit-on-window-closed
    :multicast
-   :split-sequence-by-delimiter))
+   :split-sequence-by-delimiter
+   
+   :make-can-db-obj
+   :can-db-obj-db
+   :can-db-obj-lock))
 
 (defpackage :can-logger.parser
   (:use :cl :can-logger.utils)
@@ -55,5 +59,5 @@
   (:export :make-widget-on-off :close-widget-on-off))
 
 (defpackage :can-logger.main
-  (:use :cl :xlib :can-logger.table :can-logger.parser :can-logger.plotter :can-logger.can2data :can-logger.button :can-logger.tiles :can-logger.on-off))
+  (:use :cl :xlib :can-logger.utils :can-logger.table :can-logger.parser :can-logger.plotter :can-logger.can2data :can-logger.button :can-logger.tiles :can-logger.on-off))
   

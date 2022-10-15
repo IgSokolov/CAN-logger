@@ -10,12 +10,12 @@
   (:report (lambda (condition stream)
 	     (format stream "Token \"~a\" not found in \"~a\" ~&" (token condition) (item condition)))))
 
-(defun read-file (filename)
-  (with-open-file (stream filename)
-    (loop for line = (read-line stream nil)	  
-       while line
-       collect line)))
-
+(defun read-file (filename)  
+  (with-open-file (stream filename :if-does-not-exist :create)
+    (loop for line = (read-line stream nil)
+	  while line
+	  collect line)))
+  
 (defun split-list-of-strings-by-keyword (list keyword)
   "Returns fresh list of list segmenets separated by a keyword.
    How: look for a list item which contains the keyword and cons a difference 
@@ -233,12 +233,12 @@
 				   'physical-offset-mask
 				   'label))
 
-(defun make-can-db (config-path) ;; todo cli
-  (when (probe-file config-path)
-    (let ((content (read-file config-path))
-	  (can-db (make-hash-table))) 
-      (dolist (item (split-list-of-strings-by-keyword content "can_id"))
-	(let ((xnet-obj (map-item-to-xnet-data item *list-of-parsers* *list-of-tags*)))
-	  (with-accessors ((can-id can-id)) xnet-obj
-	    (setf (gethash can-id can-db) xnet-obj))))
-      can-db)))
+(defun make-can-db (config-path) ;; todo cli  
+  (let ((content (read-file config-path)))
+    (when content
+      (let ((can-db (make-hash-table)))
+	(dolist (item (split-list-of-strings-by-keyword content "can_id"))
+	  (let ((xnet-obj (map-item-to-xnet-data item *list-of-parsers* *list-of-tags*)))
+	    (with-accessors ((can-id can-id)) xnet-obj
+	      (setf (gethash can-id can-db) xnet-obj))))
+	can-db))))

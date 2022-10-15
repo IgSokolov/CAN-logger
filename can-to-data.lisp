@@ -148,12 +148,12 @@
 (defun stop-reading-CAN-data ()
   (setq *stop* t))
 
-(defun read-can-data (&key can-interface can-db can-db-lock output-queues-analog output-queues-digital output-queues-unknown)
+(defun read-can-data (&key can-interface can-db-obj output-queues-analog output-queues-digital output-queues-unknown)
   (setq *stop* NIL)
   (with-can-socket (sckt can-interface)
 		   (let ((frame (make-can-packet)))
 		     (loop until *stop* do
 		       (socket-recv sckt frame)
-		       (sb-thread:with-mutex (can-db-lock)
-			 (process-can-frame frame can-db output-queues-analog output-queues-digital output-queues-unknown))))))
+		       (sb-thread:with-mutex ((can-db-obj-lock can-db-obj))
+			 (process-can-frame frame (can-db-obj-db can-db-obj) output-queues-analog output-queues-digital output-queues-unknown))))))
 
