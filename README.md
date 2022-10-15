@@ -72,4 +72,4 @@ Linux kernel > 2.6.25
 
 ## BUGS
 - [x] Table widget doesn't show headers
-- [ ] Widget-queue wrong assignment
+- [x] Widget-queue wrong assignment
