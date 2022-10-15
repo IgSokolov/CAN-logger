@@ -100,7 +100,7 @@
       (error 'empty-cache))    
     (setf (row-can-id row) can-id)
     (setf (gethash label (table-content table))
-	  (write-to-row table row (list 0 1) (list (write-to-string can-id) label)))))
+	  (write-to-row table row (list 0 1) (list (format NIL "~x" can-id) label)))))
 
 (defun write-value (table label value)
   (let ((db (table-content table)))
