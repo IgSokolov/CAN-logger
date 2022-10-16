@@ -76,7 +76,8 @@
 	    for yc = (drawable-y window) do
 	      (multiple-value-bind (old-xc old-yc) (change-tile-position tile-obj new-xc new-yc)
 		(setq new-xc old-xc
-		      new-yc old-yc))))))
+		      new-yc old-yc)))
+      db)))
 
 (defun make-widget-tiles (&key can-db-obj main-window display screen colormap data-queue config-path)
   (setq *stop* NIL)
@@ -115,7 +116,14 @@
 					       (can-id (car tile)))					  
 					  (setf db (remove tile db))
 					  (open-config-manager can-id config-path)
-					  (redraw-tile-window (cdr tile) db)
+					  (setf db (redraw-tile-window (cdr tile) db))
+					  ;;;; modify xc and yc
+					  (if (= xc 0)
+					      (progn
+						(setq xc (- max-x tile-width))
+						(decf yc (+ 5 tile-height)))					      
+					      (decf xc (+ tile-width 5)))
+					  ;;;;;;;;;;;;;;;;;;;;;
 					  (destroy-window (tile-window (cdr tile)))
 					  (sb-thread:with-mutex ((can-db-obj-lock can-db-obj))
 					    (setf (can-db-obj-db can-db-obj) (make-can-db config-path))))) ;; todo: error handling, because user gives wrong input.
