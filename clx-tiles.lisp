@@ -99,7 +99,7 @@
 	  (tile-height 40)
 	  (max-x (- (drawable-width window) 15))
 	  (xc 0)
-	  (yc 0 )
+	  (yc 0)
 	  (most-recent-can-id 0))
       (map-window main-window)
       (map-window window)
@@ -111,43 +111,47 @@
 	       (loop until *stop* do
 		   (event-case (display :force-output-p t :timeout 0.1)
 		     (:button-press (window)
-				    (sb-thread:with-mutex (db-lock)				      
+				    (sb-thread:with-mutex (db-lock)
+				      (sb-thread:with-mutex ((can-db-obj-lock can-db-obj))
 					(let* ((tile (find window db :key #'(lambda (x) (tile-window (cdr x))) :test 'equal))
 					       (can-id (car tile)))					  
 					  (setf db (remove tile db))
 					  (open-config-manager can-id config-path)
 					  (setf db (redraw-tile-window (cdr tile) db))
-					  ;;;; modify xc and yc
-					  (if (= xc 0)
+					  ;; shift tile backwards
+					  (if (= xc 0) ;; todo: fix compiler warnings
 					      (progn
 						(setq xc (- max-x tile-width))
 						(decf yc (+ 5 tile-height)))					      
 					      (decf xc (+ tile-width 5)))
-					  ;;;;;;;;;;;;;;;;;;;;;
 					  (destroy-window (tile-window (cdr tile)))
-					  (sb-thread:with-mutex ((can-db-obj-lock can-db-obj))
-					    (setf (can-db-obj-db can-db-obj) (make-can-db config-path))))) ;; todo: error handling, because user gives wrong input.
+					  ;;(sb-thread:with-mutex ((can-db-obj-lock can-db-obj))
+					  (setf (can-db-obj-db can-db-obj) (make-can-db config-path)))))
+					;; todo: error handling, because user gives wrong input.
 				    t) 
 		     (otherwise () t))
 		     (sleep 0.01)))))
       
-      (loop until *stop* for can-id = (sb-concurrency:dequeue data-queue) do
-	(if can-id
-	    (sb-thread:with-mutex (db-lock) 
+      (loop until *stop* do	
+	(let ((can-id (sb-concurrency:dequeue data-queue)))
+	  (when can-id
+	    (format t "id = ~a~%" can-id))
+	  (if (and can-id (not (sb-thread:mutex-value db-lock))) ;; doesn't acquire mutex, but checks if its free  
 	      (let ((tile (cdar (member can-id db :key #'car))))
 		(if tile
 		    (unless (= can-id most-recent-can-id)
 		      (setq most-recent-can-id can-id)
 		      (highlight tile))
 		    (let ((new-tile (create-tile can-id window screen display colormap xc yc tile-width tile-height)))
+		      (print "made new tile!")
 		      (incf xc (+ tile-width 5))
 		      (when (< (- max-x xc tile-width) tile-width)			
 			(setq xc 0)
 			(incf yc (+ 5 tile-height)))
 		      (push (cons can-id new-tile) db)
 		      (draw-tile new-tile)))
-		(display-force-output display)))
-	    (sleep 0.01))))))
-	    
-			     
+		(display-force-output display))
+	      (sleep 0.1)))))))
+
+
 
