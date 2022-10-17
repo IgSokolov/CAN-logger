@@ -66,9 +66,10 @@ Linux kernel > 2.6.25
 - [ ] Add relevant CAN-bus statistics
 - [ ] Dont't pick up dark colors for lines 
 - [x] Add widget names
-- [ ] If config file doesn't exist, create one
+- [x] If config file doesn't exist, create one
 - [ ] Read from CAN bus faster, ensure queues do not get full
 - [x] Start with empty config file
+- [ ] If can frame becomes invalid, use wiget-tiles to modify the config, and use widget-table to show new encoding.
 
 ## BUGS
 - [x] Table widget doesn't show headers
