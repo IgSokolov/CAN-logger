@@ -141,10 +141,13 @@
 		       (progn
 			 (format t "wrong type : ~a~%" can-id)
 			 (multicast can-id output-queues-unknown))))
-		    (multicast can-id output-queues-unknown)))
+		    (progn
+		      (format t "wrong payload size : ~a~%" can-id)
+		      (multicast can-id output-queues-unknown))))
 	      (progn
 		(format t "unknown : ~a~%" can-id)
-		(multicast can-id output-queues-unknown))))
+		(multicast can-id output-queues-unknown)
+		)))
 	(progn
 	  (format t "empty file : ~a~%" can-id)
 	  (multicast can-id output-queues-unknown)))))

@@ -46,7 +46,7 @@
     ;; (sb-thread:make-thread (lambda () (loop until *stop* do
     ;;   (print can-db)
     ;;   (sleep 0.5))))
-    (mapc #'empty-queue (list *plot-queue* *table-queue* *tiles-queue* *on-off-queue*))  
+    (mapc #'empty-queue (list *plot-queue* *table-queue* *tiles-queue* *on-off-queue*))
     (sb-thread:make-thread (lambda () (read-can-data :can-interface "vcan0" :can-db-obj can-db-obj
 						     :output-queues-analog (list *plot-queue* *table-queue*)
 						     :output-queues-digital (list *on-off-queue*)
