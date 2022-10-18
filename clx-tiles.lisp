@@ -59,10 +59,8 @@
 (defun change-tile-position (tile-obj new-xc new-yc)
   (let ((old-xc (drawable-x (tile-window (cdr tile-obj))))
 	(old-yc (drawable-y (tile-window (cdr tile-obj)))))
-    ;;(format t "~a->~a; ~a->~a~%" old-xc new-xc old-yc new-yc)
     (setf (drawable-x (tile-window (cdr tile-obj))) new-xc)
-    (setf (drawable-y (tile-window (cdr tile-obj))) new-yc)
-    ;;(format t "~a->~a; ~a->~a~%" old-xc new-xc old-yc new-yc)
+    (setf (drawable-y (tile-window (cdr tile-obj))) new-yc)    
     (values old-xc old-yc)))
 
 (defun redraw-tile-window (dead-tile db)
@@ -81,6 +79,8 @@
 
 (defun make-widget-tiles (&key can-db-obj main-window display screen colormap data-queue config-path)
   (setq *stop* NIL)
+  ;; db serves as a database for the tiles already present on the widget
+  ;; can-db-obj is a global database with xnet entries.
   (let ((db) ;; todo: comment diff db vs can-db
 	(db-lock (sb-thread:make-mutex))
 	(window (create-window
@@ -118,14 +118,13 @@
 					  (setf db (remove tile db))
 					  (open-config-manager can-id config-path)
 					  (setf db (redraw-tile-window (cdr tile) db))
-					  ;; shift tile backwards
+					  ;; shift tiles backwards
 					  (if (= xc 0) ;; todo: fix compiler warnings
 					      (progn
 						(setq xc (- max-x tile-width))
 						(decf yc (+ 5 tile-height)))					      
 					      (decf xc (+ tile-width 5)))
-					  (destroy-window (tile-window (cdr tile)))
-					  ;;(sb-thread:with-mutex ((can-db-obj-lock can-db-obj))
+					  (destroy-window (tile-window (cdr tile)))					  
 					  (setf (can-db-obj-db can-db-obj) (make-can-db config-path)))))
 					;; todo: error handling, because user gives wrong input.
 				    t) 
@@ -134,16 +133,17 @@
       
       (loop until *stop* do	
 	(let ((can-id (sb-concurrency:dequeue data-queue)))
-	  (when can-id
-	    (format t "id = ~a~%" can-id))
-	  (if (and can-id (not (sb-thread:mutex-value db-lock))) ;; doesn't acquire mutex, but checks if its free  
+	  ;; doesn't acquire mutex, but checks if its free.
+	  ;; we want to keep the loop alive if user terminates
+	  ;; programm execution.
+	  (if (and can-id (not (sb-thread:mutex-value db-lock)))
 	      (let ((tile (cdar (member can-id db :key #'car))))
 		(if tile
 		    (unless (= can-id most-recent-can-id)
 		      (setq most-recent-can-id can-id)
 		      (highlight tile))
 		    (let ((new-tile (create-tile can-id window screen display colormap xc yc tile-width tile-height)))
-		      (print "made new tile!")
+		      ;; shift tiles forwards
 		      (incf xc (+ tile-width 5))
 		      (when (< (- max-x xc tile-width) tile-width)			
 			(setq xc 0)
