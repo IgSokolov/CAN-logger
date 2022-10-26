@@ -7,7 +7,8 @@
    
    :make-can-db-obj
    :can-db-obj-db
-   :can-db-obj-lock))
+   :can-db-obj-lock
+   :trim-spaces))
 
 (defpackage :can-logger.parser
   (:use :cl :can-logger.utils)

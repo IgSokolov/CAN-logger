@@ -28,3 +28,13 @@
 (defstruct can-db-obj
   db
   (lock (sb-thread:make-mutex)))
+
+(defun trim-spaces (string &optional trim-body-p)
+  (let ((spaces '(#\Space #\Newline #\Backspace #\Tab 
+		  #\Linefeed #\Page #\Return #\Rubout)))
+    (if trim-body-p
+	(format NIL "~{~a~}"
+		(loop for x across string
+		      unless (some #'(lambda (space) (char= space x)) spaces)
+			collect x))
+	(string-trim spaces string))))

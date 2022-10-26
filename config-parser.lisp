@@ -43,9 +43,6 @@
   (with-input-from-string (in string)
     (read in)))
 
-(defun trim-spaces (string)
-  (string-trim '(#\Space #\Newline #\Backspace #\Tab 
-		 #\Linefeed #\Page #\Return #\Rubout) string))
 ;; middle-level functions
 
 (defun parse-integer-value (string keyword)
@@ -66,7 +63,7 @@
   "Checks for keyword in string and splits it using delimiterp predicate."
   (tokens-found-else-error string (list keyword "="))
   (let ((values (extract-words-between-tokens string "{" "}")))
-    (mapcar #'(lambda (item) (trim-spaces  item))
+    (mapcar #'(lambda (item) (trim-spaces item))
 	    (split-sequence-by-delimiter values delimiterp))))
 
 (defun parse-list-of-floats (string keyword)

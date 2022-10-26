@@ -134,8 +134,8 @@
       (loop until *stop* do	
 	(let ((can-id (sb-concurrency:dequeue data-queue)))
 	  ;; doesn't acquire mutex, but checks if its free.
-	  ;; we want to keep the loop alive if user terminates
-	  ;; programm execution.
+	  ;; we want to keep the loop alive and keep reading
+	  ;; *stop* value
 	  (if (and can-id (not (sb-thread:mutex-value db-lock)))
 	      (let ((tile (cdar (member can-id db :key #'car))))
 		(if tile
