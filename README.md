@@ -1,7 +1,7 @@
 ## Introduction
 `CAN-logger` is a real-time CAN bus monitor.
 <p align="center">
-	<img src=demo.gif width=100% height=100%>
+	<img src=demo.gif width=70% height=70%>
 </p>
 This application reads CAN frames from a data bus, decodes their payload and plots data in real-time.
 
@@ -40,7 +40,7 @@ physical_factor_mask = {101.1, 0, 12.5, 300}
 physical_offset_mask = {-50.0, 0, -100.0, -750.0}
 label = {Pressure_inlet, None, Mass_flow_rate, Temperature}
 ```
-you say that if the CAN-logger receives a frame like 385#aa.bb.cc.dd.ee.ff.a1.a2, it should be decoded as follows:
+you say that if the CAN-logger receives a frame like `385 # DE 0D A0 04 E7 00 EE 01`, it should be decoded as follows:
 * signal type is analog, i.e. values in the payload are integers. Another option herer would be a _digital_ signal type, where
 one encodes just 0s and 1s.
 * byte_swap is true means that the little endian format is used
@@ -58,7 +58,6 @@ For example:
 ```
 ./can-logger -p ./config -c vcan0 -s 100 -w 60
 ```
-
 ## Tested
 Red Hat 4.8.5-44 - SBCL 2.1.9
 
