@@ -71,6 +71,7 @@ Red Hat 4.8.5-44 - SBCL 2.1.9
 ## Todos
 - [ ] Fix autorescaling
 - [ ] Decode multiplexed payload
+- [ ] Don't run the app if CAN interface doesn't exist
 
 ## Acknowledgement
 Kudos to Oliver Hartkopp for his brilliant work on the SocketCAN API!
