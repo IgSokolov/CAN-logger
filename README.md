@@ -11,7 +11,7 @@ This application reads CAN frames from a data bus, decodes their payload and plo
 3. we send decoded data to a monitor written with [CLX](https://sharplispers.github.io/clx/)
 
 ## How to build
-1. Ensure ASDF finds all 3 dependencies: :fsocket :clx and :unix-opts
+1. Ensure ASDF finds all 3 dependencies (:fsocket :clx and :unix-opts)
 2. Go to the directory with sources and execute `make`
 
 ## How to test
@@ -71,7 +71,6 @@ Red Hat 4.8.5-44 - SBCL 2.1.9
 ## Todos
 - [ ] Fix autorescaling
 - [ ] Decode multiplexed payload
-- [ ] Test cli args for wrong inputs
 
 ## Acknowledgement
 Kudos to Oliver Hartkopp for his brilliant work on the SocketCAN API!
