@@ -129,20 +129,25 @@
   (setq *stop* t))
 
 (defun read-can-data (&key can-interface can-db-obj output-queues-analog)
-  (setq *stop* NIL)  
-  (with-can-socket
-      (sckt can-interface)
-      (let ((frame (make-can-packet)))
-	(with-poll (pc)
-	  (poll-register pc (make-instance 'pollfd :fd sckt :events (poll-events :pollin)))	
-	  (loop until *stop* do
-	    (when (handler-case
-		      (poll pc :timeout 100)
-		    (error (c)
-		      (declare (ignore c))
-		      NIL))
-	      (socket-recvfrom sckt frame)
-	       ;; with-mutex: in case someone wants to update CAN database on-the-fly
-	      (sb-thread:with-mutex ((can-db-obj-lock can-db-obj))
-		(process-can-frame frame (can-db-obj-db can-db-obj) output-queues-analog))))))))
+  (setq *stop* NIL)
+  (handler-case
+      (with-can-socket
+	  (sckt can-interface)
+	  (let ((frame (make-can-packet)))
+	    (with-poll (pc)
+	      (poll-register pc (make-instance 'pollfd :fd sckt :events (poll-events :pollin)))
+	      (loop until *stop* do
+		(when (handler-case
+			  (poll pc :timeout 100)
+			(error (c)
+			  (declare (ignore c))
+			  NIL))
+		  (socket-recvfrom sckt frame)
+		  ;; with-mutex: in case someone wants to update CAN database on-the-fly
+		  (sb-thread:with-mutex ((can-db-obj-lock can-db-obj))
+		    (process-can-frame frame (can-db-obj-db can-db-obj) output-queues-analog)))))))
+    (fsocket-error (c)
+      (format t "Error: ~A~%" c)
+      (sb-ext:exit))))
+
 

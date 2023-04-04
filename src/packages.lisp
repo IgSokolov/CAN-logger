@@ -49,6 +49,6 @@
   (:export :parse-cli-args))
 
 (defpackage :can-logger.main
-  (:use :cl :xlib :can-logger.utils :can-logger.parser :can-logger.plotter :can-logger.can2data :can-logger.cli)
+  (:use :cl :xlib :fsocket :can-logger.utils :can-logger.parser :can-logger.plotter :can-logger.can2data :can-logger.cli)
   (:export :run))
   
