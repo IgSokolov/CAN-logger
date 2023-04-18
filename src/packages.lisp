@@ -3,8 +3,7 @@
   (:export
    :with-safe-exit-on-window-closed
    :multicast
-   :split-sequence-by-delimiter
-   
+   :split-sequence-by-delimiter   
    :make-can-db-obj
    :can-db-obj-db
    :can-db-obj-lock
@@ -49,6 +48,7 @@
   (:export :parse-cli-args))
 
 (defpackage :can-logger.main
-  (:use :cl :xlib :fsocket :can-logger.utils :can-logger.parser :can-logger.plotter :can-logger.can2data :can-logger.cli)
+  (:use :cl :xlib :fsocket :can-logger.utils :can-logger.parser
+   :can-logger.plotter :can-logger.can2data :can-logger.cli)
   (:export :run))
   

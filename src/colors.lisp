@@ -1,6 +1,7 @@
 (in-package :can-logger.colors)
 
 (defstruct rgb-color r g b)
+
 (defstruct color-ring-buffer
   ref-colors
   available-colors

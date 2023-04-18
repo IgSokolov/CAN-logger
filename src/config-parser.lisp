@@ -35,7 +35,8 @@
 
 (defun tokens-found-else-error (item list-of-tokens)
   "If some token in list-of-tokens is missing in item (string), an error is signaled."
-  (mapc #'(lambda (token) (unless (search token item) (error 'token-not-found :item item :token token))) list-of-tokens))
+  (mapc #'(lambda (token) (unless (search token item)
+			    (error 'token-not-found :item item :token token))) list-of-tokens))
 
 (defun extract-words-between-tokens (string left-token right-token)
   "value = [1.1] -> 1.1 as string"
@@ -54,7 +55,9 @@
 (defun parse-integer-value (string keyword)
   "keyword = {X} -> X as integer"
   (tokens-found-else-error string (list keyword "="))
-  (let ((value (parse-integer (extract-words-between-tokens string "{" "}") :radix 16 :junk-allowed t)))
+  (let ((value (parse-integer (extract-words-between-tokens string "{" "}")
+			      :radix 16
+			      :junk-allowed t)))
     (unless value
       (error 'cannot-parse-item :item string))
     value))
@@ -124,7 +127,8 @@
 
 (defun parse-data-type-mask (string)
   (flet ((delimiterp (c) (char= c #\,)))
-    (mapcar #'(lambda (item) (intern (string-upcase item) :keyword)) (parse-list-value string "data_type_mask" #'delimiterp))))
+    (mapcar #'(lambda (item) (intern (string-upcase item) :keyword))
+	    (parse-list-value string "data_type_mask" #'delimiterp))))
 
 (defun parse-bit-factor-mask (string)
   (parse-list-of-floats string "bit_factor_mask"))
@@ -185,8 +189,10 @@
 			 (label label)
 			 (multiplexed-p multiplexed-p))			 
             obj
-          (format stream "can-id: ~x~%signal-type: ~a~%endiannes: ~a~%data-type-mask: ~a~%bit-factor-mask: ~a~%physical-factor-mask: ~a~%physical-offset-mask: ~a~%label: ~a~%multiplexed-p: ~a~%"can-id signal-type endiannes data-type-mask bit-factor-mask physical-factor-mask physical-offset-mask label multiplexed-p))))
-
+          (format stream "can-id: ~x~%signal-type: ~a~%endiannes: ~a~%data-type-mask: ~a~%
+bit-factor-mask: ~a~%physical-factor-mask: ~a~%physical-offset-mask: ~a~%label: ~a~%
+multiplexed-p: ~a~%" can-id signal-type endiannes data-type-mask bit-factor-mask
+physical-factor-mask physical-offset-mask label multiplexed-p))))
 
 (defun map-item-to-xnet-data (item parsers tags)
   "Tries to find a suitable parser for each data string in item.
@@ -216,7 +222,6 @@
 	(setf (slot-value data 'multiplexed-p) NIL))
     (setf (slot-value data 'payload-size) (compute-expected-payload-size (slot-value data 'data-type-mask)))
     data))
-
 
 (defparameter *list-of-parsers* (list #'parse-can-id
 				      #'parse-signal-type

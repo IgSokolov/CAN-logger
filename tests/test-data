@@ -1,2000 +1,3000 @@
-cansend vcan0 485#00000000
-sleep 0.10000
-cansend vcan0 485#00000300
-sleep 0.10000
-cansend vcan0 485#00000700
-sleep 0.10000
-cansend vcan0 485#01000A00
-sleep 0.10000
-cansend vcan0 485#02000D00
-sleep 0.10000
-cansend vcan0 485#03001000
-sleep 0.10000
-cansend vcan0 485#04001300
-sleep 0.10000
-cansend vcan0 485#05001600
-sleep 0.10000
-cansend vcan0 485#07001900
-sleep 0.10000
-cansend vcan0 485#08001C00
-sleep 0.10000
-cansend vcan0 485#0A001F00
-sleep 0.10000
-cansend vcan0 485#0C002200
-sleep 0.10000
-cansend vcan0 485#0E002500
-sleep 0.10000
-cansend vcan0 485#11002700
-sleep 0.10000
-cansend vcan0 485#14002A00
-sleep 0.10000
-cansend vcan0 485#16002C00
-sleep 0.10000
-cansend vcan0 485#19002E00
-sleep 0.10000
-cansend vcan0 485#1C003000
-sleep 0.10000
-cansend vcan0 485#20003200
-sleep 0.10000
-cansend vcan0 485#23003300
-sleep 0.10000
-cansend vcan0 485#27003500
-sleep 0.10000
-cansend vcan0 485#2A003600
-sleep 0.10000
-cansend vcan0 485#2E003800
-sleep 0.10000
-cansend vcan0 485#32003900
-sleep 0.10000
-cansend vcan0 485#36003900
-sleep 0.10000
-cansend vcan0 485#3A003A00
-sleep 0.10000
-cansend vcan0 485#3E003A00
-sleep 0.10000
-cansend vcan0 485#42003B00
-sleep 0.10000
-cansend vcan0 485#47003A00
-sleep 0.10000
-cansend vcan0 485#4B003A00
-sleep 0.10000
-cansend vcan0 485#50003A00
-sleep 0.10000
-cansend vcan0 485#54003900
-sleep 0.10000
-cansend vcan0 485#59003800
-sleep 0.10000
-cansend vcan0 485#5D003700
-sleep 0.10000
-cansend vcan0 485#62003600
-sleep 0.10000
-cansend vcan0 485#66003400
-sleep 0.10000
-cansend vcan0 485#6B003200
-sleep 0.10000
-cansend vcan0 485#6F003000
-sleep 0.10000
-cansend vcan0 485#74002E00
-sleep 0.10000
-cansend vcan0 485#78002B00
-sleep 0.10000
-cansend vcan0 485#7D002900
-sleep 0.10000
-cansend vcan0 485#81002500
-sleep 0.10000
-cansend vcan0 485#85002200
-sleep 0.10000
-cansend vcan0 485#8A001F00
-sleep 0.10000
-cansend vcan0 485#8E001B00
-sleep 0.10000
-cansend vcan0 485#92001700
-sleep 0.10000
-cansend vcan0 485#96001300
-sleep 0.10000
-cansend vcan0 485#99000E00
-sleep 0.10000
-cansend vcan0 485#9D000A00
-sleep 0.10000
-cansend vcan0 485#A0000500
-sleep 0.10000
-cansend vcan0 485#A4000000
-sleep 0.10000
-cansend vcan0 485#A700FBFF
-sleep 0.10000
-cansend vcan0 485#AA00F5FF
-sleep 0.10000
-cansend vcan0 485#AD00F0FF
-sleep 0.10000
-cansend vcan0 485#B000EAFF
-sleep 0.10000
-cansend vcan0 485#B200E4FF
-sleep 0.10000
-cansend vcan0 485#B400DEFF
-sleep 0.10000
-cansend vcan0 485#B600D7FF
-sleep 0.10000
-cansend vcan0 485#B800D1FF
-sleep 0.10000
-cansend vcan0 485#BA00CAFF
-sleep 0.10000
-cansend vcan0 485#BB00C3FF
-sleep 0.10000
-cansend vcan0 485#BC00BCFF
-sleep 0.10000
-cansend vcan0 485#BD00B5FF
-sleep 0.10000
-cansend vcan0 485#BD00AEFF
-sleep 0.10000
-cansend vcan0 485#BE00A7FF
-sleep 0.10000
-cansend vcan0 485#BE009FFF
-sleep 0.10000
-cansend vcan0 485#BE0098FF
-sleep 0.10000
-cansend vcan0 485#BD0090FF
-sleep 0.10000
-cansend vcan0 485#BC0089FF
-sleep 0.10000
-cansend vcan0 485#BB0081FF
-sleep 0.10000
-cansend vcan0 485#BA0079FF
-sleep 0.10000
-cansend vcan0 485#B80071FF
-sleep 0.10000
-cansend vcan0 485#B6006AFF
-sleep 0.10000
-cansend vcan0 485#B30062FF
-sleep 0.10000
-cansend vcan0 485#B1005AFF
-sleep 0.10000
-cansend vcan0 485#AE0052FF
-sleep 0.10000
-cansend vcan0 485#AA004AFF
-sleep 0.10000
-cansend vcan0 485#A70043FF
-sleep 0.10000
-cansend vcan0 485#A3003BFF
-sleep 0.10000
-cansend vcan0 485#9F0033FF
-sleep 0.10000
-cansend vcan0 485#9A002CFF
-sleep 0.10000
-cansend vcan0 485#950024FF
-sleep 0.10000
-cansend vcan0 485#90001DFF
-sleep 0.10000
-cansend vcan0 485#8A0016FF
-sleep 0.10000
-cansend vcan0 485#85000FFF
-sleep 0.10000
-cansend vcan0 485#7E0008FF
-sleep 0.10000
-cansend vcan0 485#780001FF
-sleep 0.10000
-cansend vcan0 485#7100FAFE
-sleep 0.10000
-cansend vcan0 485#6A00F4FE
-sleep 0.10000
-cansend vcan0 485#6300EEFE
-sleep 0.10000
-cansend vcan0 485#5B00E8FE
-sleep 0.10000
-cansend vcan0 485#5300E2FE
-sleep 0.10000
-cansend vcan0 485#4B00DCFE
-sleep 0.10000
-cansend vcan0 485#4200D7FE
-sleep 0.10000
-cansend vcan0 485#3A00D1FE
-sleep 0.10000
-cansend vcan0 485#3100CDFE
-sleep 0.10000
-cansend vcan0 485#2700C8FE
-sleep 0.10000
-cansend vcan0 485#1E00C4FE
-sleep 0.10000
-cansend vcan0 485#1400C0FE
-sleep 0.10000
-cansend vcan0 485#0A00BCFE
-sleep 0.10000
-cansend vcan0 485#0000B8FE
-sleep 0.10000
-cansend vcan0 485#F6FFB5FE
-sleep 0.10000
-cansend vcan0 485#EBFFB2FE
-sleep 0.10000
-cansend vcan0 485#E0FFB0FE
-sleep 0.10000
-cansend vcan0 485#D5FFAEFE
-sleep 0.10000
-cansend vcan0 485#CAFFACFE
-sleep 0.10000
-cansend vcan0 485#BFFFABFE
-sleep 0.10000
-cansend vcan0 485#B4FFAAFE
-sleep 0.10000
-cansend vcan0 485#A8FFA9FE
-sleep 0.10000
-cansend vcan0 485#9CFFA9FE
-sleep 0.10000
-cansend vcan0 485#91FFA9FE
-sleep 0.10000
-cansend vcan0 485#85FFAAFE
-sleep 0.10000
-cansend vcan0 485#79FFABFE
-sleep 0.10000
-cansend vcan0 485#6DFFACFE
-sleep 0.10000
-cansend vcan0 485#61FFAEFE
-sleep 0.10000
-cansend vcan0 485#55FFB0FE
-sleep 0.10000
-cansend vcan0 485#49FFB3FE
-sleep 0.10000
-cansend vcan0 485#3DFFB6FE
-sleep 0.10000
-cansend vcan0 485#31FFBAFE
-sleep 0.10000
-cansend vcan0 485#25FFBDFE
-sleep 0.10000
-cansend vcan0 485#19FFC2FE
-sleep 0.10000
-cansend vcan0 485#0DFFC7FE
-sleep 0.10000
-cansend vcan0 485#01FFCCFE
-sleep 0.10000
-cansend vcan0 485#F5FED2FE
-sleep 0.10000
-cansend vcan0 485#EAFED8FE
-sleep 0.10000
-cansend vcan0 485#DEFEDEFE
-sleep 0.10000
-cansend vcan0 485#D3FEE5FE
-sleep 0.10000
-cansend vcan0 485#C8FEEDFE
-sleep 0.10000
-cansend vcan0 485#BDFEF5FE
-sleep 0.10000
-cansend vcan0 485#B2FEFDFE
-sleep 0.10000
-cansend vcan0 485#A7FE06FF
-sleep 0.10000
-cansend vcan0 485#9DFE0FFF
-sleep 0.10000
-cansend vcan0 485#93FE18FF
-sleep 0.10000
-cansend vcan0 485#89FE22FF
-sleep 0.10000
-cansend vcan0 485#7FFE2CFF
-sleep 0.10000
-cansend vcan0 485#76FE37FF
-sleep 0.10000
-cansend vcan0 485#6DFE42FF
-sleep 0.10000
-cansend vcan0 485#64FE4EFF
-sleep 0.10000
-cansend vcan0 485#5CFE5AFF
-sleep 0.10000
-cansend vcan0 485#53FE66FF
-sleep 0.10000
-cansend vcan0 485#4CFE72FF
-sleep 0.10000
-cansend vcan0 485#44FE7FFF
-sleep 0.10000
-cansend vcan0 485#3DFE8CFF
-sleep 0.10000
-cansend vcan0 485#37FE9AFF
-sleep 0.10000
-cansend vcan0 485#31FEA8FF
-sleep 0.10000
-cansend vcan0 485#2BFEB6FF
-sleep 0.10000
-cansend vcan0 485#25FEC4FF
-sleep 0.10000
-cansend vcan0 485#20FED3FF
-sleep 0.10000
-cansend vcan0 485#1CFEE2FF
-sleep 0.10000
-cansend vcan0 485#18FEF1FF
-sleep 0.10000
-cansend vcan0 485#14FE0000
-sleep 0.10000
-cansend vcan0 485#11FE1000
-sleep 0.10000
-cansend vcan0 485#0FFE1F00
-sleep 0.10000
-cansend vcan0 485#0DFE2F00
-sleep 0.10000
-cansend vcan0 485#0BFE3F00
-sleep 0.10000
-cansend vcan0 485#0AFE4F00
-sleep 0.10000
-cansend vcan0 485#0AFE6000
-sleep 0.10000
-cansend vcan0 485#0AFE7000
-sleep 0.10000
-cansend vcan0 485#0BFE8100
-sleep 0.10000
-cansend vcan0 485#0CFE9100
-sleep 0.10000
-cansend vcan0 485#0DFEA200
-sleep 0.10000
-cansend vcan0 485#10FEB300
-sleep 0.10000
-cansend vcan0 485#12FEC300
-sleep 0.10000
-cansend vcan0 485#16FED400
-sleep 0.10000
-cansend vcan0 485#1AFEE500
-sleep 0.10000
-cansend vcan0 485#1EFEF500
-sleep 0.10000
-cansend vcan0 485#23FE0601
-sleep 0.10000
-cansend vcan0 485#29FE1701
-sleep 0.10000
-cansend vcan0 485#2FFE2701
-sleep 0.10000
-cansend vcan0 485#36FE3701
-sleep 0.10000
-cansend vcan0 485#3DFE4701
-sleep 0.10000
-cansend vcan0 485#45FE5701
-sleep 0.10000
-cansend vcan0 485#4EFE6701
-sleep 0.10000
-cansend vcan0 485#57FE7701
-sleep 0.10000
-cansend vcan0 485#60FE8601
-sleep 0.10000
-cansend vcan0 485#6BFE9501
-sleep 0.10000
-cansend vcan0 485#75FEA401
-sleep 0.10000
-cansend vcan0 485#80FEB301
-sleep 0.10000
-cansend vcan0 485#8CFEC101
-sleep 0.10000
-cansend vcan0 485#99FECF01
-sleep 0.10000
-cansend vcan0 485#A5FEDD01
-sleep 0.10000
-cansend vcan0 485#B3FEEB01
-sleep 0.10000
-cansend vcan0 485#C0FEF801
-sleep 0.10000
-cansend vcan0 485#CFFE0402
-sleep 0.10000
-cansend vcan0 485#DEFE1002
-sleep 0.10000
-cansend vcan0 485#EDFE1C02
-sleep 0.10000
-cansend vcan0 485#FDFE2702
-sleep 0.10000
-cansend vcan0 485#0DFF3202
-sleep 0.10000
-cansend vcan0 485#1DFF3D02
-sleep 0.10000
-cansend vcan0 485#2EFF4702
-sleep 0.10000
-cansend vcan0 485#40FF5002
-sleep 0.10000
-cansend vcan0 485#51FF5902
-sleep 0.10000
-cansend vcan0 485#64FF6102
-sleep 0.10000
-cansend vcan0 485#76FF6902
-sleep 0.10000
-cansend vcan0 485#89FF7002
-sleep 0.10000
-cansend vcan0 485#9CFF7702
-sleep 0.10000
-cansend vcan0 485#B0FF7D02
-sleep 0.10000
-cansend vcan0 485#C3FF8302
-sleep 0.10000
-cansend vcan0 485#D7FF8802
-sleep 0.10000
-cansend vcan0 485#ECFF8C02
-sleep 0.10000
-cansend vcan0 485#00008F02
-sleep 0.10000
-cansend vcan0 485#15009202
-sleep 0.10000
-cansend vcan0 485#2A009502
-sleep 0.10000
-cansend vcan0 485#3F009602
-sleep 0.10000
-cansend vcan0 485#54009702
-sleep 0.10000
-cansend vcan0 485#69009702
-sleep 0.10000
-cansend vcan0 485#7E009702
-sleep 0.10000
-cansend vcan0 485#94009602
-sleep 0.10000
-cansend vcan0 485#A9009402
-sleep 0.10000
-cansend vcan0 485#BF009202
-sleep 0.10000
-cansend vcan0 485#D5008E02
-sleep 0.10000
-cansend vcan0 485#EA008B02
-sleep 0.10000
-cansend vcan0 485#00018602
-sleep 0.10000
-cansend vcan0 485#15018102
-sleep 0.10000
-cansend vcan0 485#2B017A02
-sleep 0.10000
-cansend vcan0 485#40017402
-sleep 0.10000
-cansend vcan0 485#55016C02
-sleep 0.10000
-cansend vcan0 485#6A016402
-sleep 0.10000
-cansend vcan0 485#7F015B02
-sleep 0.10000
-cansend vcan0 485#93015202
-sleep 0.10000
-cansend vcan0 485#A8014702
-sleep 0.10000
-cansend vcan0 485#BC013C02
-sleep 0.10000
-cansend vcan0 485#D0013002
-sleep 0.10000
-cansend vcan0 485#E3012402
-sleep 0.10000
-cansend vcan0 485#F6011702
-sleep 0.10000
-cansend vcan0 485#09020902
-sleep 0.10000
-cansend vcan0 485#1C02FB01
-sleep 0.10000
-cansend vcan0 485#2E02EC01
-sleep 0.10000
-cansend vcan0 485#4002DC01
-sleep 0.10000
-cansend vcan0 485#5102CC01
-sleep 0.10000
-cansend vcan0 485#6202BB01
-sleep 0.10000
-cansend vcan0 485#7202A901
-sleep 0.10000
-cansend vcan0 485#82029701
-sleep 0.10000
-cansend vcan0 485#91028501
-sleep 0.10000
-cansend vcan0 485#A0027101
-sleep 0.10000
-cansend vcan0 485#AE025E01
-sleep 0.10000
-cansend vcan0 485#BC024901
-sleep 0.10000
-cansend vcan0 485#C9023401
-sleep 0.10000
-cansend vcan0 485#D5021F01
-sleep 0.10000
-cansend vcan0 485#E1020901
-sleep 0.10000
-cansend vcan0 485#EC02F300
-sleep 0.10000
-cansend vcan0 485#F602DC00
-sleep 0.10000
-cansend vcan0 485#0003C500
-sleep 0.10000
-cansend vcan0 485#0903AE00
-sleep 0.10000
-cansend vcan0 485#11039600
-sleep 0.10000
-cansend vcan0 485#19037E00
-sleep 0.10000
-cansend vcan0 485#20036500
-sleep 0.10000
-cansend vcan0 485#26034C00
-sleep 0.10000
-cansend vcan0 485#2B033300
-sleep 0.10000
-cansend vcan0 485#2F031A00
-sleep 0.10000
-cansend vcan0 485#33030000
-sleep 0.10000
-cansend vcan0 485#3603E6FF
-sleep 0.10000
-cansend vcan0 485#3803CCFF
-sleep 0.10000
-cansend vcan0 485#3903B2FF
-sleep 0.10000
-cansend vcan0 485#3A0398FF
-sleep 0.10000
-cansend vcan0 485#39037DFF
-sleep 0.10000
-cansend vcan0 485#380363FF
-sleep 0.10000
-cansend vcan0 485#360348FF
-sleep 0.10000
-cansend vcan0 485#33032EFF
-sleep 0.10000
-cansend vcan0 485#2F0313FF
-sleep 0.10000
-cansend vcan0 485#2A03F9FE
-sleep 0.10000
-cansend vcan0 485#2503DEFE
-sleep 0.10000
-cansend vcan0 485#1E03C4FE
-sleep 0.10000
-cansend vcan0 485#1703AAFE
-sleep 0.10000
-cansend vcan0 485#0F0390FE
-sleep 0.10000
-cansend vcan0 485#060376FE
-sleep 0.10000
-cansend vcan0 485#FC025CFE
-sleep 0.10000
-cansend vcan0 485#F10243FE
-sleep 0.10000
-cansend vcan0 485#E50229FE
-sleep 0.10000
-cansend vcan0 485#D90211FE
-sleep 0.10000
-cansend vcan0 485#CC02F8FD
-sleep 0.10000
-cansend vcan0 485#BE02E0FD
-sleep 0.10000
-cansend vcan0 485#AF02C8FD
-sleep 0.10000
-cansend vcan0 485#9F02B0FD
-sleep 0.10000
-cansend vcan0 485#8E0299FD
-sleep 0.10000
-cansend vcan0 485#7D0283FD
-sleep 0.10000
-cansend vcan0 485#6B026DFD
-sleep 0.10000
-cansend vcan0 485#580257FD
-sleep 0.10000
-cansend vcan0 485#450242FD
-sleep 0.10000
-cansend vcan0 485#30022EFD
-sleep 0.10000
-cansend vcan0 485#1B021AFD
-sleep 0.10000
-cansend vcan0 485#060206FD
-sleep 0.10000
-cansend vcan0 485#EF01F4FC
-sleep 0.10000
-cansend vcan0 485#D801E2FC
-sleep 0.10000
-cansend vcan0 485#C001D1FC
-sleep 0.10000
-cansend vcan0 485#A801C0FC
-sleep 0.10000
-cansend vcan0 485#8F01B0FC
-sleep 0.10000
-cansend vcan0 485#7501A1FC
-sleep 0.10000
-cansend vcan0 485#5B0193FC
-sleep 0.10000
-cansend vcan0 485#410185FC
-sleep 0.10000
-cansend vcan0 485#260178FC
-sleep 0.10000
-cansend vcan0 485#0A016CFC
-sleep 0.10000
-cansend vcan0 485#EE0061FC
-sleep 0.10000
-cansend vcan0 485#D10057FC
-sleep 0.10000
-cansend vcan0 485#B5004EFC
-sleep 0.10000
-cansend vcan0 485#970045FC
-sleep 0.10000
-cansend vcan0 485#7A003EFC
-sleep 0.10000
-cansend vcan0 485#5C0037FC
-sleep 0.10000
-cansend vcan0 485#3D0031FC
-sleep 0.10000
-cansend vcan0 485#1F002DFC
-sleep 0.10000
-cansend vcan0 485#000029FC
-sleep 0.10000
-cansend vcan0 485#E1FF26FC
-sleep 0.10000
-cansend vcan0 485#C2FF24FC
-sleep 0.10000
-cansend vcan0 485#A3FF24FC
-sleep 0.10000
-cansend vcan0 485#83FF24FC
-sleep 0.10000
-cansend vcan0 485#64FF25FC
-sleep 0.10000
-cansend vcan0 485#44FF27FC
-sleep 0.10000
-cansend vcan0 485#25FF2AFC
-sleep 0.10000
-cansend vcan0 485#05FF2EFC
-sleep 0.10000
-cansend vcan0 485#E6FE34FC
-sleep 0.10000
-cansend vcan0 485#C6FE3AFC
-sleep 0.10000
-cansend vcan0 485#A7FE41FC
-sleep 0.10000
-cansend vcan0 485#88FE49FC
-sleep 0.10000
-cansend vcan0 485#69FE53FC
-sleep 0.10000
-cansend vcan0 485#4AFE5DFC
-sleep 0.10000
-cansend vcan0 485#2BFE68FC
-sleep 0.10000
-cansend vcan0 485#0DFE75FC
-sleep 0.10000
-cansend vcan0 485#EFFD82FC
-sleep 0.10000
-cansend vcan0 485#D2FD90FC
-sleep 0.10000
-cansend vcan0 485#B4FD9FFC
-sleep 0.10000
-cansend vcan0 485#98FDB0FC
-sleep 0.10000
-cansend vcan0 485#7BFDC1FC
-sleep 0.10000
-cansend vcan0 485#5FFDD3FC
-sleep 0.10000
-cansend vcan0 485#44FDE6FC
-sleep 0.10000
-cansend vcan0 485#29FDFAFC
-sleep 0.10000
-cansend vcan0 485#0FFD0FFD
-sleep 0.10000
-cansend vcan0 485#F5FC25FD
-sleep 0.10000
-cansend vcan0 485#DCFC3BFD
-sleep 0.10000
-cansend vcan0 485#C4FC53FD
-sleep 0.10000
-cansend vcan0 485#ACFC6BFD
-sleep 0.10000
-cansend vcan0 485#95FC84FD
-sleep 0.10000
-cansend vcan0 485#7FFC9EFD
-sleep 0.10000
-cansend vcan0 485#69FCB9FD
-sleep 0.10000
-cansend vcan0 485#55FCD5FD
-sleep 0.10000
-cansend vcan0 485#41FCF1FD
-sleep 0.10000
-cansend vcan0 485#2EFC0EFE
-sleep 0.10000
-cansend vcan0 485#1CFC2BFE
-sleep 0.10000
-cansend vcan0 485#0BFC49FE
-sleep 0.10000
-cansend vcan0 485#FAFB68FE
-sleep 0.10000
-cansend vcan0 485#EBFB88FE
-sleep 0.10000
-cansend vcan0 485#DCFBA8FE
-sleep 0.10000
-cansend vcan0 485#CFFBC8FE
-sleep 0.10000
-cansend vcan0 485#C3FBE9FE
-sleep 0.10000
-cansend vcan0 485#B7FB0BFF
-sleep 0.10000
-cansend vcan0 485#ADFB2DFF
-sleep 0.10000
-cansend vcan0 485#A3FB4FFF
-sleep 0.10000
-cansend vcan0 485#9BFB72FF
-sleep 0.10000
-cansend vcan0 485#94FB95FF
-sleep 0.10000
-cansend vcan0 485#8EFBB8FF
-sleep 0.10000
-cansend vcan0 485#89FBDCFF
-sleep 0.10000
-cansend vcan0 485#85FB0000
-sleep 0.10000
-cansend vcan0 485#82FB2400
-sleep 0.10000
-cansend vcan0 485#81FB4800
-sleep 0.10000
-cansend vcan0 485#80FB6D00
-sleep 0.10000
-cansend vcan0 485#81FB9100
-sleep 0.10000
-cansend vcan0 485#83FBB600
-sleep 0.10000
-cansend vcan0 485#86FBDB00
-sleep 0.10000
-cansend vcan0 485#8AFBFF00
-sleep 0.10000
-cansend vcan0 485#90FB2401
-sleep 0.10000
-cansend vcan0 485#96FB4801
-sleep 0.10000
-cansend vcan0 485#9EFB6D01
-sleep 0.10000
-cansend vcan0 485#A7FB9101
-sleep 0.10000
-cansend vcan0 485#B1FBB501
-sleep 0.10000
-cansend vcan0 485#BCFBD801
-sleep 0.10000
-cansend vcan0 485#C9FBFC01
-sleep 0.10000
-cansend vcan0 485#D6FB1F02
-sleep 0.10000
-cansend vcan0 485#E5FB4202
-sleep 0.10000
-cansend vcan0 485#F5FB6402
-sleep 0.10000
-cansend vcan0 485#06FC8602
-sleep 0.10000
-cansend vcan0 485#18FCA802
-sleep 0.10000
-cansend vcan0 485#2BFCC902
-sleep 0.10000
-cansend vcan0 485#3FFCE902
-sleep 0.10000
-cansend vcan0 485#55FC0903
-sleep 0.10000
-cansend vcan0 485#6BFC2803
-sleep 0.10000
-cansend vcan0 485#83FC4703
-sleep 0.10000
-cansend vcan0 485#9BFC6503
-sleep 0.10000
-cansend vcan0 485#B5FC8203
-sleep 0.10000
-cansend vcan0 485#CFFC9F03
-sleep 0.10000
-cansend vcan0 485#EAFCBA03
-sleep 0.10000
-cansend vcan0 485#07FDD503
-sleep 0.10000
-cansend vcan0 485#24FDEF03
-sleep 0.10000
-cansend vcan0 485#42FD0904
-sleep 0.10000
-cansend vcan0 485#61FD2104
-sleep 0.10000
-cansend vcan0 485#81FD3804
-sleep 0.10000
-cansend vcan0 485#A2FD4F04
-sleep 0.10000
-cansend vcan0 485#C3FD6404
-sleep 0.10000
-cansend vcan0 485#E5FD7804
-sleep 0.10000
-cansend vcan0 485#08FE8C04
-sleep 0.10000
-cansend vcan0 485#2CFE9E04
-sleep 0.10000
-cansend vcan0 485#50FEAF04
-sleep 0.10000
-cansend vcan0 485#75FEBF04
-sleep 0.10000
-cansend vcan0 485#9BFECE04
-sleep 0.10000
-cansend vcan0 485#C1FEDC04
-sleep 0.10000
-cansend vcan0 485#E7FEE904
-sleep 0.10000
-cansend vcan0 485#0EFFF404
-sleep 0.10000
-cansend vcan0 485#36FFFE04
-sleep 0.10000
-cansend vcan0 485#5DFF0705
-sleep 0.10000
-cansend vcan0 485#86FF0F05
-sleep 0.10000
-cansend vcan0 485#AEFF1605
-sleep 0.10000
-cansend vcan0 485#D7FF1B05
-sleep 0.10000
-cansend vcan0 485#00001F05
-sleep 0.10000
-cansend vcan0 485#29002105
-sleep 0.10000
-cansend vcan0 485#53002305
-sleep 0.10000
-cansend vcan0 485#7C002305
-sleep 0.10000
-cansend vcan0 485#A6002105
-sleep 0.10000
-cansend vcan0 485#D0001F05
-sleep 0.10000
-cansend vcan0 485#F9001B05
-sleep 0.10000
-cansend vcan0 485#23011505
-sleep 0.10000
-cansend vcan0 485#4C010F05
-sleep 0.10000
-cansend vcan0 485#76010705
-sleep 0.10000
-cansend vcan0 485#9F01FE04
-sleep 0.10000
-cansend vcan0 485#C801F304
-sleep 0.10000
-cansend vcan0 485#F101E704
-sleep 0.10000
-cansend vcan0 485#1902DA04
-sleep 0.10000
-cansend vcan0 485#4202CB04
-sleep 0.10000
-cansend vcan0 485#6902BC04
-sleep 0.10000
-cansend vcan0 485#9102AB04
-sleep 0.10000
-cansend vcan0 485#B8029804
-sleep 0.10000
-cansend vcan0 485#DE028404
-sleep 0.10000
-cansend vcan0 485#04037004
-sleep 0.10000
-cansend vcan0 485#29035904
-sleep 0.10000
-cansend vcan0 485#4D034204
-sleep 0.10000
-cansend vcan0 485#71032904
-sleep 0.10000
-cansend vcan0 485#95031004
-sleep 0.10000
-cansend vcan0 485#B703F503
-sleep 0.10000
-cansend vcan0 485#D903D903
-sleep 0.10000
-cansend vcan0 485#FA03BC03
-sleep 0.10000
-cansend vcan0 485#1A049D03
-sleep 0.10000
-cansend vcan0 485#39047E03
-sleep 0.10000
-cansend vcan0 485#57045E03
-sleep 0.10000
-cansend vcan0 485#74043C03
-sleep 0.10000
-cansend vcan0 485#90041A03
-sleep 0.10000
-cansend vcan0 485#AB04F602
-sleep 0.10000
-cansend vcan0 485#C504D202
-sleep 0.10000
-cansend vcan0 485#DE04AD02
-sleep 0.10000
-cansend vcan0 485#F6048702
-sleep 0.10000
-cansend vcan0 485#0D056002
-sleep 0.10000
-cansend vcan0 485#22053902
-sleep 0.10000
-cansend vcan0 485#36051002
-sleep 0.10000
-cansend vcan0 485#4905E701
-sleep 0.10000
-cansend vcan0 485#5B05BE01
-sleep 0.10000
-cansend vcan0 485#6C059301
-sleep 0.10000
-cansend vcan0 485#7B056801
-sleep 0.10000
-cansend vcan0 485#89053D01
-sleep 0.10000
-cansend vcan0 485#95051101
-sleep 0.10000
-cansend vcan0 485#A005E400
-sleep 0.10000
-cansend vcan0 485#AA05B700
-sleep 0.10000
-cansend vcan0 485#B2058A00
-sleep 0.10000
-cansend vcan0 485#B9055C00
-sleep 0.10000
-cansend vcan0 485#BF052E00
-sleep 0.10000
-cansend vcan0 485#C3050000
-sleep 0.10000
-cansend vcan0 485#C505D2FF
-sleep 0.10000
-cansend vcan0 485#C605A3FF
-sleep 0.10000
-cansend vcan0 485#C60574FF
-sleep 0.10000
-cansend vcan0 485#C40546FF
-sleep 0.10000
-cansend vcan0 485#C10517FF
-sleep 0.10000
-cansend vcan0 485#BC05E8FE
-sleep 0.10000
-cansend vcan0 485#B505B9FE
-sleep 0.10000
-cansend vcan0 485#AE058BFE
-sleep 0.10000
-cansend vcan0 485#A4055CFE
-sleep 0.10000
-cansend vcan0 485#9A052EFE
-sleep 0.10000
-cansend vcan0 485#8D0500FE
-sleep 0.10000
-cansend vcan0 485#8005D3FD
-sleep 0.10000
-cansend vcan0 485#7005A5FD
-sleep 0.10000
-cansend vcan0 485#600579FD
-sleep 0.10000
-cansend vcan0 485#4E054CFD
-sleep 0.10000
-cansend vcan0 485#3A0520FD
-sleep 0.10000
-cansend vcan0 485#2505F5FC
-sleep 0.10000
-cansend vcan0 485#0F05CAFC
-sleep 0.10000
-cansend vcan0 485#F704A0FC
-sleep 0.10000
-cansend vcan0 485#DE0477FC
-sleep 0.10000
-cansend vcan0 485#C3044EFC
-sleep 0.10000
-cansend vcan0 485#A80426FC
-sleep 0.10000
-cansend vcan0 485#8B04FFFB
-sleep 0.10000
-cansend vcan0 485#6C04D9FB
-sleep 0.10000
-cansend vcan0 485#4D04B3FB
-sleep 0.10000
-cansend vcan0 485#2C048FFB
-sleep 0.10000
-cansend vcan0 485#0A046CFB
-sleep 0.10000
-cansend vcan0 485#E60349FB
-sleep 0.10000
-cansend vcan0 485#C20328FB
-sleep 0.10000
-cansend vcan0 485#9C0308FB
-sleep 0.10000
-cansend vcan0 485#7603E8FA
-sleep 0.10000
-cansend vcan0 485#4E03CAFA
-sleep 0.10000
-cansend vcan0 485#2603AEFA
-sleep 0.10000
-cansend vcan0 485#FC0292FA
-sleep 0.10000
-cansend vcan0 485#D10278FA
-sleep 0.10000
-cansend vcan0 485#A6025FFA
-sleep 0.10000
-cansend vcan0 485#7A0247FA
-sleep 0.10000
-cansend vcan0 485#4D0231FA
-sleep 0.10000
-cansend vcan0 485#1F021CFA
-sleep 0.10000
-cansend vcan0 485#F00109FA
-sleep 0.10000
-cansend vcan0 485#C101F7F9
-sleep 0.10000
-cansend vcan0 485#9101E7F9
-sleep 0.10000
-cansend vcan0 485#6001D7F9
-sleep 0.10000
-cansend vcan0 485#2F01CAF9
-sleep 0.10000
-cansend vcan0 485#FE00BEF9
-sleep 0.10000
-cansend vcan0 485#CC00B4F9
-sleep 0.10000
-cansend vcan0 485#9900ABF9
-sleep 0.10000
-cansend vcan0 485#6600A3F9
-sleep 0.10000
-cansend vcan0 485#33009EF9
-sleep 0.10000
-cansend vcan0 485#00009AF9
-sleep 0.10000
-cansend vcan0 485#CCFF97F9
-sleep 0.10000
-cansend vcan0 485#99FF96F9
-sleep 0.10000
-cansend vcan0 485#65FF97F9
-sleep 0.10000
-cansend vcan0 485#31FF9AF9
-sleep 0.10000
-cansend vcan0 485#FDFE9EF9
-sleep 0.10000
-cansend vcan0 485#C9FEA3F9
-sleep 0.10000
-cansend vcan0 485#96FEABF9
-sleep 0.10000
-cansend vcan0 485#62FEB4F9
-sleep 0.10000
-cansend vcan0 485#2FFEBEF9
-sleep 0.10000
-cansend vcan0 485#FCFDCBF9
-sleep 0.10000
-cansend vcan0 485#C9FDD9F9
-sleep 0.10000
-cansend vcan0 485#96FDE8F9
-sleep 0.10000
-cansend vcan0 485#64FDF9F9
-sleep 0.10000
-cansend vcan0 485#33FD0CFA
-sleep 0.10000
-cansend vcan0 485#02FD20FA
-sleep 0.10000
-cansend vcan0 485#D1FC36FA
-sleep 0.10000
-cansend vcan0 485#A2FC4EFA
-sleep 0.10000
-cansend vcan0 485#73FC67FA
-sleep 0.10000
-cansend vcan0 485#44FC81FA
-sleep 0.10000
-cansend vcan0 485#16FC9EFA
-sleep 0.10000
-cansend vcan0 485#EAFBBBFA
-sleep 0.10000
-cansend vcan0 485#BEFBDAFA
-sleep 0.10000
-cansend vcan0 485#93FBFBFA
-sleep 0.10000
-cansend vcan0 485#69FB1CFB
-sleep 0.10000
-cansend vcan0 485#40FB40FB
-sleep 0.10000
-cansend vcan0 485#18FB64FB
-sleep 0.10000
-cansend vcan0 485#F1FA8AFB
-sleep 0.10000
-cansend vcan0 485#CBFAB1FB
-sleep 0.10000
-cansend vcan0 485#A6FADAFB
-sleep 0.10000
-cansend vcan0 485#83FA03FC
-sleep 0.10000
-cansend vcan0 485#61FA2EFC
-sleep 0.10000
-cansend vcan0 485#40FA5AFC
-sleep 0.10000
-cansend vcan0 485#21FA87FC
-sleep 0.10000
-cansend vcan0 485#03FAB5FC
-sleep 0.10000
-cansend vcan0 485#E6F9E4FC
-sleep 0.10000
-cansend vcan0 485#CBF914FD
-sleep 0.10000
-cansend vcan0 485#B1F945FD
-sleep 0.10000
-cansend vcan0 485#99F977FD
-sleep 0.10000
-cansend vcan0 485#82F9AAFD
-sleep 0.10000
-cansend vcan0 485#6DF9DDFD
-sleep 0.10000
-cansend vcan0 485#5AF911FE
-sleep 0.10000
-cansend vcan0 485#48F946FE
-sleep 0.10000
-cansend vcan0 485#38F97CFE
-sleep 0.10000
-cansend vcan0 485#29F9B2FE
-sleep 0.10000
-cansend vcan0 485#1CF9E9FE
-sleep 0.10000
-cansend vcan0 485#11F920FF
-sleep 0.10000
-cansend vcan0 485#08F957FF
-sleep 0.10000
-cansend vcan0 485#00F98FFF
-sleep 0.10000
-cansend vcan0 485#FAF8C7FF
-sleep 0.10000
-cansend vcan0 485#F6F80000
-sleep 0.10000
-cansend vcan0 485#F3F83900
-sleep 0.10000
-cansend vcan0 485#F3F87200
-sleep 0.10000
-cansend vcan0 485#F4F8AB00
-sleep 0.10000
-cansend vcan0 485#F7F8E400
-sleep 0.10000
-cansend vcan0 485#FCF81C01
-sleep 0.10000
-cansend vcan0 485#02F95501
-sleep 0.10000
-cansend vcan0 485#0BF98E01
-sleep 0.10000
-cansend vcan0 485#15F9C701
-sleep 0.10000
-cansend vcan0 485#21F9FF01
-sleep 0.10000
-cansend vcan0 485#2FF93702
-sleep 0.10000
-cansend vcan0 485#3EF96F02
-sleep 0.10000
-cansend vcan0 485#50F9A602
-sleep 0.10000
-cansend vcan0 485#63F9DD02
-sleep 0.10000
-cansend vcan0 485#78F91303
-sleep 0.10000
-cansend vcan0 485#8EF94803
-sleep 0.10000
-cansend vcan0 485#A7F97D03
-sleep 0.10000
-cansend vcan0 485#C1F9B203
-sleep 0.10000
-cansend vcan0 485#DDF9E503
-sleep 0.10000
-cansend vcan0 485#FAF91804
-sleep 0.10000
-cansend vcan0 485#19FA4A04
-sleep 0.10000
-cansend vcan0 485#3AFA7B04
-sleep 0.10000
-cansend vcan0 485#5CFAAB04
-sleep 0.10000
-cansend vcan0 485#80FADA04
-sleep 0.10000
-cansend vcan0 485#A5FA0805
-sleep 0.10000
-cansend vcan0 485#CCFA3405
-sleep 0.10000
-cansend vcan0 485#F4FA6005
-sleep 0.10000
-cansend vcan0 485#1EFB8A05
-sleep 0.10000
-cansend vcan0 485#49FBB305
-sleep 0.10000
-cansend vcan0 485#75FBDB05
-sleep 0.10000
-cansend vcan0 485#A3FB0206
-sleep 0.10000
-cansend vcan0 485#D2FB2706
-sleep 0.10000
-cansend vcan0 485#02FC4A06
-sleep 0.10000
-cansend vcan0 485#34FC6C06
-sleep 0.10000
-cansend vcan0 485#66FC8D06
-sleep 0.10000
-cansend vcan0 485#9AFCAC06
-sleep 0.10000
-cansend vcan0 485#CEFCC906
-sleep 0.10000
-cansend vcan0 485#04FDE506
-sleep 0.10000
-cansend vcan0 485#3BFDFF06
-sleep 0.10000
-cansend vcan0 485#72FD1807
-sleep 0.10000
-cansend vcan0 485#ABFD2F07
-sleep 0.10000
-cansend vcan0 485#E4FD4407
-sleep 0.10000
-cansend vcan0 485#1EFE5707
-sleep 0.10000
-cansend vcan0 485#58FE6807
-sleep 0.10000
-cansend vcan0 485#93FE7807
-sleep 0.10000
-cansend vcan0 485#CFFE8607
-sleep 0.10000
-cansend vcan0 485#0BFF9207
-sleep 0.10000
-cansend vcan0 485#48FF9C07
-sleep 0.10000
-cansend vcan0 485#85FFA407
-sleep 0.10000
-cansend vcan0 485#C2FFAA07
-sleep 0.10000
-cansend vcan0 485#0000AE07
-sleep 0.10000
-cansend vcan0 485#3E00B007
-sleep 0.10000
-cansend vcan0 485#7C00B107
-sleep 0.10000
-cansend vcan0 485#BA00AF07
-sleep 0.10000
-cansend vcan0 485#F800AC07
-sleep 0.10000
-cansend vcan0 485#3601A607
-sleep 0.10000
-cansend vcan0 485#74019F07
-sleep 0.10000
-cansend vcan0 485#B2019507
-sleep 0.10000
-cansend vcan0 485#EF018A07
-sleep 0.10000
-cansend vcan0 485#2D027C07
-sleep 0.10000
-cansend vcan0 485#6A026D07
-sleep 0.10000
-cansend vcan0 485#A6025C07
-sleep 0.10000
-cansend vcan0 485#E2024907
-sleep 0.10000
-cansend vcan0 485#1E033307
-sleep 0.10000
-cansend vcan0 485#59031C07
-sleep 0.10000
-cansend vcan0 485#93030407
-sleep 0.10000
-cansend vcan0 485#CC03E906
-sleep 0.10000
-cansend vcan0 485#0504CC06
-sleep 0.10000
-cansend vcan0 485#3D04AE06
-sleep 0.10000
-cansend vcan0 485#74048E06
-sleep 0.10000
-cansend vcan0 485#AA046C06
-sleep 0.10000
-cansend vcan0 485#DF044806
-sleep 0.10000
-cansend vcan0 485#13052206
-sleep 0.10000
-cansend vcan0 485#4605FB05
-sleep 0.10000
-cansend vcan0 485#7805D205
-sleep 0.10000
-cansend vcan0 485#A805A805
-sleep 0.10000
-cansend vcan0 485#D7057C05
-sleep 0.10000
-cansend vcan0 485#05064F05
-sleep 0.10000
-cansend vcan0 485#32062005
-sleep 0.10000
-cansend vcan0 485#5D06EF04
-sleep 0.10000
-cansend vcan0 485#8606BD04
-sleep 0.10000
-cansend vcan0 485#AE068A04
-sleep 0.10000
-cansend vcan0 485#D4065604
-sleep 0.10000
-cansend vcan0 485#F9062004
-sleep 0.10000
-cansend vcan0 485#1C07E903
-sleep 0.10000
-cansend vcan0 485#3E07B103
-sleep 0.10000
-cansend vcan0 485#5E077703
-sleep 0.10000
-cansend vcan0 485#7C073D03
-sleep 0.10000
-cansend vcan0 485#98070203
-sleep 0.10000
-cansend vcan0 485#B207C502
-sleep 0.10000
-cansend vcan0 485#CA078802
-sleep 0.10000
-cansend vcan0 485#E1074A02
-sleep 0.10000
-cansend vcan0 485#F6070B02
-sleep 0.10000
-cansend vcan0 485#0808CC01
-sleep 0.10000
-cansend vcan0 485#19088B01
-sleep 0.10000
-cansend vcan0 485#27084B01
-sleep 0.10000
-cansend vcan0 485#34080901
-sleep 0.10000
-cansend vcan0 485#3F08C800
-sleep 0.10000
-cansend vcan0 485#47088500
-sleep 0.10000
-cansend vcan0 485#4E084300
-sleep 0.10000
-cansend vcan0 485#52080000
-sleep 0.10000
-cansend vcan0 485#5408BDFF
-sleep 0.10000
-cansend vcan0 485#54087AFF
-sleep 0.10000
-cansend vcan0 485#520837FF
-sleep 0.10000
-cansend vcan0 485#4E08F3FE
-sleep 0.10000
-cansend vcan0 485#4808B0FE
-sleep 0.10000
-cansend vcan0 485#3F086DFE
-sleep 0.10000
-cansend vcan0 485#35082AFE
-sleep 0.10000
-cansend vcan0 485#2808E8FD
-sleep 0.10000
-cansend vcan0 485#1A08A6FD
-sleep 0.10000
-cansend vcan0 485#090864FD
-sleep 0.10000
-cansend vcan0 485#F60722FD
-sleep 0.10000
-cansend vcan0 485#E107E1FC
-sleep 0.10000
-cansend vcan0 485#CA07A1FC
-sleep 0.10000
-cansend vcan0 485#B10762FC
-sleep 0.10000
-cansend vcan0 485#960723FC
-sleep 0.10000
-cansend vcan0 485#7807E5FB
-sleep 0.10000
-cansend vcan0 485#5907A7FB
-sleep 0.10000
-cansend vcan0 485#38076BFB
-sleep 0.10000
-cansend vcan0 485#150730FB
-sleep 0.10000
-cansend vcan0 485#F006F6FA
-sleep 0.10000
-cansend vcan0 485#C906BCFA
-sleep 0.10000
-cansend vcan0 485#A10684FA
-sleep 0.10000
-cansend vcan0 485#76064EFA
-sleep 0.10000
-cansend vcan0 485#4A0618FA
-sleep 0.10000
-cansend vcan0 485#1C06E4F9
-sleep 0.10000
-cansend vcan0 485#EC05B1F9
-sleep 0.10000
-cansend vcan0 485#BB0580F9
-sleep 0.10000
-cansend vcan0 485#880550F9
-sleep 0.10000
-cansend vcan0 485#540522F9
-sleep 0.10000
-cansend vcan0 485#1E05F5F8
-sleep 0.10000
-cansend vcan0 485#E604CAF8
-sleep 0.10000
-cansend vcan0 485#AD04A1F8
-sleep 0.10000
-cansend vcan0 485#73047AF8
-sleep 0.10000
-cansend vcan0 485#380454F8
-sleep 0.10000
-cansend vcan0 485#FB0330F8
-sleep 0.10000
-cansend vcan0 485#BD030EF8
-sleep 0.10000
-cansend vcan0 485#7E03EEF7
-sleep 0.10000
-cansend vcan0 485#3E03D0F7
-sleep 0.10000
-cansend vcan0 485#FD02B4F7
-sleep 0.10000
-cansend vcan0 485#BB029AF7
-sleep 0.10000
-cansend vcan0 485#780282F7
-sleep 0.10000
-cansend vcan0 485#34026CF7
-sleep 0.10000
-cansend vcan0 485#EF0158F7
-sleep 0.10000
-cansend vcan0 485#AA0146F7
-sleep 0.10000
-cansend vcan0 485#640137F7
-sleep 0.10000
-cansend vcan0 485#1E0129F7
-sleep 0.10000
-cansend vcan0 485#D7001EF7
-sleep 0.10000
-cansend vcan0 485#900015F7
-sleep 0.10000
-cansend vcan0 485#48000FF7
-sleep 0.10000
-cansend vcan0 485#00000AF7
-sleep 0.10000
-cansend vcan0 485#B8FF08F7
-sleep 0.10000
-cansend vcan0 485#70FF08F7
-sleep 0.10000
-cansend vcan0 485#27FF0BF7
-sleep 0.10000
-cansend vcan0 485#DFFE0FF7
-sleep 0.10000
-cansend vcan0 485#97FE16F7
-sleep 0.10000
-cansend vcan0 485#4FFE20F7
-sleep 0.10000
-cansend vcan0 485#07FE2BF7
-sleep 0.10000
-cansend vcan0 485#BFFD39F7
-sleep 0.10000
-cansend vcan0 485#78FD49F7
-sleep 0.10000
-cansend vcan0 485#31FD5BF7
-sleep 0.10000
-cansend vcan0 485#EBFC70F7
-sleep 0.10000
-cansend vcan0 485#A5FC87F7
-sleep 0.10000
-cansend vcan0 485#60FCA0F7
-sleep 0.10000
-cansend vcan0 485#1CFCBBF7
-sleep 0.10000
-cansend vcan0 485#D8FBD9F7
-sleep 0.10000
-cansend vcan0 485#96FBF8F7
-sleep 0.10000
-cansend vcan0 485#54FB1AF8
-sleep 0.10000
-cansend vcan0 485#13FB3EF8
-sleep 0.10000
-cansend vcan0 485#D4FA63F8
-sleep 0.10000
-cansend vcan0 485#95FA8BF8
-sleep 0.10000
-cansend vcan0 485#58FAB5F8
-sleep 0.10000
-cansend vcan0 485#1CFAE1F8
-sleep 0.10000
-cansend vcan0 485#E1F90FF9
-sleep 0.10000
-cansend vcan0 485#A8F93FF9
-sleep 0.10000
-cansend vcan0 485#70F970F9
-sleep 0.10000
-cansend vcan0 485#3AF9A4F9
-sleep 0.10000
-cansend vcan0 485#05F9D9F9
-sleep 0.10000
-cansend vcan0 485#D2F80FFA
-sleep 0.10000
-cansend vcan0 485#A1F848FA
-sleep 0.10000
-cansend vcan0 485#71F882FA
-sleep 0.10000
-cansend vcan0 485#43F8BEFA
-sleep 0.10000
-cansend vcan0 485#17F8FBFA
-sleep 0.10000
-cansend vcan0 485#EDF739FB
-sleep 0.10000
-cansend vcan0 485#C4F779FB
-sleep 0.10000
-cansend vcan0 485#9EF7BBFB
-sleep 0.10000
-cansend vcan0 485#7AF7FDFB
-sleep 0.10000
-cansend vcan0 485#58F741FC
-sleep 0.10000
-cansend vcan0 485#38F786FC
-sleep 0.10000
-cansend vcan0 485#1AF7CCFC
-sleep 0.10000
-cansend vcan0 485#FEF613FD
-sleep 0.10000
-cansend vcan0 485#E4F65BFD
-sleep 0.10000
-cansend vcan0 485#CDF6A3FD
-sleep 0.10000
-cansend vcan0 485#B8F6EDFD
-sleep 0.10000
-cansend vcan0 485#A5F637FE
-sleep 0.10000
-cansend vcan0 485#95F682FE
-sleep 0.10000
-cansend vcan0 485#87F6CEFE
-sleep 0.10000
-cansend vcan0 485#7BF61AFF
-sleep 0.10000
-cansend vcan0 485#72F666FF
-sleep 0.10000
-cansend vcan0 485#6BF6B3FF
-sleep 0.10000
-cansend vcan0 485#66F60000
-sleep 0.10000
-cansend vcan0 485#64F64D00
-sleep 0.10000
-cansend vcan0 485#65F69B00
-sleep 0.10000
-cansend vcan0 485#68F6E800
-sleep 0.10000
-cansend vcan0 485#6DF63601
-sleep 0.10000
-cansend vcan0 485#75F68301
-sleep 0.10000
-cansend vcan0 485#7FF6D001
-sleep 0.10000
-cansend vcan0 485#8BF61D02
-sleep 0.10000
-cansend vcan0 485#9AF66A02
-sleep 0.10000
-cansend vcan0 485#ACF6B602
-sleep 0.10000
-cansend vcan0 485#C0F60203
-sleep 0.10000
-cansend vcan0 485#D6F64D03
-sleep 0.10000
-cansend vcan0 485#EEF69703
-sleep 0.10000
-cansend vcan0 485#0AF7E103
-sleep 0.10000
-cansend vcan0 485#27F72A04
-sleep 0.10000
-cansend vcan0 485#47F77204
-sleep 0.10000
-cansend vcan0 485#69F7B904
-sleep 0.10000
-cansend vcan0 485#8DF7FF04
-sleep 0.10000
-cansend vcan0 485#B3F74405
-sleep 0.10000
-cansend vcan0 485#DCF78805
-sleep 0.10000
-cansend vcan0 485#07F8CB05
-sleep 0.10000
-cansend vcan0 485#34F80C06
-sleep 0.10000
-cansend vcan0 485#63F84C06
-sleep 0.10000
-cansend vcan0 485#94F88B06
-sleep 0.10000
-cansend vcan0 485#C7F8C806
-sleep 0.10000
-cansend vcan0 485#FCF80407
-sleep 0.10000
-cansend vcan0 485#33F93E07
-sleep 0.10000
-cansend vcan0 485#6CF97607
-sleep 0.10000
-cansend vcan0 485#A7F9AC07
-sleep 0.10000
-cansend vcan0 485#E4F9E107
-sleep 0.10000
-cansend vcan0 485#22FA1408
-sleep 0.10000
-cansend vcan0 485#62FA4508
-sleep 0.10000
-cansend vcan0 485#A3FA7308
-sleep 0.10000
-cansend vcan0 485#E6FAA008
-sleep 0.10000
-cansend vcan0 485#2AFBCB08
-sleep 0.10000
-cansend vcan0 485#70FBF408
-sleep 0.10000
-cansend vcan0 485#B7FB1A09
-sleep 0.10000
-cansend vcan0 485#00FC3F09
-sleep 0.10000
-cansend vcan0 485#49FC6109
-sleep 0.10000
-cansend vcan0 485#94FC8009
-sleep 0.10000
-cansend vcan0 485#E0FC9E09
-sleep 0.10000
-cansend vcan0 485#2DFDB909
-sleep 0.10000
-cansend vcan0 485#7BFDD209
-sleep 0.10000
-cansend vcan0 485#C9FDE809
-sleep 0.10000
-cansend vcan0 485#18FEFC09
-sleep 0.10000
-cansend vcan0 485#68FE0D0A
-sleep 0.10000
-cansend vcan0 485#B9FE1C0A
-sleep 0.10000
-cansend vcan0 485#0AFF280A
-sleep 0.10000
-cansend vcan0 485#5CFF320A
-sleep 0.10000
-cansend vcan0 485#AEFF390A
-sleep 0.10000
-cansend vcan0 485#00003D0A
-sleep 0.10000
-cansend vcan0 485#52003F0A
-sleep 0.10000
-cansend vcan0 485#A5003F0A
-sleep 0.10000
-cansend vcan0 485#F8003C0A
-sleep 0.10000
-cansend vcan0 485#4A01360A
-sleep 0.10000
-cansend vcan0 485#9D012D0A
-sleep 0.10000
-cansend vcan0 485#EF01220A
-sleep 0.10000
-cansend vcan0 485#4102150A
-sleep 0.10000
-cansend vcan0 485#9202040A
-sleep 0.10000
-cansend vcan0 485#E402F209
-sleep 0.10000
-cansend vcan0 485#3403DC09
-sleep 0.10000
-cansend vcan0 485#8403C409
-sleep 0.10000
-cansend vcan0 485#D303AA09
-sleep 0.10000
-cansend vcan0 485#22048D09
-sleep 0.10000
-cansend vcan0 485#70046D09
-sleep 0.10000
-cansend vcan0 485#BC044B09
-sleep 0.10000
-cansend vcan0 485#08052709
-sleep 0.10000
-cansend vcan0 485#53050009
-sleep 0.10000
-cansend vcan0 485#9C05D708
-sleep 0.10000
-cansend vcan0 485#E405AC08
-sleep 0.10000
-cansend vcan0 485#2B067E08
-sleep 0.10000
-cansend vcan0 485#71064E08
-sleep 0.10000
-cansend vcan0 485#B5061B08
-sleep 0.10000
-cansend vcan0 485#F706E707
-sleep 0.10000
-cansend vcan0 485#3807B007
-sleep 0.10000
-cansend vcan0 485#78077807
-sleep 0.10000
-cansend vcan0 485#B5073D07
-sleep 0.10000
-cansend vcan0 485#F1070007
-sleep 0.10000
-cansend vcan0 485#2A08C106
-sleep 0.10000
-cansend vcan0 485#62088106
-sleep 0.10000
-cansend vcan0 485#98083F06
-sleep 0.10000
-cansend vcan0 485#CC08FB05
-sleep 0.10000
-cansend vcan0 485#FE08B505
-sleep 0.10000
-cansend vcan0 485#2D096D05
-sleep 0.10000
-cansend vcan0 485#5B092505
-sleep 0.10000
-cansend vcan0 485#8609DA04
-sleep 0.10000
-cansend vcan0 485#AF098E04
-sleep 0.10000
-cansend vcan0 485#D5094104
-sleep 0.10000
-cansend vcan0 485#F909F303
-sleep 0.10000
-cansend vcan0 485#1B0AA303
-sleep 0.10000
-cansend vcan0 485#3A0A5303
-sleep 0.10000
-cansend vcan0 485#560A0103
-sleep 0.10000
-cansend vcan0 485#700AAE02
-sleep 0.10000
-cansend vcan0 485#880A5B02
-sleep 0.10000
-cansend vcan0 485#9D0A0602
-sleep 0.10000
-cansend vcan0 485#AF0AB101
-sleep 0.10000
-cansend vcan0 485#BE0A5B01
-sleep 0.10000
-cansend vcan0 485#CB0A0501
-sleep 0.10000
-cansend vcan0 485#D50AAE00
-sleep 0.10000
-cansend vcan0 485#DD0A5700
-sleep 0.10000
-cansend vcan0 485#E10A0000
-sleep 0.10000
-cansend vcan0 485#E30AA8FF
-sleep 0.10000
-cansend vcan0 485#E20A51FF
-sleep 0.10000
-cansend vcan0 485#DF0AF9FE
-sleep 0.10000
-cansend vcan0 485#D80AA1FE
-sleep 0.10000
-cansend vcan0 485#CF0A4AFE
-sleep 0.10000
-cansend vcan0 485#C30AF2FD
-sleep 0.10000
-cansend vcan0 485#B50A9BFD
-sleep 0.10000
-cansend vcan0 485#A30A45FD
-sleep 0.10000
-cansend vcan0 485#8F0AEFFC
-sleep 0.10000
-cansend vcan0 485#780A99FC
-sleep 0.10000
-cansend vcan0 485#5E0A44FC
-sleep 0.10000
-cansend vcan0 485#420AF0FB
-sleep 0.10000
-cansend vcan0 485#230A9DFB
-sleep 0.10000
-cansend vcan0 485#020A4BFB
-sleep 0.10000
-cansend vcan0 485#DD09F9FA
-sleep 0.10000
-cansend vcan0 485#B709A9FA
-sleep 0.10000
-cansend vcan0 485#8D095AFA
-sleep 0.10000
-cansend vcan0 485#61090CFA
-sleep 0.10000
-cansend vcan0 485#3309BFF9
-sleep 0.10000
-cansend vcan0 485#020974F9
-sleep 0.10000
-cansend vcan0 485#CF082BF9
-sleep 0.10000
-cansend vcan0 485#9A08E3F8
-sleep 0.10000
-cansend vcan0 485#62089CF8
-sleep 0.10000
-cansend vcan0 485#280858F8
-sleep 0.10000
-cansend vcan0 485#EB0715F8
-sleep 0.10000
-cansend vcan0 485#AD07D4F7
-sleep 0.10000
-cansend vcan0 485#6C0794F7
-sleep 0.10000
-cansend vcan0 485#2A0757F7
-sleep 0.10000
-cansend vcan0 485#E5061CF7
-sleep 0.10000
-cansend vcan0 485#9F06E3F6
-sleep 0.10000
-cansend vcan0 485#5706ACF6
-sleep 0.10000
-cansend vcan0 485#0D0678F6
-sleep 0.10000
-cansend vcan0 485#C10546F6
-sleep 0.10000
-cansend vcan0 485#730516F6
-sleep 0.10000
-cansend vcan0 485#2505E8F5
-sleep 0.10000
-cansend vcan0 485#D404BDF5
-sleep 0.10000
-cansend vcan0 485#820495F5
-sleep 0.10000
-cansend vcan0 485#2F046FF5
-sleep 0.10000
-cansend vcan0 485#DB034BF5
-sleep 0.10000
-cansend vcan0 485#85032AF5
-sleep 0.10000
-cansend vcan0 485#2F030CF5
-sleep 0.10000
-cansend vcan0 485#D702F1F4
-sleep 0.10000
-cansend vcan0 485#7E02D8F4
-sleep 0.10000
-cansend vcan0 485#2502C3F4
-sleep 0.10000
-cansend vcan0 485#CB01AFF4
-sleep 0.10000
-cansend vcan0 485#70019FF4
-sleep 0.10000
-cansend vcan0 485#150192F4
-sleep 0.10000
-cansend vcan0 485#B90087F4
-sleep 0.10000
-cansend vcan0 485#5D0080F4
-sleep 0.10000
-cansend vcan0 485#00007BF4
-sleep 0.10000
-cansend vcan0 485#A3FF79F4
-sleep 0.10000
-cansend vcan0 485#46FF7AF4
-sleep 0.10000
-cansend vcan0 485#EAFE7EF4
-sleep 0.10000
-cansend vcan0 485#8DFE85F4
-sleep 0.10000
-cansend vcan0 485#30FE8FF4
-sleep 0.10000
-cansend vcan0 485#D4FD9CF4
-sleep 0.10000
-cansend vcan0 485#78FDACF4
-sleep 0.10000
-cansend vcan0 485#1CFDBEF4
-sleep 0.10000
-cansend vcan0 485#C1FCD4F4
-sleep 0.10000
-cansend vcan0 485#67FCECF4
-sleep 0.10000
-cansend vcan0 485#0DFC07F5
-sleep 0.10000
-cansend vcan0 485#B4FB26F5
-sleep 0.10000
-cansend vcan0 485#5CFB46F5
-sleep 0.10000
-cansend vcan0 485#05FB6AF5
-sleep 0.10000
-cansend vcan0 485#AFFA91F5
-sleep 0.10000
-cansend vcan0 485#5AFABAF5
-sleep 0.10000
-cansend vcan0 485#06FAE6F5
-sleep 0.10000
-cansend vcan0 485#B4F914F6
-sleep 0.10000
-cansend vcan0 485#63F945F6
-sleep 0.10000
-cansend vcan0 485#14F979F6
-sleep 0.10000
-cansend vcan0 485#C6F8AFF6
-sleep 0.10000
-cansend vcan0 485#7AF8E8F6
-sleep 0.10000
-cansend vcan0 485#30F823F7
-sleep 0.10000
-cansend vcan0 485#E7F761F7
-sleep 0.10000
-cansend vcan0 485#A1F7A1F7
-sleep 0.10000
-cansend vcan0 485#5CF7E3F7
-sleep 0.10000
-cansend vcan0 485#1AF727F8
-sleep 0.10000
-cansend vcan0 485#D9F66EF8
-sleep 0.10000
-cansend vcan0 485#9BF6B6F8
-sleep 0.10000
-cansend vcan0 485#5FF601F9
-sleep 0.10000
-cansend vcan0 485#25F64DF9
-sleep 0.10000
-cansend vcan0 485#EEF59CF9
-sleep 0.10000
-cansend vcan0 485#B9F5ECF9
-sleep 0.10000
-cansend vcan0 485#86F53EFA
-sleep 0.10000
-cansend vcan0 485#56F591FA
-sleep 0.10000
-cansend vcan0 485#29F5E6FA
-sleep 0.10000
-cansend vcan0 485#FEF43DFB
-sleep 0.10000
-cansend vcan0 485#D6F495FB
-sleep 0.10000
-cansend vcan0 485#B1F4EEFB
-sleep 0.10000
-cansend vcan0 485#8FF448FC
-sleep 0.10000
-cansend vcan0 485#6FF4A4FC
-sleep 0.10000
-cansend vcan0 485#52F400FD
-sleep 0.10000
-cansend vcan0 485#38F45EFD
-sleep 0.10000
-cansend vcan0 485#22F4BCFD
-sleep 0.10000
-cansend vcan0 485#0EF41CFE
-sleep 0.10000
-cansend vcan0 485#FDF37BFE
-sleep 0.10000
-cansend vcan0 485#EFF3DCFE
-sleep 0.10000
-cansend vcan0 485#E4F33DFF
-sleep 0.10000
-cansend vcan0 485#DCF39EFF
-sleep 0.10000
-cansend vcan0 485#D7F30000
-sleep 0.10000
-cansend vcan0 485#D5F36200
-sleep 0.10000
-cansend vcan0 485#D7F3C400
-sleep 0.10000
-cansend vcan0 485#DBF32601
-sleep 0.10000
-cansend vcan0 485#E3F38801
-sleep 0.10000
-cansend vcan0 485#EDF3EA01
-sleep 0.10000
-cansend vcan0 485#FBF34B02
-sleep 0.10000
-cansend vcan0 485#0CF4AC02
-sleep 0.10000
-cansend vcan0 485#20F40D03
-sleep 0.10000
-cansend vcan0 485#36F46D03
-sleep 0.10000
-cansend vcan0 485#50F4CC03
-sleep 0.10000
-cansend vcan0 485#6DF42B04
-sleep 0.10000
-cansend vcan0 485#8DF48804
-sleep 0.10000
-cansend vcan0 485#B0F4E504
-sleep 0.10000
-cansend vcan0 485#D6F44105
-sleep 0.10000
-cansend vcan0 485#FFF49C05
-sleep 0.10000
-cansend vcan0 485#2AF5F505
-sleep 0.10000
-cansend vcan0 485#59F54D06
-sleep 0.10000
-cansend vcan0 485#8AF5A406
-sleep 0.10000
-cansend vcan0 485#BEF5F906
-sleep 0.10000
-cansend vcan0 485#F5F54C07
-sleep 0.10000
-cansend vcan0 485#2EF69E07
-sleep 0.10000
-cansend vcan0 485#6AF6EE07
-sleep 0.10000
-cansend vcan0 485#A8F63C08
-sleep 0.10000
-cansend vcan0 485#E9F68908
-sleep 0.10000
-cansend vcan0 485#2DF7D308
-sleep 0.10000
-cansend vcan0 485#73F71B09
-sleep 0.10000
-cansend vcan0 485#BBF76109
-sleep 0.10000
-cansend vcan0 485#05F8A509
-sleep 0.10000
-cansend vcan0 485#52F8E709
-sleep 0.10000
-cansend vcan0 485#A1F8260A
-sleep 0.10000
-cansend vcan0 485#F1F8630A
-sleep 0.10000
-cansend vcan0 485#44F99D0A
-sleep 0.10000
-cansend vcan0 485#98F9D40A
-sleep 0.10000
-cansend vcan0 485#EFF9090B
-sleep 0.10000
-cansend vcan0 485#47FA3C0B
-sleep 0.10000
-cansend vcan0 485#A0FA6B0B
-sleep 0.10000
-cansend vcan0 485#FCFA980B
-sleep 0.10000
-cansend vcan0 485#58FBC20B
-sleep 0.10000
-cansend vcan0 485#B6FBE90B
-sleep 0.10000
-cansend vcan0 485#16FC0D0C
-sleep 0.10000
-cansend vcan0 485#76FC2E0C
-sleep 0.10000
-cansend vcan0 485#D8FC4C0C
-sleep 0.10000
-cansend vcan0 485#3AFD670C
-sleep 0.10000
-cansend vcan0 485#9EFD7F0C
-sleep 0.10000
-cansend vcan0 485#02FE940C
-sleep 0.10000
-cansend vcan0 485#67FEA60C
-sleep 0.10000
-cansend vcan0 485#CDFEB40C
-sleep 0.10000
-cansend vcan0 485#33FFC00C
-sleep 0.10000
-cansend vcan0 485#99FFC80C
-sleep 0.10000
+cansend vcan0 485#CEFF3200
+cansend vcan0 486#CEFF3200
+sleep 0.08200
+cansend vcan0 485#CFFF3200
+cansend vcan0 486#CFFF3200
+sleep 0.08200
+cansend vcan0 485#CFFF3200
+cansend vcan0 486#D1FF3200
+sleep 0.08200
+cansend vcan0 485#D0FF3200
+cansend vcan0 486#D2FF3200
+sleep 0.08200
+cansend vcan0 485#D1FF3200
+cansend vcan0 486#D3FF3200
+sleep 0.08200
+cansend vcan0 485#D1FF3200
+cansend vcan0 486#D4FF3200
+sleep 0.08200
+cansend vcan0 485#D2FF3200
+cansend vcan0 486#D6FF3200
+sleep 0.08200
+cansend vcan0 485#D2FF3200
+cansend vcan0 486#D7FF3200
+sleep 0.08200
+cansend vcan0 485#D3FF3200
+cansend vcan0 486#D8FF3100
+sleep 0.08200
+cansend vcan0 485#D4FF3200
+cansend vcan0 486#D9FF3100
+sleep 0.08200
+cansend vcan0 485#D4FF3200
+cansend vcan0 486#DBFF3100
+sleep 0.08200
+cansend vcan0 485#D5FF3200
+cansend vcan0 486#DCFF3100
+sleep 0.08200
+cansend vcan0 485#D6FF3200
+cansend vcan0 486#DDFF3100
+sleep 0.08200
+cansend vcan0 485#D6FF3200
+cansend vcan0 486#DEFF3100
+sleep 0.08200
+cansend vcan0 485#D7FF3200
+cansend vcan0 486#E0FF3000
+sleep 0.08200
+cansend vcan0 485#D7FF3200
+cansend vcan0 486#E1FF3000
+sleep 0.08200
+cansend vcan0 485#D8FF3100
+cansend vcan0 486#E2FF3000
+sleep 0.08200
+cansend vcan0 485#D9FF3100
+cansend vcan0 486#E3FF3000
+sleep 0.08200
+cansend vcan0 485#D9FF3100
+cansend vcan0 486#E4FF2F00
+sleep 0.08200
+cansend vcan0 485#DAFF3100
+cansend vcan0 486#E6FF2F00
+sleep 0.08200
+cansend vcan0 485#DBFF3100
+cansend vcan0 486#E7FF2F00
+sleep 0.08200
+cansend vcan0 485#DBFF3100
+cansend vcan0 486#E8FF2F00
+sleep 0.08200
+cansend vcan0 485#DCFF3100
+cansend vcan0 486#E9FF2E00
+sleep 0.08200
+cansend vcan0 485#DCFF3100
+cansend vcan0 486#EBFF2E00
+sleep 0.08200
+cansend vcan0 485#DDFF3100
+cansend vcan0 486#ECFF2D00
+sleep 0.08200
+cansend vcan0 485#DEFF3100
+cansend vcan0 486#EDFF2D00
+sleep 0.08200
+cansend vcan0 485#DEFF3100
+cansend vcan0 486#EEFF2D00
+sleep 0.08200
+cansend vcan0 485#DFFF3100
+cansend vcan0 486#EFFF2C00
+sleep 0.08200
+cansend vcan0 485#E0FF3000
+cansend vcan0 486#F0FF2C00
+sleep 0.08200
+cansend vcan0 485#E0FF3000
+cansend vcan0 486#F2FF2B00
+sleep 0.08200
+cansend vcan0 485#E1FF3000
+cansend vcan0 486#F3FF2B00
+sleep 0.08200
+cansend vcan0 485#E1FF3000
+cansend vcan0 486#F4FF2B00
+sleep 0.08200
+cansend vcan0 485#E2FF3000
+cansend vcan0 486#F5FF2A00
+sleep 0.08200
+cansend vcan0 485#E3FF3000
+cansend vcan0 486#F6FF2A00
+sleep 0.08200
+cansend vcan0 485#E3FF3000
+cansend vcan0 486#F7FF2900
+sleep 0.08200
+cansend vcan0 485#E4FF3000
+cansend vcan0 486#F9FF2800
+sleep 0.08200
+cansend vcan0 485#E4FF2F00
+cansend vcan0 486#FAFF2800
+sleep 0.08200
+cansend vcan0 485#E5FF2F00
+cansend vcan0 486#FBFF2700
+sleep 0.08200
+cansend vcan0 485#E6FF2F00
+cansend vcan0 486#FCFF2700
+sleep 0.08200
+cansend vcan0 485#E6FF2F00
+cansend vcan0 486#FDFF2600
+sleep 0.08200
+cansend vcan0 485#E7FF2F00
+cansend vcan0 486#FEFF2600
+sleep 0.08200
+cansend vcan0 485#E7FF2F00
+cansend vcan0 486#FFFF2500
+sleep 0.08200
+cansend vcan0 485#E8FF2F00
+cansend vcan0 486#00002400
+sleep 0.08200
+cansend vcan0 485#E9FF2E00
+cansend vcan0 486#01002400
+sleep 0.08200
+cansend vcan0 485#E9FF2E00
+cansend vcan0 486#03002300
+sleep 0.08200
+cansend vcan0 485#EAFF2E00
+cansend vcan0 486#04002200
+sleep 0.08200
+cansend vcan0 485#EBFF2E00
+cansend vcan0 486#05002200
+sleep 0.08200
+cansend vcan0 485#EBFF2E00
+cansend vcan0 486#06002100
+sleep 0.08200
+cansend vcan0 485#ECFF2D00
+cansend vcan0 486#07002000
+sleep 0.08200
+cansend vcan0 485#ECFF2D00
+cansend vcan0 486#08002000
+sleep 0.08200
+cansend vcan0 485#EDFF2D00
+cansend vcan0 486#09001F00
+sleep 0.08200
+cansend vcan0 485#EDFF2D00
+cansend vcan0 486#0A001E00
+sleep 0.08200
+cansend vcan0 485#EEFF2D00
+cansend vcan0 486#0B001D00
+sleep 0.08200
+cansend vcan0 485#EFFF2D00
+cansend vcan0 486#0C001D00
+sleep 0.08200
+cansend vcan0 485#EFFF2C00
+cansend vcan0 486#0D001C00
+sleep 0.08200
+cansend vcan0 485#F0FF2C00
+cansend vcan0 486#0E001B00
+sleep 0.08200
+cansend vcan0 485#F0FF2C00
+cansend vcan0 486#0F001A00
+sleep 0.08200
+cansend vcan0 485#F1FF2C00
+cansend vcan0 486#10001900
+sleep 0.08200
+cansend vcan0 485#F2FF2B00
+cansend vcan0 486#11001900
+sleep 0.08200
+cansend vcan0 485#F2FF2B00
+cansend vcan0 486#12001800
+sleep 0.08200
+cansend vcan0 485#F3FF2B00
+cansend vcan0 486#12001700
+sleep 0.08200
+cansend vcan0 485#F3FF2B00
+cansend vcan0 486#13001600
+sleep 0.08200
+cansend vcan0 485#F4FF2B00
+cansend vcan0 486#14001500
+sleep 0.08200
+cansend vcan0 485#F5FF2A00
+cansend vcan0 486#15001400
+sleep 0.08200
+cansend vcan0 485#F5FF2A00
+cansend vcan0 486#16001300
+sleep 0.08200
+cansend vcan0 485#F6FF2A00
+cansend vcan0 486#17001200
+sleep 0.08200
+cansend vcan0 485#F6FF2A00
+cansend vcan0 486#18001200
+sleep 0.08200
+cansend vcan0 485#F7FF2900
+cansend vcan0 486#19001100
+sleep 0.08200
+cansend vcan0 485#F7FF2900
+cansend vcan0 486#19001000
+sleep 0.08200
+cansend vcan0 485#F8FF2900
+cansend vcan0 486#1A000F00
+sleep 0.08200
+cansend vcan0 485#F9FF2800
+cansend vcan0 486#1B000E00
+sleep 0.08200
+cansend vcan0 485#F9FF2800
+cansend vcan0 486#1C000D00
+sleep 0.08200
+cansend vcan0 485#FAFF2800
+cansend vcan0 486#1D000C00
+sleep 0.08200
+cansend vcan0 485#FAFF2800
+cansend vcan0 486#1D000B00
+sleep 0.08200
+cansend vcan0 485#FBFF2700
+cansend vcan0 486#1E000A00
+sleep 0.08200
+cansend vcan0 485#FBFF2700
+cansend vcan0 486#1F000900
+sleep 0.08200
+cansend vcan0 485#FCFF2700
+cansend vcan0 486#20000800
+sleep 0.08200
+cansend vcan0 485#FDFF2700
+cansend vcan0 486#20000700
+sleep 0.08200
+cansend vcan0 485#FDFF2600
+cansend vcan0 486#21000600
+sleep 0.08200
+cansend vcan0 485#FEFF2600
+cansend vcan0 486#22000500
+sleep 0.08200
+cansend vcan0 485#FEFF2600
+cansend vcan0 486#22000400
+sleep 0.08200
+cansend vcan0 485#FFFF2500
+cansend vcan0 486#23000300
+sleep 0.08200
+cansend vcan0 485#FFFF2500
+cansend vcan0 486#24000100
+sleep 0.08200
+cansend vcan0 485#00002500
+cansend vcan0 486#24000000
+sleep 0.08200
+cansend vcan0 485#00002400
+cansend vcan0 486#2500FFFF
+sleep 0.08200
+cansend vcan0 485#01002400
+cansend vcan0 486#2600FEFF
+sleep 0.08200
+cansend vcan0 485#01002400
+cansend vcan0 486#2600FDFF
+sleep 0.08200
+cansend vcan0 485#02002300
+cansend vcan0 486#2700FCFF
+sleep 0.08200
+cansend vcan0 485#03002300
+cansend vcan0 486#2700FBFF
+sleep 0.08200
+cansend vcan0 485#03002300
+cansend vcan0 486#2800FAFF
+sleep 0.08200
+cansend vcan0 485#04002200
+cansend vcan0 486#2800F9FF
+sleep 0.08200
+cansend vcan0 485#04002200
+cansend vcan0 486#2900F7FF
+sleep 0.08200
+cansend vcan0 485#05002200
+cansend vcan0 486#2A00F6FF
+sleep 0.08200
+cansend vcan0 485#05002100
+cansend vcan0 486#2A00F5FF
+sleep 0.08200
+cansend vcan0 485#06002100
+cansend vcan0 486#2B00F4FF
+sleep 0.08200
+cansend vcan0 485#06002100
+cansend vcan0 486#2B00F3FF
+sleep 0.08200
+cansend vcan0 485#07002000
+cansend vcan0 486#2B00F2FF
+sleep 0.08200
+cansend vcan0 485#07002000
+cansend vcan0 486#2C00F0FF
+sleep 0.08200
+cansend vcan0 485#08002000
+cansend vcan0 486#2C00EFFF
+sleep 0.08200
+cansend vcan0 485#08001F00
+cansend vcan0 486#2D00EEFF
+sleep 0.08200
+cansend vcan0 485#09001F00
+cansend vcan0 486#2D00EDFF
+sleep 0.08200
+cansend vcan0 485#09001F00
+cansend vcan0 486#2D00ECFF
+sleep 0.08200
+cansend vcan0 485#0A001E00
+cansend vcan0 486#2E00EBFF
+sleep 0.08200
+cansend vcan0 485#0A001E00
+cansend vcan0 486#2E00E9FF
+sleep 0.08200
+cansend vcan0 485#0B001D00
+cansend vcan0 486#2F00E8FF
+sleep 0.08200
+cansend vcan0 485#0B001D00
+cansend vcan0 486#2F00E7FF
+sleep 0.08200
+cansend vcan0 485#0C001D00
+cansend vcan0 486#2F00E6FF
+sleep 0.08200
+cansend vcan0 485#0C001C00
+cansend vcan0 486#2F00E4FF
+sleep 0.08200
+cansend vcan0 485#0D001C00
+cansend vcan0 486#3000E3FF
+sleep 0.08200
+cansend vcan0 485#0D001B00
+cansend vcan0 486#3000E2FF
+sleep 0.08200
+cansend vcan0 485#0E001B00
+cansend vcan0 486#3000E1FF
+sleep 0.08200
+cansend vcan0 485#0E001B00
+cansend vcan0 486#3000E0FF
+sleep 0.08200
+cansend vcan0 485#0F001A00
+cansend vcan0 486#3100DEFF
+sleep 0.08200
+cansend vcan0 485#0F001A00
+cansend vcan0 486#3100DDFF
+sleep 0.08200
+cansend vcan0 485#10001900
+cansend vcan0 486#3100DCFF
+sleep 0.08200
+cansend vcan0 485#10001900
+cansend vcan0 486#3100DBFF
+sleep 0.08200
+cansend vcan0 485#11001900
+cansend vcan0 486#3100D9FF
+sleep 0.08200
+cansend vcan0 485#11001800
+cansend vcan0 486#3100D8FF
+sleep 0.08200
+cansend vcan0 485#12001800
+cansend vcan0 486#3200D7FF
+sleep 0.08200
+cansend vcan0 485#12001700
+cansend vcan0 486#3200D6FF
+sleep 0.08200
+cansend vcan0 485#12001700
+cansend vcan0 486#3200D4FF
+sleep 0.08200
+cansend vcan0 485#13001600
+cansend vcan0 486#3200D3FF
+sleep 0.08200
+cansend vcan0 485#13001600
+cansend vcan0 486#3200D2FF
+sleep 0.08200
+cansend vcan0 485#14001600
+cansend vcan0 486#3200D1FF
+sleep 0.08200
+cansend vcan0 485#14001500
+cansend vcan0 486#3200CFFF
+sleep 0.08200
+cansend vcan0 485#15001500
+cansend vcan0 486#3200CEFF
+sleep 0.08200
+cansend vcan0 485#15001400
+cansend vcan0 486#3200CDFF
+sleep 0.08200
+cansend vcan0 485#16001400
+cansend vcan0 486#3200CBFF
+sleep 0.08200
+cansend vcan0 485#16001300
+cansend vcan0 486#3200CAFF
+sleep 0.08200
+cansend vcan0 485#16001300
+cansend vcan0 486#3200C9FF
+sleep 0.08200
+cansend vcan0 485#17001200
+cansend vcan0 486#3200C8FF
+sleep 0.08200
+cansend vcan0 485#17001200
+cansend vcan0 486#3200C6FF
+sleep 0.08200
+cansend vcan0 485#18001200
+cansend vcan0 486#3200C5FF
+sleep 0.08200
+cansend vcan0 485#18001100
+cansend vcan0 486#3100C4FF
+sleep 0.08200
+cansend vcan0 485#19001100
+cansend vcan0 486#3100C3FF
+sleep 0.08200
+cansend vcan0 485#19001000
+cansend vcan0 486#3100C1FF
+sleep 0.08200
+cansend vcan0 485#19001000
+cansend vcan0 486#3100C0FF
+sleep 0.08200
+cansend vcan0 485#1A000F00
+cansend vcan0 486#3100BFFF
+sleep 0.08200
+cansend vcan0 485#1A000F00
+cansend vcan0 486#3100BEFF
+sleep 0.08200
+cansend vcan0 485#1B000E00
+cansend vcan0 486#3000BCFF
+sleep 0.08200
+cansend vcan0 485#1B000E00
+cansend vcan0 486#3000BBFF
+sleep 0.08200
+cansend vcan0 485#1B000D00
+cansend vcan0 486#3000BAFF
+sleep 0.08200
+cansend vcan0 485#1C000D00
+cansend vcan0 486#3000B9FF
+sleep 0.08200
+cansend vcan0 485#1C000C00
+cansend vcan0 486#2F00B8FF
+sleep 0.08200
+cansend vcan0 485#1D000C00
+cansend vcan0 486#2F00B6FF
+sleep 0.08200
+cansend vcan0 485#1D000B00
+cansend vcan0 486#2F00B5FF
+sleep 0.08200
+cansend vcan0 485#1D000B00
+cansend vcan0 486#2F00B4FF
+sleep 0.08200
+cansend vcan0 485#1E000A00
+cansend vcan0 486#2E00B3FF
+sleep 0.08200
+cansend vcan0 485#1E000A00
+cansend vcan0 486#2E00B1FF
+sleep 0.08200
+cansend vcan0 485#1F000900
+cansend vcan0 486#2D00B0FF
+sleep 0.08200
+cansend vcan0 485#1F000900
+cansend vcan0 486#2D00AFFF
+sleep 0.08200
+cansend vcan0 485#1F000800
+cansend vcan0 486#2D00AEFF
+sleep 0.08200
+cansend vcan0 485#20000800
+cansend vcan0 486#2C00ADFF
+sleep 0.08200
+cansend vcan0 485#20000700
+cansend vcan0 486#2C00ACFF
+sleep 0.08200
+cansend vcan0 485#20000700
+cansend vcan0 486#2B00AAFF
+sleep 0.08200
+cansend vcan0 485#21000600
+cansend vcan0 486#2B00A9FF
+sleep 0.08200
+cansend vcan0 485#21000600
+cansend vcan0 486#2B00A8FF
+sleep 0.08200
+cansend vcan0 485#21000500
+cansend vcan0 486#2A00A7FF
+sleep 0.08200
+cansend vcan0 485#22000500
+cansend vcan0 486#2A00A6FF
+sleep 0.08200
+cansend vcan0 485#22000400
+cansend vcan0 486#2900A5FF
+sleep 0.08200
+cansend vcan0 485#22000400
+cansend vcan0 486#2800A3FF
+sleep 0.08200
+cansend vcan0 485#23000300
+cansend vcan0 486#2800A2FF
+sleep 0.08200
+cansend vcan0 485#23000300
+cansend vcan0 486#2700A1FF
+sleep 0.08200
+cansend vcan0 485#23000200
+cansend vcan0 486#2700A0FF
+sleep 0.08200
+cansend vcan0 485#24000100
+cansend vcan0 486#26009FFF
+sleep 0.08200
+cansend vcan0 485#24000100
+cansend vcan0 486#26009EFF
+sleep 0.08200
+cansend vcan0 485#24000000
+cansend vcan0 486#25009DFF
+sleep 0.08200
+cansend vcan0 485#25000000
+cansend vcan0 486#24009CFF
+sleep 0.08200
+cansend vcan0 485#2500FFFF
+cansend vcan0 486#24009BFF
+sleep 0.08200
+cansend vcan0 485#2500FFFF
+cansend vcan0 486#230099FF
+sleep 0.08200
+cansend vcan0 485#2600FEFF
+cansend vcan0 486#220098FF
+sleep 0.08200
+cansend vcan0 485#2600FEFF
+cansend vcan0 486#220097FF
+sleep 0.08200
+cansend vcan0 485#2600FDFF
+cansend vcan0 486#210096FF
+sleep 0.08200
+cansend vcan0 485#2700FDFF
+cansend vcan0 486#200095FF
+sleep 0.08200
+cansend vcan0 485#2700FCFF
+cansend vcan0 486#200094FF
+sleep 0.08200
+cansend vcan0 485#2700FBFF
+cansend vcan0 486#1F0093FF
+sleep 0.08200
+cansend vcan0 485#2700FBFF
+cansend vcan0 486#1E0092FF
+sleep 0.08200
+cansend vcan0 485#2800FAFF
+cansend vcan0 486#1D0091FF
+sleep 0.08200
+cansend vcan0 485#2800FAFF
+cansend vcan0 486#1D0090FF
+sleep 0.08200
+cansend vcan0 485#2800F9FF
+cansend vcan0 486#1C008FFF
+sleep 0.08200
+cansend vcan0 485#2800F9FF
+cansend vcan0 486#1B008EFF
+sleep 0.08200
+cansend vcan0 485#2900F8FF
+cansend vcan0 486#1A008DFF
+sleep 0.08200
+cansend vcan0 485#2900F7FF
+cansend vcan0 486#19008CFF
+sleep 0.08200
+cansend vcan0 485#2900F7FF
+cansend vcan0 486#19008BFF
+sleep 0.08200
+cansend vcan0 485#2A00F6FF
+cansend vcan0 486#18008AFF
+sleep 0.08200
+cansend vcan0 485#2A00F6FF
+cansend vcan0 486#17008AFF
+sleep 0.08200
+cansend vcan0 485#2A00F5FF
+cansend vcan0 486#160089FF
+sleep 0.08200
+cansend vcan0 485#2A00F5FF
+cansend vcan0 486#150088FF
+sleep 0.08200
+cansend vcan0 485#2B00F4FF
+cansend vcan0 486#140087FF
+sleep 0.08200
+cansend vcan0 485#2B00F3FF
+cansend vcan0 486#130086FF
+sleep 0.08200
+cansend vcan0 485#2B00F3FF
+cansend vcan0 486#120085FF
+sleep 0.08200
+cansend vcan0 485#2B00F2FF
+cansend vcan0 486#120084FF
+sleep 0.08200
+cansend vcan0 485#2B00F2FF
+cansend vcan0 486#110083FF
+sleep 0.08200
+cansend vcan0 485#2C00F1FF
+cansend vcan0 486#100083FF
+sleep 0.08200
+cansend vcan0 485#2C00F0FF
+cansend vcan0 486#0F0082FF
+sleep 0.08200
+cansend vcan0 485#2C00F0FF
+cansend vcan0 486#0E0081FF
+sleep 0.08200
+cansend vcan0 485#2C00EFFF
+cansend vcan0 486#0D0080FF
+sleep 0.08200
+cansend vcan0 485#2D00EFFF
+cansend vcan0 486#0C007FFF
+sleep 0.08200
+cansend vcan0 485#2D00EEFF
+cansend vcan0 486#0B007FFF
+sleep 0.08200
+cansend vcan0 485#2D00EDFF
+cansend vcan0 486#0A007EFF
+sleep 0.08200
+cansend vcan0 485#2D00EDFF
+cansend vcan0 486#09007DFF
+sleep 0.08200
+cansend vcan0 485#2D00ECFF
+cansend vcan0 486#08007CFF
+sleep 0.08200
+cansend vcan0 485#2D00ECFF
+cansend vcan0 486#07007CFF
+sleep 0.08200
+cansend vcan0 485#2E00EBFF
+cansend vcan0 486#06007BFF
+sleep 0.08200
+cansend vcan0 485#2E00EBFF
+cansend vcan0 486#05007AFF
+sleep 0.08200
+cansend vcan0 485#2E00EAFF
+cansend vcan0 486#04007AFF
+sleep 0.08200
+cansend vcan0 485#2E00E9FF
+cansend vcan0 486#030079FF
+sleep 0.08200
+cansend vcan0 485#2E00E9FF
+cansend vcan0 486#010078FF
+sleep 0.08200
+cansend vcan0 485#2F00E8FF
+cansend vcan0 486#000078FF
+sleep 0.08200
+cansend vcan0 485#2F00E7FF
+cansend vcan0 486#FFFF77FF
+sleep 0.08200
+cansend vcan0 485#2F00E7FF
+cansend vcan0 486#FEFF76FF
+sleep 0.08200
+cansend vcan0 485#2F00E6FF
+cansend vcan0 486#FDFF76FF
+sleep 0.08200
+cansend vcan0 485#2F00E6FF
+cansend vcan0 486#FCFF75FF
+sleep 0.08200
+cansend vcan0 485#2F00E5FF
+cansend vcan0 486#FBFF75FF
+sleep 0.08200
+cansend vcan0 485#2F00E4FF
+cansend vcan0 486#FAFF74FF
+sleep 0.08200
+cansend vcan0 485#3000E4FF
+cansend vcan0 486#F9FF74FF
+sleep 0.08200
+cansend vcan0 485#3000E3FF
+cansend vcan0 486#F7FF73FF
+sleep 0.08200
+cansend vcan0 485#3000E3FF
+cansend vcan0 486#F6FF72FF
+sleep 0.08200
+cansend vcan0 485#3000E2FF
+cansend vcan0 486#F5FF72FF
+sleep 0.08200
+cansend vcan0 485#3000E1FF
+cansend vcan0 486#F4FF71FF
+sleep 0.08200
+cansend vcan0 485#3000E1FF
+cansend vcan0 486#F3FF71FF
+sleep 0.08200
+cansend vcan0 485#3000E0FF
+cansend vcan0 486#F2FF71FF
+sleep 0.08200
+cansend vcan0 485#3000E0FF
+cansend vcan0 486#F0FF70FF
+sleep 0.08200
+cansend vcan0 485#3100DFFF
+cansend vcan0 486#EFFF70FF
+sleep 0.08200
+cansend vcan0 485#3100DEFF
+cansend vcan0 486#EEFF6FFF
+sleep 0.08200
+cansend vcan0 485#3100DEFF
+cansend vcan0 486#EDFF6FFF
+sleep 0.08200
+cansend vcan0 485#3100DDFF
+cansend vcan0 486#ECFF6FFF
+sleep 0.08200
+cansend vcan0 485#3100DCFF
+cansend vcan0 486#EBFF6EFF
+sleep 0.08200
+cansend vcan0 485#3100DCFF
+cansend vcan0 486#E9FF6EFF
+sleep 0.08200
+cansend vcan0 485#3100DBFF
+cansend vcan0 486#E8FF6DFF
+sleep 0.08200
+cansend vcan0 485#3100DBFF
+cansend vcan0 486#E7FF6DFF
+sleep 0.08200
+cansend vcan0 485#3100DAFF
+cansend vcan0 486#E6FF6DFF
+sleep 0.08200
+cansend vcan0 485#3100D9FF
+cansend vcan0 486#E4FF6DFF
+sleep 0.08200
+cansend vcan0 485#3100D9FF
+cansend vcan0 486#E3FF6CFF
+sleep 0.08200
+cansend vcan0 485#3100D8FF
+cansend vcan0 486#E2FF6CFF
+sleep 0.08200
+cansend vcan0 485#3200D7FF
+cansend vcan0 486#E1FF6CFF
+sleep 0.08200
+cansend vcan0 485#3200D7FF
+cansend vcan0 486#E0FF6CFF
+sleep 0.08200
+cansend vcan0 485#3200D6FF
+cansend vcan0 486#DEFF6BFF
+sleep 0.08200
+cansend vcan0 485#3200D6FF
+cansend vcan0 486#DDFF6BFF
+sleep 0.08200
+cansend vcan0 485#3200D5FF
+cansend vcan0 486#DCFF6BFF
+sleep 0.08200
+cansend vcan0 485#3200D4FF
+cansend vcan0 486#DBFF6BFF
+sleep 0.08200
+cansend vcan0 485#3200D4FF
+cansend vcan0 486#D9FF6BFF
+sleep 0.08200
+cansend vcan0 485#3200D3FF
+cansend vcan0 486#D8FF6BFF
+sleep 0.08200
+cansend vcan0 485#3200D2FF
+cansend vcan0 486#D7FF6AFF
+sleep 0.08200
+cansend vcan0 485#3200D2FF
+cansend vcan0 486#D6FF6AFF
+sleep 0.08200
+cansend vcan0 485#3200D1FF
+cansend vcan0 486#D4FF6AFF
+sleep 0.08200
+cansend vcan0 485#3200D1FF
+cansend vcan0 486#D3FF6AFF
+sleep 0.08200
+cansend vcan0 485#3200D0FF
+cansend vcan0 486#D2FF6AFF
+sleep 0.08200
+cansend vcan0 485#3200CFFF
+cansend vcan0 486#D1FF6AFF
+sleep 0.08200
+cansend vcan0 485#3200CFFF
+cansend vcan0 486#CFFF6AFF
+sleep 0.08200
+cansend vcan0 485#3200CEFF
+cansend vcan0 486#CEFF6AFF
+sleep 0.08200
+cansend vcan0 485#3200CDFF
+cansend vcan0 486#CDFF6AFF
+sleep 0.08200
+cansend vcan0 485#3200CDFF
+cansend vcan0 486#CBFF6AFF
+sleep 0.08200
+cansend vcan0 485#3200CCFF
+cansend vcan0 486#CAFF6AFF
+sleep 0.08200
+cansend vcan0 485#3200CBFF
+cansend vcan0 486#C9FF6AFF
+sleep 0.08200
+cansend vcan0 485#3200CBFF
+cansend vcan0 486#C8FF6AFF
+sleep 0.08200
+cansend vcan0 485#3200CAFF
+cansend vcan0 486#C6FF6AFF
+sleep 0.08200
+cansend vcan0 485#3200CAFF
+cansend vcan0 486#C5FF6AFF
+sleep 0.08200
+cansend vcan0 485#3200C9FF
+cansend vcan0 486#C4FF6BFF
+sleep 0.08200
+cansend vcan0 485#3200C8FF
+cansend vcan0 486#C3FF6BFF
+sleep 0.08200
+cansend vcan0 485#3200C8FF
+cansend vcan0 486#C1FF6BFF
+sleep 0.08200
+cansend vcan0 485#3200C7FF
+cansend vcan0 486#C0FF6BFF
+sleep 0.08200
+cansend vcan0 485#3200C6FF
+cansend vcan0 486#BFFF6BFF
+sleep 0.08200
+cansend vcan0 485#3200C6FF
+cansend vcan0 486#BEFF6BFF
+sleep 0.08200
+cansend vcan0 485#3200C5FF
+cansend vcan0 486#BCFF6CFF
+sleep 0.08200
+cansend vcan0 485#3200C5FF
+cansend vcan0 486#BBFF6CFF
+sleep 0.08200
+cansend vcan0 485#3100C4FF
+cansend vcan0 486#BAFF6CFF
+sleep 0.08200
+cansend vcan0 485#3100C3FF
+cansend vcan0 486#B9FF6CFF
+sleep 0.08200
+cansend vcan0 485#3100C3FF
+cansend vcan0 486#B8FF6DFF
+sleep 0.08200
+cansend vcan0 485#3100C2FF
+cansend vcan0 486#B6FF6DFF
+sleep 0.08200
+cansend vcan0 485#3100C1FF
+cansend vcan0 486#B5FF6DFF
+sleep 0.08200
+cansend vcan0 485#3100C1FF
+cansend vcan0 486#B4FF6DFF
+sleep 0.08200
+cansend vcan0 485#3100C0FF
+cansend vcan0 486#B3FF6EFF
+sleep 0.08200
+cansend vcan0 485#3100C0FF
+cansend vcan0 486#B1FF6EFF
+sleep 0.08200
+cansend vcan0 485#3100BFFF
+cansend vcan0 486#B0FF6FFF
+sleep 0.08200
+cansend vcan0 485#3100BEFF
+cansend vcan0 486#AFFF6FFF
+sleep 0.08200
+cansend vcan0 485#3100BEFF
+cansend vcan0 486#AEFF6FFF
+sleep 0.08200
+cansend vcan0 485#3100BDFF
+cansend vcan0 486#ADFF70FF
+sleep 0.08200
+cansend vcan0 485#3000BCFF
+cansend vcan0 486#ACFF70FF
+sleep 0.08200
+cansend vcan0 485#3000BCFF
+cansend vcan0 486#AAFF71FF
+sleep 0.08200
+cansend vcan0 485#3000BBFF
+cansend vcan0 486#A9FF71FF
+sleep 0.08200
+cansend vcan0 485#3000BBFF
+cansend vcan0 486#A8FF71FF
+sleep 0.08200
+cansend vcan0 485#3000BAFF
+cansend vcan0 486#A7FF72FF
+sleep 0.08200
+cansend vcan0 485#3000B9FF
+cansend vcan0 486#A6FF72FF
+sleep 0.08200
+cansend vcan0 485#3000B9FF
+cansend vcan0 486#A5FF73FF
+sleep 0.08200
+cansend vcan0 485#3000B8FF
+cansend vcan0 486#A3FF74FF
+sleep 0.08200
+cansend vcan0 485#2F00B8FF
+cansend vcan0 486#A2FF74FF
+sleep 0.08200
+cansend vcan0 485#2F00B7FF
+cansend vcan0 486#A1FF75FF
+sleep 0.08200
+cansend vcan0 485#2F00B6FF
+cansend vcan0 486#A0FF75FF
+sleep 0.08200
+cansend vcan0 485#2F00B6FF
+cansend vcan0 486#9FFF76FF
+sleep 0.08200
+cansend vcan0 485#2F00B5FF
+cansend vcan0 486#9EFF76FF
+sleep 0.08200
+cansend vcan0 485#2F00B5FF
+cansend vcan0 486#9DFF77FF
+sleep 0.08200
+cansend vcan0 485#2F00B4FF
+cansend vcan0 486#9CFF78FF
+sleep 0.08200
+cansend vcan0 485#2E00B3FF
+cansend vcan0 486#9BFF78FF
+sleep 0.08200
+cansend vcan0 485#2E00B3FF
+cansend vcan0 486#99FF79FF
+sleep 0.08200
+cansend vcan0 485#2E00B2FF
+cansend vcan0 486#98FF7AFF
+sleep 0.08200
+cansend vcan0 485#2E00B1FF
+cansend vcan0 486#97FF7AFF
+sleep 0.08200
+cansend vcan0 485#2E00B1FF
+cansend vcan0 486#96FF7BFF
+sleep 0.08200
+cansend vcan0 485#2D00B0FF
+cansend vcan0 486#95FF7CFF
+sleep 0.08200
+cansend vcan0 485#2D00B0FF
+cansend vcan0 486#94FF7CFF
+sleep 0.08200
+cansend vcan0 485#2D00AFFF
+cansend vcan0 486#93FF7DFF
+sleep 0.08200
+cansend vcan0 485#2D00AFFF
+cansend vcan0 486#92FF7EFF
+sleep 0.08200
+cansend vcan0 485#2D00AEFF
+cansend vcan0 486#91FF7FFF
+sleep 0.08200
+cansend vcan0 485#2D00ADFF
+cansend vcan0 486#90FF7FFF
+sleep 0.08200
+cansend vcan0 485#2C00ADFF
+cansend vcan0 486#8FFF80FF
+sleep 0.08200
+cansend vcan0 485#2C00ACFF
+cansend vcan0 486#8EFF81FF
+sleep 0.08200
+cansend vcan0 485#2C00ACFF
+cansend vcan0 486#8DFF82FF
+sleep 0.08200
+cansend vcan0 485#2C00ABFF
+cansend vcan0 486#8CFF83FF
+sleep 0.08200
+cansend vcan0 485#2B00AAFF
+cansend vcan0 486#8BFF83FF
+sleep 0.08200
+cansend vcan0 485#2B00AAFF
+cansend vcan0 486#8AFF84FF
+sleep 0.08200
+cansend vcan0 485#2B00A9FF
+cansend vcan0 486#8AFF85FF
+sleep 0.08200
+cansend vcan0 485#2B00A9FF
+cansend vcan0 486#89FF86FF
+sleep 0.08200
+cansend vcan0 485#2B00A8FF
+cansend vcan0 486#88FF87FF
+sleep 0.08200
+cansend vcan0 485#2A00A7FF
+cansend vcan0 486#87FF88FF
+sleep 0.08200
+cansend vcan0 485#2A00A7FF
+cansend vcan0 486#86FF89FF
+sleep 0.08200
+cansend vcan0 485#2A00A6FF
+cansend vcan0 486#85FF8AFF
+sleep 0.08200
+cansend vcan0 485#2A00A6FF
+cansend vcan0 486#84FF8AFF
+sleep 0.08200
+cansend vcan0 485#2900A5FF
+cansend vcan0 486#83FF8BFF
+sleep 0.08200
+cansend vcan0 485#2900A5FF
+cansend vcan0 486#83FF8CFF
+sleep 0.08200
+cansend vcan0 485#2900A4FF
+cansend vcan0 486#82FF8DFF
+sleep 0.08200
+cansend vcan0 485#2800A3FF
+cansend vcan0 486#81FF8EFF
+sleep 0.08200
+cansend vcan0 485#2800A3FF
+cansend vcan0 486#80FF8FFF
+sleep 0.08200
+cansend vcan0 485#2800A2FF
+cansend vcan0 486#7FFF90FF
+sleep 0.08200
+cansend vcan0 485#2800A2FF
+cansend vcan0 486#7FFF91FF
+sleep 0.08200
+cansend vcan0 485#2700A1FF
+cansend vcan0 486#7EFF92FF
+sleep 0.08200
+cansend vcan0 485#2700A1FF
+cansend vcan0 486#7DFF93FF
+sleep 0.08200
+cansend vcan0 485#2700A0FF
+cansend vcan0 486#7CFF94FF
+sleep 0.08200
+cansend vcan0 485#27009FFF
+cansend vcan0 486#7CFF95FF
+sleep 0.08200
+cansend vcan0 485#26009FFF
+cansend vcan0 486#7BFF96FF
+sleep 0.08200
+cansend vcan0 485#26009EFF
+cansend vcan0 486#7AFF97FF
+sleep 0.08200
+cansend vcan0 485#26009EFF
+cansend vcan0 486#7AFF98FF
+sleep 0.08200
+cansend vcan0 485#25009DFF
+cansend vcan0 486#79FF99FF
+sleep 0.08200
+cansend vcan0 485#25009DFF
+cansend vcan0 486#78FF9BFF
+sleep 0.08200
+cansend vcan0 485#25009CFF
+cansend vcan0 486#78FF9CFF
+sleep 0.08200
+cansend vcan0 485#24009CFF
+cansend vcan0 486#77FF9DFF
+sleep 0.08200
+cansend vcan0 485#24009BFF
+cansend vcan0 486#76FF9EFF
+sleep 0.08200
+cansend vcan0 485#24009BFF
+cansend vcan0 486#76FF9FFF
+sleep 0.08200
+cansend vcan0 485#23009AFF
+cansend vcan0 486#75FFA0FF
+sleep 0.08200
+cansend vcan0 485#230099FF
+cansend vcan0 486#75FFA1FF
+sleep 0.08200
+cansend vcan0 485#230099FF
+cansend vcan0 486#74FFA2FF
+sleep 0.08200
+cansend vcan0 485#220098FF
+cansend vcan0 486#74FFA3FF
+sleep 0.08200
+cansend vcan0 485#220098FF
+cansend vcan0 486#73FFA5FF
+sleep 0.08200
+cansend vcan0 485#220097FF
+cansend vcan0 486#72FFA6FF
+sleep 0.08200
+cansend vcan0 485#210097FF
+cansend vcan0 486#72FFA7FF
+sleep 0.08200
+cansend vcan0 485#210096FF
+cansend vcan0 486#71FFA8FF
+sleep 0.08200
+cansend vcan0 485#210096FF
+cansend vcan0 486#71FFA9FF
+sleep 0.08200
+cansend vcan0 485#200095FF
+cansend vcan0 486#71FFAAFF
+sleep 0.08200
+cansend vcan0 485#200095FF
+cansend vcan0 486#70FFACFF
+sleep 0.08200
+cansend vcan0 485#200094FF
+cansend vcan0 486#70FFADFF
+sleep 0.08200
+cansend vcan0 485#1F0094FF
+cansend vcan0 486#6FFFAEFF
+sleep 0.08200
+cansend vcan0 485#1F0093FF
+cansend vcan0 486#6FFFAFFF
+sleep 0.08200
+cansend vcan0 485#1F0093FF
+cansend vcan0 486#6FFFB0FF
+sleep 0.08200
+cansend vcan0 485#1E0092FF
+cansend vcan0 486#6EFFB1FF
+sleep 0.08200
+cansend vcan0 485#1E0092FF
+cansend vcan0 486#6EFFB3FF
+sleep 0.08200
+cansend vcan0 485#1D0091FF
+cansend vcan0 486#6DFFB4FF
+sleep 0.08200
+cansend vcan0 485#1D0091FF
+cansend vcan0 486#6DFFB5FF
+sleep 0.08200
+cansend vcan0 485#1D0090FF
+cansend vcan0 486#6DFFB6FF
+sleep 0.08200
+cansend vcan0 485#1C0090FF
+cansend vcan0 486#6DFFB8FF
+sleep 0.08200
+cansend vcan0 485#1C008FFF
+cansend vcan0 486#6CFFB9FF
+sleep 0.08200
+cansend vcan0 485#1B008FFF
+cansend vcan0 486#6CFFBAFF
+sleep 0.08200
+cansend vcan0 485#1B008EFF
+cansend vcan0 486#6CFFBBFF
+sleep 0.08200
+cansend vcan0 485#1B008EFF
+cansend vcan0 486#6CFFBCFF
+sleep 0.08200
+cansend vcan0 485#1A008DFF
+cansend vcan0 486#6BFFBEFF
+sleep 0.08200
+cansend vcan0 485#1A008DFF
+cansend vcan0 486#6BFFBFFF
+sleep 0.08200
+cansend vcan0 485#19008CFF
+cansend vcan0 486#6BFFC0FF
+sleep 0.08200
+cansend vcan0 485#19008CFF
+cansend vcan0 486#6BFFC1FF
+sleep 0.08200
+cansend vcan0 485#19008BFF
+cansend vcan0 486#6BFFC3FF
+sleep 0.08200
+cansend vcan0 485#18008BFF
+cansend vcan0 486#6BFFC4FF
+sleep 0.08200
+cansend vcan0 485#18008AFF
+cansend vcan0 486#6AFFC5FF
+sleep 0.08200
+cansend vcan0 485#17008AFF
+cansend vcan0 486#6AFFC6FF
+sleep 0.08200
+cansend vcan0 485#17008AFF
+cansend vcan0 486#6AFFC8FF
+sleep 0.08200
+cansend vcan0 485#160089FF
+cansend vcan0 486#6AFFC9FF
+sleep 0.08200
+cansend vcan0 485#160089FF
+cansend vcan0 486#6AFFCAFF
+sleep 0.08200
+cansend vcan0 485#160088FF
+cansend vcan0 486#6AFFCBFF
+sleep 0.08200
+cansend vcan0 485#150088FF
+cansend vcan0 486#6AFFCDFF
+sleep 0.08200
+cansend vcan0 485#150087FF
+cansend vcan0 486#6AFFCEFF
+sleep 0.08200
+cansend vcan0 485#140087FF
+cansend vcan0 486#6AFFCFFF
+sleep 0.08200
+cansend vcan0 485#140086FF
+cansend vcan0 486#6AFFD1FF
+sleep 0.08200
+cansend vcan0 485#130086FF
+cansend vcan0 486#6AFFD2FF
+sleep 0.08200
+cansend vcan0 485#130086FF
+cansend vcan0 486#6AFFD3FF
+sleep 0.08200
+cansend vcan0 485#120085FF
+cansend vcan0 486#6AFFD4FF
+sleep 0.08200
+cansend vcan0 485#120085FF
+cansend vcan0 486#6AFFD6FF
+sleep 0.08200
+cansend vcan0 485#120084FF
+cansend vcan0 486#6AFFD7FF
+sleep 0.08200
+cansend vcan0 485#110084FF
+cansend vcan0 486#6BFFD8FF
+sleep 0.08200
+cansend vcan0 485#110083FF
+cansend vcan0 486#6BFFD9FF
+sleep 0.08200
+cansend vcan0 485#100083FF
+cansend vcan0 486#6BFFDBFF
+sleep 0.08200
+cansend vcan0 485#100083FF
+cansend vcan0 486#6BFFDCFF
+sleep 0.08200
+cansend vcan0 485#0F0082FF
+cansend vcan0 486#6BFFDDFF
+sleep 0.08200
+cansend vcan0 485#0F0082FF
+cansend vcan0 486#6BFFDEFF
+sleep 0.08200
+cansend vcan0 485#0E0081FF
+cansend vcan0 486#6CFFE0FF
+sleep 0.08200
+cansend vcan0 485#0E0081FF
+cansend vcan0 486#6CFFE1FF
+sleep 0.08200
+cansend vcan0 485#0D0081FF
+cansend vcan0 486#6CFFE2FF
+sleep 0.08200
+cansend vcan0 485#0D0080FF
+cansend vcan0 486#6CFFE3FF
+sleep 0.08200
+cansend vcan0 485#0C0080FF
+cansend vcan0 486#6DFFE4FF
+sleep 0.08200
+cansend vcan0 485#0C007FFF
+cansend vcan0 486#6DFFE6FF
+sleep 0.08200
+cansend vcan0 485#0B007FFF
+cansend vcan0 486#6DFFE7FF
+sleep 0.08200
+cansend vcan0 485#0B007FFF
+cansend vcan0 486#6DFFE8FF
+sleep 0.08200
+cansend vcan0 485#0A007EFF
+cansend vcan0 486#6EFFE9FF
+sleep 0.08200
+cansend vcan0 485#0A007EFF
+cansend vcan0 486#6EFFEBFF
+sleep 0.08200
+cansend vcan0 485#09007DFF
+cansend vcan0 486#6FFFECFF
+sleep 0.08200
+cansend vcan0 485#09007DFF
+cansend vcan0 486#6FFFEDFF
+sleep 0.08200
+cansend vcan0 485#08007DFF
+cansend vcan0 486#6FFFEEFF
+sleep 0.08200
+cansend vcan0 485#08007CFF
+cansend vcan0 486#70FFEFFF
+sleep 0.08200
+cansend vcan0 485#07007CFF
+cansend vcan0 486#70FFF0FF
+sleep 0.08200
+cansend vcan0 485#07007CFF
+cansend vcan0 486#71FFF2FF
+sleep 0.08200
+cansend vcan0 485#06007BFF
+cansend vcan0 486#71FFF3FF
+sleep 0.08200
+cansend vcan0 485#06007BFF
+cansend vcan0 486#71FFF4FF
+sleep 0.08200
+cansend vcan0 485#05007BFF
+cansend vcan0 486#72FFF5FF
+sleep 0.08200
+cansend vcan0 485#05007AFF
+cansend vcan0 486#72FFF6FF
+sleep 0.08200
+cansend vcan0 485#04007AFF
+cansend vcan0 486#73FFF7FF
+sleep 0.08200
+cansend vcan0 485#04007AFF
+cansend vcan0 486#74FFF9FF
+sleep 0.08200
+cansend vcan0 485#030079FF
+cansend vcan0 486#74FFFAFF
+sleep 0.08200
+cansend vcan0 485#030079FF
+cansend vcan0 486#75FFFBFF
+sleep 0.08200
+cansend vcan0 485#020079FF
+cansend vcan0 486#75FFFCFF
+sleep 0.08200
+cansend vcan0 485#010078FF
+cansend vcan0 486#76FFFDFF
+sleep 0.08200
+cansend vcan0 485#010078FF
+cansend vcan0 486#76FFFEFF
+sleep 0.08200
+cansend vcan0 485#000078FF
+cansend vcan0 486#77FFFFFF
+sleep 0.08200
+cansend vcan0 485#000077FF
+cansend vcan0 486#78FF0000
+sleep 0.08200
+cansend vcan0 485#FFFF77FF
+cansend vcan0 486#78FF0100
+sleep 0.08200
+cansend vcan0 485#FFFF77FF
+cansend vcan0 486#79FF0300
+sleep 0.08200
+cansend vcan0 485#FEFF76FF
+cansend vcan0 486#7AFF0400
+sleep 0.08200
+cansend vcan0 485#FEFF76FF
+cansend vcan0 486#7AFF0500
+sleep 0.08200
+cansend vcan0 485#FDFF76FF
+cansend vcan0 486#7BFF0600
+sleep 0.08200
+cansend vcan0 485#FDFF75FF
+cansend vcan0 486#7CFF0700
+sleep 0.08200
+cansend vcan0 485#FCFF75FF
+cansend vcan0 486#7CFF0800
+sleep 0.08200
+cansend vcan0 485#FBFF75FF
+cansend vcan0 486#7DFF0900
+sleep 0.08200
+cansend vcan0 485#FBFF75FF
+cansend vcan0 486#7EFF0A00
+sleep 0.08200
+cansend vcan0 485#FAFF74FF
+cansend vcan0 486#7FFF0B00
+sleep 0.08200
+cansend vcan0 485#FAFF74FF
+cansend vcan0 486#7FFF0C00
+sleep 0.08200
+cansend vcan0 485#F9FF74FF
+cansend vcan0 486#80FF0D00
+sleep 0.08200
+cansend vcan0 485#F9FF74FF
+cansend vcan0 486#81FF0E00
+sleep 0.08200
+cansend vcan0 485#F8FF73FF
+cansend vcan0 486#82FF0F00
+sleep 0.08200
+cansend vcan0 485#F7FF73FF
+cansend vcan0 486#83FF1000
+sleep 0.08200
+cansend vcan0 485#F7FF73FF
+cansend vcan0 486#83FF1100
+sleep 0.08200
+cansend vcan0 485#F6FF72FF
+cansend vcan0 486#84FF1200
+sleep 0.08200
+cansend vcan0 485#F6FF72FF
+cansend vcan0 486#85FF1200
+sleep 0.08200
+cansend vcan0 485#F5FF72FF
+cansend vcan0 486#86FF1300
+sleep 0.08200
+cansend vcan0 485#F5FF72FF
+cansend vcan0 486#87FF1400
+sleep 0.08200
+cansend vcan0 485#F4FF71FF
+cansend vcan0 486#88FF1500
+sleep 0.08200
+cansend vcan0 485#F3FF71FF
+cansend vcan0 486#89FF1600
+sleep 0.08200
+cansend vcan0 485#F3FF71FF
+cansend vcan0 486#8AFF1700
+sleep 0.08200
+cansend vcan0 485#F2FF71FF
+cansend vcan0 486#8AFF1800
+sleep 0.08200
+cansend vcan0 485#F2FF71FF
+cansend vcan0 486#8BFF1900
+sleep 0.08200
+cansend vcan0 485#F1FF70FF
+cansend vcan0 486#8CFF1900
+sleep 0.08200
+cansend vcan0 485#F0FF70FF
+cansend vcan0 486#8DFF1A00
+sleep 0.08200
+cansend vcan0 485#F0FF70FF
+cansend vcan0 486#8EFF1B00
+sleep 0.08200
+cansend vcan0 485#EFFF70FF
+cansend vcan0 486#8FFF1C00
+sleep 0.08200
+cansend vcan0 485#EFFF6FFF
+cansend vcan0 486#90FF1D00
+sleep 0.08200
+cansend vcan0 485#EEFF6FFF
+cansend vcan0 486#91FF1D00
+sleep 0.08200
+cansend vcan0 485#EDFF6FFF
+cansend vcan0 486#92FF1E00
+sleep 0.08200
+cansend vcan0 485#EDFF6FFF
+cansend vcan0 486#93FF1F00
+sleep 0.08200
+cansend vcan0 485#ECFF6FFF
+cansend vcan0 486#94FF2000
+sleep 0.08200
+cansend vcan0 485#ECFF6FFF
+cansend vcan0 486#95FF2000
+sleep 0.08200
+cansend vcan0 485#EBFF6EFF
+cansend vcan0 486#96FF2100
+sleep 0.08200
+cansend vcan0 485#EBFF6EFF
+cansend vcan0 486#97FF2200
+sleep 0.08200
+cansend vcan0 485#EAFF6EFF
+cansend vcan0 486#98FF2200
+sleep 0.08200
+cansend vcan0 485#E9FF6EFF
+cansend vcan0 486#99FF2300
+sleep 0.08200
+cansend vcan0 485#E9FF6EFF
+cansend vcan0 486#9BFF2400
+sleep 0.08200
+cansend vcan0 485#E8FF6DFF
+cansend vcan0 486#9CFF2400
+sleep 0.08200
+cansend vcan0 485#E7FF6DFF
+cansend vcan0 486#9DFF2500
+sleep 0.08200
+cansend vcan0 485#E7FF6DFF
+cansend vcan0 486#9EFF2600
+sleep 0.08200
+cansend vcan0 485#E6FF6DFF
+cansend vcan0 486#9FFF2600
+sleep 0.08200
+cansend vcan0 485#E6FF6DFF
+cansend vcan0 486#A0FF2700
+sleep 0.08200
+cansend vcan0 485#E5FF6DFF
+cansend vcan0 486#A1FF2700
+sleep 0.08200
+cansend vcan0 485#E4FF6DFF
+cansend vcan0 486#A2FF2800
+sleep 0.08200
+cansend vcan0 485#E4FF6CFF
+cansend vcan0 486#A3FF2800
+sleep 0.08200
+cansend vcan0 485#E3FF6CFF
+cansend vcan0 486#A5FF2900
+sleep 0.08200
+cansend vcan0 485#E3FF6CFF
+cansend vcan0 486#A6FF2A00
+sleep 0.08200
+cansend vcan0 485#E2FF6CFF
+cansend vcan0 486#A7FF2A00
+sleep 0.08200
+cansend vcan0 485#E1FF6CFF
+cansend vcan0 486#A8FF2B00
+sleep 0.08200
+cansend vcan0 485#E1FF6CFF
+cansend vcan0 486#A9FF2B00
+sleep 0.08200
+cansend vcan0 485#E0FF6CFF
+cansend vcan0 486#AAFF2B00
+sleep 0.08200
+cansend vcan0 485#E0FF6CFF
+cansend vcan0 486#ACFF2C00
+sleep 0.08200
+cansend vcan0 485#DFFF6BFF
+cansend vcan0 486#ADFF2C00
+sleep 0.08200
+cansend vcan0 485#DEFF6BFF
+cansend vcan0 486#AEFF2D00
+sleep 0.08200
+cansend vcan0 485#DEFF6BFF
+cansend vcan0 486#AFFF2D00
+sleep 0.08200
+cansend vcan0 485#DDFF6BFF
+cansend vcan0 486#B0FF2D00
+sleep 0.08200
+cansend vcan0 485#DCFF6BFF
+cansend vcan0 486#B1FF2E00
+sleep 0.08200
+cansend vcan0 485#DCFF6BFF
+cansend vcan0 486#B3FF2E00
+sleep 0.08200
+cansend vcan0 485#DBFF6BFF
+cansend vcan0 486#B4FF2F00
+sleep 0.08200
+cansend vcan0 485#DBFF6BFF
+cansend vcan0 486#B5FF2F00
+sleep 0.08200
+cansend vcan0 485#DAFF6BFF
+cansend vcan0 486#B6FF2F00
+sleep 0.08200
+cansend vcan0 485#D9FF6BFF
+cansend vcan0 486#B8FF2F00
+sleep 0.08200
+cansend vcan0 485#D9FF6BFF
+cansend vcan0 486#B9FF3000
+sleep 0.08200
+cansend vcan0 485#D8FF6BFF
+cansend vcan0 486#BAFF3000
+sleep 0.08200
+cansend vcan0 485#D7FF6AFF
+cansend vcan0 486#BBFF3000
+sleep 0.08200
+cansend vcan0 485#D7FF6AFF
+cansend vcan0 486#BCFF3000
+sleep 0.08200
+cansend vcan0 485#D6FF6AFF
+cansend vcan0 486#BEFF3100
+sleep 0.08200
+cansend vcan0 485#D6FF6AFF
+cansend vcan0 486#BFFF3100
+sleep 0.08200
+cansend vcan0 485#D5FF6AFF
+cansend vcan0 486#C0FF3100
+sleep 0.08200
+cansend vcan0 485#D4FF6AFF
+cansend vcan0 486#C1FF3100
+sleep 0.08200
+cansend vcan0 485#D4FF6AFF
+cansend vcan0 486#C3FF3100
+sleep 0.08200
+cansend vcan0 485#D3FF6AFF
+cansend vcan0 486#C4FF3100
+sleep 0.08200
+cansend vcan0 485#D2FF6AFF
+cansend vcan0 486#C5FF3200
+sleep 0.08200
+cansend vcan0 485#D2FF6AFF
+cansend vcan0 486#C6FF3200
+sleep 0.08200
+cansend vcan0 485#D1FF6AFF
+cansend vcan0 486#C8FF3200
+sleep 0.08200
+cansend vcan0 485#D1FF6AFF
+cansend vcan0 486#C9FF3200
+sleep 0.08200
+cansend vcan0 485#D0FF6AFF
+cansend vcan0 486#CAFF3200
+sleep 0.08200
+cansend vcan0 485#CFFF6AFF
+cansend vcan0 486#CBFF3200
+sleep 0.08200
+cansend vcan0 485#CFFF6AFF
+cansend vcan0 486#CDFF3200
+sleep 0.08200
+cansend vcan0 485#CEFF6AFF
+cansend vcan0 486#CEFF3200
+sleep 0.08200
+cansend vcan0 485#CDFF6AFF
+cansend vcan0 486#CFFF3200
+sleep 0.08200
+cansend vcan0 485#CDFF6AFF
+cansend vcan0 486#D1FF3200
+sleep 0.08200
+cansend vcan0 485#CCFF6AFF
+cansend vcan0 486#D2FF3200
+sleep 0.08200
+cansend vcan0 485#CBFF6AFF
+cansend vcan0 486#D3FF3200
+sleep 0.08200
+cansend vcan0 485#CBFF6AFF
+cansend vcan0 486#D4FF3200
+sleep 0.08200
+cansend vcan0 485#CAFF6AFF
+cansend vcan0 486#D6FF3200
+sleep 0.08200
+cansend vcan0 485#CAFF6AFF
+cansend vcan0 486#D7FF3200
+sleep 0.08200
+cansend vcan0 485#C9FF6AFF
+cansend vcan0 486#D8FF3100
+sleep 0.08200
+cansend vcan0 485#C8FF6AFF
+cansend vcan0 486#D9FF3100
+sleep 0.08200
+cansend vcan0 485#C8FF6AFF
+cansend vcan0 486#DBFF3100
+sleep 0.08200
+cansend vcan0 485#C7FF6AFF
+cansend vcan0 486#DCFF3100
+sleep 0.08200
+cansend vcan0 485#C6FF6AFF
+cansend vcan0 486#DDFF3100
+sleep 0.08200
+cansend vcan0 485#C6FF6AFF
+cansend vcan0 486#DEFF3100
+sleep 0.08200
+cansend vcan0 485#C5FF6AFF
+cansend vcan0 486#E0FF3000
+sleep 0.08200
+cansend vcan0 485#C5FF6AFF
+cansend vcan0 486#E1FF3000
+sleep 0.08200
+cansend vcan0 485#C4FF6BFF
+cansend vcan0 486#E2FF3000
+sleep 0.08200
+cansend vcan0 485#C3FF6BFF
+cansend vcan0 486#E3FF3000
+sleep 0.08200
+cansend vcan0 485#C3FF6BFF
+cansend vcan0 486#E4FF2F00
+sleep 0.08200
+cansend vcan0 485#C2FF6BFF
+cansend vcan0 486#E6FF2F00
+sleep 0.08200
+cansend vcan0 485#C1FF6BFF
+cansend vcan0 486#E7FF2F00
+sleep 0.08200
+cansend vcan0 485#C1FF6BFF
+cansend vcan0 486#E8FF2F00
+sleep 0.08200
+cansend vcan0 485#C0FF6BFF
+cansend vcan0 486#E9FF2E00
+sleep 0.08200
+cansend vcan0 485#C0FF6BFF
+cansend vcan0 486#EBFF2E00
+sleep 0.08200
+cansend vcan0 485#BFFF6BFF
+cansend vcan0 486#ECFF2D00
+sleep 0.08200
+cansend vcan0 485#BEFF6BFF
+cansend vcan0 486#EDFF2D00
+sleep 0.08200
+cansend vcan0 485#BEFF6BFF
+cansend vcan0 486#EEFF2D00
+sleep 0.08200
+cansend vcan0 485#BDFF6BFF
+cansend vcan0 486#EFFF2C00
+sleep 0.08200
+cansend vcan0 485#BCFF6CFF
+cansend vcan0 486#F0FF2C00
+sleep 0.08200
+cansend vcan0 485#BCFF6CFF
+cansend vcan0 486#F2FF2B00
+sleep 0.08200
+cansend vcan0 485#BBFF6CFF
+cansend vcan0 486#F3FF2B00
+sleep 0.08200
+cansend vcan0 485#BBFF6CFF
+cansend vcan0 486#F4FF2B00
+sleep 0.08200
+cansend vcan0 485#BAFF6CFF
+cansend vcan0 486#F5FF2A00
+sleep 0.08200
+cansend vcan0 485#B9FF6CFF
+cansend vcan0 486#F6FF2A00
+sleep 0.08200
+cansend vcan0 485#B9FF6CFF
+cansend vcan0 486#F7FF2900
+sleep 0.08200
+cansend vcan0 485#B8FF6CFF
+cansend vcan0 486#F9FF2800
+sleep 0.08200
+cansend vcan0 485#B8FF6DFF
+cansend vcan0 486#FAFF2800
+sleep 0.08200
+cansend vcan0 485#B7FF6DFF
+cansend vcan0 486#FBFF2700
+sleep 0.08200
+cansend vcan0 485#B6FF6DFF
+cansend vcan0 486#FCFF2700
+sleep 0.08200
+cansend vcan0 485#B6FF6DFF
+cansend vcan0 486#FDFF2600
+sleep 0.08200
+cansend vcan0 485#B5FF6DFF
+cansend vcan0 486#FEFF2600
+sleep 0.08200
+cansend vcan0 485#B5FF6DFF
+cansend vcan0 486#FFFF2500
+sleep 0.08200
+cansend vcan0 485#B4FF6DFF
+cansend vcan0 486#00002400
+sleep 0.08200
+cansend vcan0 485#B3FF6EFF
+cansend vcan0 486#01002400
+sleep 0.08200
+cansend vcan0 485#B3FF6EFF
+cansend vcan0 486#03002300
+sleep 0.08200
+cansend vcan0 485#B2FF6EFF
+cansend vcan0 486#04002200
+sleep 0.08200
+cansend vcan0 485#B1FF6EFF
+cansend vcan0 486#05002200
+sleep 0.08200
+cansend vcan0 485#B1FF6EFF
+cansend vcan0 486#06002100
+sleep 0.08200
+cansend vcan0 485#B0FF6FFF
+cansend vcan0 486#07002000
+sleep 0.08200
+cansend vcan0 485#B0FF6FFF
+cansend vcan0 486#08002000
+sleep 0.08200
+cansend vcan0 485#AFFF6FFF
+cansend vcan0 486#09001F00
+sleep 0.08200
+cansend vcan0 485#AFFF6FFF
+cansend vcan0 486#0A001E00
+sleep 0.08200
+cansend vcan0 485#AEFF6FFF
+cansend vcan0 486#0B001D00
+sleep 0.08200
+cansend vcan0 485#ADFF6FFF
+cansend vcan0 486#0C001D00
+sleep 0.08200
+cansend vcan0 485#ADFF70FF
+cansend vcan0 486#0D001C00
+sleep 0.08200
+cansend vcan0 485#ACFF70FF
+cansend vcan0 486#0E001B00
+sleep 0.08200
+cansend vcan0 485#ACFF70FF
+cansend vcan0 486#0F001A00
+sleep 0.08200
+cansend vcan0 485#ABFF70FF
+cansend vcan0 486#10001900
+sleep 0.08200
+cansend vcan0 485#AAFF71FF
+cansend vcan0 486#11001900
+sleep 0.08200
+cansend vcan0 485#AAFF71FF
+cansend vcan0 486#12001800
+sleep 0.08200
+cansend vcan0 485#A9FF71FF
+cansend vcan0 486#12001700
+sleep 0.08200
+cansend vcan0 485#A9FF71FF
+cansend vcan0 486#13001600
+sleep 0.08200
+cansend vcan0 485#A8FF71FF
+cansend vcan0 486#14001500
+sleep 0.08200
+cansend vcan0 485#A7FF72FF
+cansend vcan0 486#15001400
+sleep 0.08200
+cansend vcan0 485#A7FF72FF
+cansend vcan0 486#16001300
+sleep 0.08200
+cansend vcan0 485#A6FF72FF
+cansend vcan0 486#17001200
+sleep 0.08200
+cansend vcan0 485#A6FF72FF
+cansend vcan0 486#18001200
+sleep 0.08200
+cansend vcan0 485#A5FF73FF
+cansend vcan0 486#19001100
+sleep 0.08200
+cansend vcan0 485#A5FF73FF
+cansend vcan0 486#19001000
+sleep 0.08200
+cansend vcan0 485#A4FF73FF
+cansend vcan0 486#1A000F00
+sleep 0.08200
+cansend vcan0 485#A3FF74FF
+cansend vcan0 486#1B000E00
+sleep 0.08200
+cansend vcan0 485#A3FF74FF
+cansend vcan0 486#1C000D00
+sleep 0.08200
+cansend vcan0 485#A2FF74FF
+cansend vcan0 486#1D000C00
+sleep 0.08200
+cansend vcan0 485#A2FF74FF
+cansend vcan0 486#1D000B00
+sleep 0.08200
+cansend vcan0 485#A1FF75FF
+cansend vcan0 486#1E000A00
+sleep 0.08200
+cansend vcan0 485#A1FF75FF
+cansend vcan0 486#1F000900
+sleep 0.08200
+cansend vcan0 485#A0FF75FF
+cansend vcan0 486#20000800
+sleep 0.08200
+cansend vcan0 485#9FFF75FF
+cansend vcan0 486#20000700
+sleep 0.08200
+cansend vcan0 485#9FFF76FF
+cansend vcan0 486#21000600
+sleep 0.08200
+cansend vcan0 485#9EFF76FF
+cansend vcan0 486#22000500
+sleep 0.08200
+cansend vcan0 485#9EFF76FF
+cansend vcan0 486#22000400
+sleep 0.08200
+cansend vcan0 485#9DFF77FF
+cansend vcan0 486#23000300
+sleep 0.08200
+cansend vcan0 485#9DFF77FF
+cansend vcan0 486#24000100
+sleep 0.08200
+cansend vcan0 485#9CFF77FF
+cansend vcan0 486#24000000
+sleep 0.08200
+cansend vcan0 485#9CFF78FF
+cansend vcan0 486#2500FFFF
+sleep 0.08200
+cansend vcan0 485#9BFF78FF
+cansend vcan0 486#2600FEFF
+sleep 0.08200
+cansend vcan0 485#9BFF78FF
+cansend vcan0 486#2600FDFF
+sleep 0.08200
+cansend vcan0 485#9AFF79FF
+cansend vcan0 486#2700FCFF
+sleep 0.08200
+cansend vcan0 485#99FF79FF
+cansend vcan0 486#2700FBFF
+sleep 0.08200
+cansend vcan0 485#99FF79FF
+cansend vcan0 486#2800FAFF
+sleep 0.08200
+cansend vcan0 485#98FF7AFF
+cansend vcan0 486#2800F9FF
+sleep 0.08200
+cansend vcan0 485#98FF7AFF
+cansend vcan0 486#2900F7FF
+sleep 0.08200
+cansend vcan0 485#97FF7AFF
+cansend vcan0 486#2A00F6FF
+sleep 0.08200
+cansend vcan0 485#97FF7BFF
+cansend vcan0 486#2A00F5FF
+sleep 0.08200
+cansend vcan0 485#96FF7BFF
+cansend vcan0 486#2B00F4FF
+sleep 0.08200
+cansend vcan0 485#96FF7BFF
+cansend vcan0 486#2B00F3FF
+sleep 0.08200
+cansend vcan0 485#95FF7CFF
+cansend vcan0 486#2B00F2FF
+sleep 0.08200
+cansend vcan0 485#95FF7CFF
+cansend vcan0 486#2C00F0FF
+sleep 0.08200
+cansend vcan0 485#94FF7CFF
+cansend vcan0 486#2C00EFFF
+sleep 0.08200
+cansend vcan0 485#94FF7DFF
+cansend vcan0 486#2D00EEFF
+sleep 0.08200
+cansend vcan0 485#93FF7DFF
+cansend vcan0 486#2D00EDFF
+sleep 0.08200
+cansend vcan0 485#93FF7DFF
+cansend vcan0 486#2D00ECFF
+sleep 0.08200
+cansend vcan0 485#92FF7EFF
+cansend vcan0 486#2E00EBFF
+sleep 0.08200
+cansend vcan0 485#92FF7EFF
+cansend vcan0 486#2E00E9FF
+sleep 0.08200
+cansend vcan0 485#91FF7FFF
+cansend vcan0 486#2F00E8FF
+sleep 0.08200
+cansend vcan0 485#91FF7FFF
+cansend vcan0 486#2F00E7FF
+sleep 0.08200
+cansend vcan0 485#90FF7FFF
+cansend vcan0 486#2F00E6FF
+sleep 0.08200
+cansend vcan0 485#90FF80FF
+cansend vcan0 486#2F00E4FF
+sleep 0.08200
+cansend vcan0 485#8FFF80FF
+cansend vcan0 486#3000E3FF
+sleep 0.08200
+cansend vcan0 485#8FFF81FF
+cansend vcan0 486#3000E2FF
+sleep 0.08200
+cansend vcan0 485#8EFF81FF
+cansend vcan0 486#3000E1FF
+sleep 0.08200
+cansend vcan0 485#8EFF81FF
+cansend vcan0 486#3000E0FF
+sleep 0.08200
+cansend vcan0 485#8DFF82FF
+cansend vcan0 486#3100DEFF
+sleep 0.08200
+cansend vcan0 485#8DFF82FF
+cansend vcan0 486#3100DDFF
+sleep 0.08200
+cansend vcan0 485#8CFF83FF
+cansend vcan0 486#3100DCFF
+sleep 0.08200
+cansend vcan0 485#8CFF83FF
+cansend vcan0 486#3100DBFF
+sleep 0.08200
+cansend vcan0 485#8BFF83FF
+cansend vcan0 486#3100D9FF
+sleep 0.08200
+cansend vcan0 485#8BFF84FF
+cansend vcan0 486#3100D8FF
+sleep 0.08200
+cansend vcan0 485#8AFF84FF
+cansend vcan0 486#3200D7FF
+sleep 0.08200
+cansend vcan0 485#8AFF85FF
+cansend vcan0 486#3200D6FF
+sleep 0.08200
+cansend vcan0 485#8AFF85FF
+cansend vcan0 486#3200D4FF
+sleep 0.08200
+cansend vcan0 485#89FF86FF
+cansend vcan0 486#3200D3FF
+sleep 0.08200
+cansend vcan0 485#89FF86FF
+cansend vcan0 486#3200D2FF
+sleep 0.08200
+cansend vcan0 485#88FF86FF
+cansend vcan0 486#3200D1FF
+sleep 0.08200
+cansend vcan0 485#88FF87FF
+cansend vcan0 486#3200CFFF
+sleep 0.08200
+cansend vcan0 485#87FF87FF
+cansend vcan0 486#3200CEFF
+sleep 0.08200
+cansend vcan0 485#87FF88FF
+cansend vcan0 486#3200CDFF
+sleep 0.08200
+cansend vcan0 485#86FF88FF
+cansend vcan0 486#3200CBFF
+sleep 0.08200
+cansend vcan0 485#86FF89FF
+cansend vcan0 486#3200CAFF
+sleep 0.08200
+cansend vcan0 485#86FF89FF
+cansend vcan0 486#3200C9FF
+sleep 0.08200
+cansend vcan0 485#85FF8AFF
+cansend vcan0 486#3200C8FF
+sleep 0.08200
+cansend vcan0 485#85FF8AFF
+cansend vcan0 486#3200C6FF
+sleep 0.08200
+cansend vcan0 485#84FF8AFF
+cansend vcan0 486#3200C5FF
+sleep 0.08200
+cansend vcan0 485#84FF8BFF
+cansend vcan0 486#3100C4FF
+sleep 0.08200
+cansend vcan0 485#83FF8BFF
+cansend vcan0 486#3100C3FF
+sleep 0.08200
+cansend vcan0 485#83FF8CFF
+cansend vcan0 486#3100C1FF
+sleep 0.08200
+cansend vcan0 485#83FF8CFF
+cansend vcan0 486#3100C0FF
+sleep 0.08200
+cansend vcan0 485#82FF8DFF
+cansend vcan0 486#3100BFFF
+sleep 0.08200
+cansend vcan0 485#82FF8DFF
+cansend vcan0 486#3100BEFF
+sleep 0.08200
+cansend vcan0 485#81FF8EFF
+cansend vcan0 486#3000BCFF
+sleep 0.08200
+cansend vcan0 485#81FF8EFF
+cansend vcan0 486#3000BBFF
+sleep 0.08200
+cansend vcan0 485#81FF8FFF
+cansend vcan0 486#3000BAFF
+sleep 0.08200
+cansend vcan0 485#80FF8FFF
+cansend vcan0 486#3000B9FF
+sleep 0.08200
+cansend vcan0 485#80FF90FF
+cansend vcan0 486#2F00B8FF
+sleep 0.08200
+cansend vcan0 485#7FFF90FF
+cansend vcan0 486#2F00B6FF
+sleep 0.08200
+cansend vcan0 485#7FFF91FF
+cansend vcan0 486#2F00B5FF
+sleep 0.08200
+cansend vcan0 485#7FFF91FF
+cansend vcan0 486#2F00B4FF
+sleep 0.08200
+cansend vcan0 485#7EFF92FF
+cansend vcan0 486#2E00B3FF
+sleep 0.08200
+cansend vcan0 485#7EFF92FF
+cansend vcan0 486#2E00B1FF
+sleep 0.08200
+cansend vcan0 485#7DFF93FF
+cansend vcan0 486#2D00B0FF
+sleep 0.08200
+cansend vcan0 485#7DFF93FF
+cansend vcan0 486#2D00AFFF
+sleep 0.08200
+cansend vcan0 485#7DFF94FF
+cansend vcan0 486#2D00AEFF
+sleep 0.08200
+cansend vcan0 485#7CFF94FF
+cansend vcan0 486#2C00ADFF
+sleep 0.08200
+cansend vcan0 485#7CFF95FF
+cansend vcan0 486#2C00ACFF
+sleep 0.08200
+cansend vcan0 485#7CFF95FF
+cansend vcan0 486#2B00AAFF
+sleep 0.08200
+cansend vcan0 485#7BFF96FF
+cansend vcan0 486#2B00A9FF
+sleep 0.08200
+cansend vcan0 485#7BFF96FF
+cansend vcan0 486#2B00A8FF
+sleep 0.08200
+cansend vcan0 485#7BFF97FF
+cansend vcan0 486#2A00A7FF
+sleep 0.08200
+cansend vcan0 485#7AFF97FF
+cansend vcan0 486#2A00A6FF
+sleep 0.08200
+cansend vcan0 485#7AFF98FF
+cansend vcan0 486#2900A5FF
+sleep 0.08200
+cansend vcan0 485#7AFF98FF
+cansend vcan0 486#2800A3FF
+sleep 0.08200
+cansend vcan0 485#79FF99FF
+cansend vcan0 486#2800A2FF
+sleep 0.08200
+cansend vcan0 485#79FF99FF
+cansend vcan0 486#2700A1FF
+sleep 0.08200
+cansend vcan0 485#79FF9AFF
+cansend vcan0 486#2700A0FF
+sleep 0.08200
+cansend vcan0 485#78FF9BFF
+cansend vcan0 486#26009FFF
+sleep 0.08200
+cansend vcan0 485#78FF9BFF
+cansend vcan0 486#26009EFF
+sleep 0.08200
+cansend vcan0 485#78FF9CFF
+cansend vcan0 486#25009DFF
+sleep 0.08200
+cansend vcan0 485#77FF9CFF
+cansend vcan0 486#24009CFF
+sleep 0.08200
+cansend vcan0 485#77FF9DFF
+cansend vcan0 486#24009BFF
+sleep 0.08200
+cansend vcan0 485#77FF9DFF
+cansend vcan0 486#230099FF
+sleep 0.08200
+cansend vcan0 485#76FF9EFF
+cansend vcan0 486#220098FF
+sleep 0.08200
+cansend vcan0 485#76FF9EFF
+cansend vcan0 486#220097FF
+sleep 0.08200
+cansend vcan0 485#76FF9FFF
+cansend vcan0 486#210096FF
+sleep 0.08200
+cansend vcan0 485#75FF9FFF
+cansend vcan0 486#200095FF
+sleep 0.08200
+cansend vcan0 485#75FFA0FF
+cansend vcan0 486#200094FF
+sleep 0.08200
+cansend vcan0 485#75FFA1FF
+cansend vcan0 486#1F0093FF
+sleep 0.08200
+cansend vcan0 485#75FFA1FF
+cansend vcan0 486#1E0092FF
+sleep 0.08200
+cansend vcan0 485#74FFA2FF
+cansend vcan0 486#1D0091FF
+sleep 0.08200
+cansend vcan0 485#74FFA2FF
+cansend vcan0 486#1D0090FF
+sleep 0.08200
+cansend vcan0 485#74FFA3FF
+cansend vcan0 486#1C008FFF
+sleep 0.08200
+cansend vcan0 485#74FFA3FF
+cansend vcan0 486#1B008EFF
+sleep 0.08200
+cansend vcan0 485#73FFA4FF
+cansend vcan0 486#1A008DFF
+sleep 0.08200
+cansend vcan0 485#73FFA5FF
+cansend vcan0 486#19008CFF
+sleep 0.08200
+cansend vcan0 485#73FFA5FF
+cansend vcan0 486#19008BFF
+sleep 0.08200
+cansend vcan0 485#72FFA6FF
+cansend vcan0 486#18008AFF
+sleep 0.08200
+cansend vcan0 485#72FFA6FF
+cansend vcan0 486#17008AFF
+sleep 0.08200
+cansend vcan0 485#72FFA7FF
+cansend vcan0 486#160089FF
+sleep 0.08200
+cansend vcan0 485#72FFA7FF
+cansend vcan0 486#150088FF
+sleep 0.08200
+cansend vcan0 485#71FFA8FF
+cansend vcan0 486#140087FF
+sleep 0.08200
+cansend vcan0 485#71FFA9FF
+cansend vcan0 486#130086FF
+sleep 0.08200
+cansend vcan0 485#71FFA9FF
+cansend vcan0 486#120085FF
+sleep 0.08200
+cansend vcan0 485#71FFAAFF
+cansend vcan0 486#120084FF
+sleep 0.08200
+cansend vcan0 485#71FFAAFF
+cansend vcan0 486#110083FF
+sleep 0.08200
+cansend vcan0 485#70FFABFF
+cansend vcan0 486#100083FF
+sleep 0.08200
+cansend vcan0 485#70FFACFF
+cansend vcan0 486#0F0082FF
+sleep 0.08200
+cansend vcan0 485#70FFACFF
+cansend vcan0 486#0E0081FF
+sleep 0.08200
+cansend vcan0 485#70FFADFF
+cansend vcan0 486#0D0080FF
+sleep 0.08200
+cansend vcan0 485#6FFFADFF
+cansend vcan0 486#0C007FFF
+sleep 0.08200
+cansend vcan0 485#6FFFAEFF
+cansend vcan0 486#0B007FFF
+sleep 0.08200
+cansend vcan0 485#6FFFAFFF
+cansend vcan0 486#0A007EFF
+sleep 0.08200
+cansend vcan0 485#6FFFAFFF
+cansend vcan0 486#09007DFF
+sleep 0.08200
+cansend vcan0 485#6FFFB0FF
+cansend vcan0 486#08007CFF
+sleep 0.08200
+cansend vcan0 485#6FFFB0FF
+cansend vcan0 486#07007CFF
+sleep 0.08200
+cansend vcan0 485#6EFFB1FF
+cansend vcan0 486#06007BFF
+sleep 0.08200
+cansend vcan0 485#6EFFB1FF
+cansend vcan0 486#05007AFF
+sleep 0.08200
+cansend vcan0 485#6EFFB2FF
+cansend vcan0 486#04007AFF
+sleep 0.08200
+cansend vcan0 485#6EFFB3FF
+cansend vcan0 486#030079FF
+sleep 0.08200
+cansend vcan0 485#6EFFB3FF
+cansend vcan0 486#010078FF
+sleep 0.08200
+cansend vcan0 485#6DFFB4FF
+cansend vcan0 486#000078FF
+sleep 0.08200
+cansend vcan0 485#6DFFB5FF
+cansend vcan0 486#FFFF77FF
+sleep 0.08200
+cansend vcan0 485#6DFFB5FF
+cansend vcan0 486#FEFF76FF
+sleep 0.08200
+cansend vcan0 485#6DFFB6FF
+cansend vcan0 486#FDFF76FF
+sleep 0.08200
+cansend vcan0 485#6DFFB6FF
+cansend vcan0 486#FCFF75FF
+sleep 0.08200
+cansend vcan0 485#6DFFB7FF
+cansend vcan0 486#FBFF75FF
+sleep 0.08200
+cansend vcan0 485#6DFFB8FF
+cansend vcan0 486#FAFF74FF
+sleep 0.08200
+cansend vcan0 485#6CFFB8FF
+cansend vcan0 486#F9FF74FF
+sleep 0.08200
+cansend vcan0 485#6CFFB9FF
+cansend vcan0 486#F7FF73FF
+sleep 0.08200
+cansend vcan0 485#6CFFB9FF
+cansend vcan0 486#F6FF72FF
+sleep 0.08200
+cansend vcan0 485#6CFFBAFF
+cansend vcan0 486#F5FF72FF
+sleep 0.08200
+cansend vcan0 485#6CFFBBFF
+cansend vcan0 486#F4FF71FF
+sleep 0.08200
+cansend vcan0 485#6CFFBBFF
+cansend vcan0 486#F3FF71FF
+sleep 0.08200
+cansend vcan0 485#6CFFBCFF
+cansend vcan0 486#F2FF71FF
+sleep 0.08200
+cansend vcan0 485#6CFFBCFF
+cansend vcan0 486#F0FF70FF
+sleep 0.08200
+cansend vcan0 485#6BFFBDFF
+cansend vcan0 486#EFFF70FF
+sleep 0.08200
+cansend vcan0 485#6BFFBEFF
+cansend vcan0 486#EEFF6FFF
+sleep 0.08200
+cansend vcan0 485#6BFFBEFF
+cansend vcan0 486#EDFF6FFF
+sleep 0.08200
+cansend vcan0 485#6BFFBFFF
+cansend vcan0 486#ECFF6FFF
+sleep 0.08200
+cansend vcan0 485#6BFFC0FF
+cansend vcan0 486#EBFF6EFF
+sleep 0.08200
+cansend vcan0 485#6BFFC0FF
+cansend vcan0 486#E9FF6EFF
+sleep 0.08200
+cansend vcan0 485#6BFFC1FF
+cansend vcan0 486#E8FF6DFF
+sleep 0.08200
+cansend vcan0 485#6BFFC1FF
+cansend vcan0 486#E7FF6DFF
+sleep 0.08200
+cansend vcan0 485#6BFFC2FF
+cansend vcan0 486#E6FF6DFF
+sleep 0.08200
+cansend vcan0 485#6BFFC3FF
+cansend vcan0 486#E4FF6DFF
+sleep 0.08200
+cansend vcan0 485#6BFFC3FF
+cansend vcan0 486#E3FF6CFF
+sleep 0.08200
+cansend vcan0 485#6BFFC4FF
+cansend vcan0 486#E2FF6CFF
+sleep 0.08200
+cansend vcan0 485#6AFFC5FF
+cansend vcan0 486#E1FF6CFF
+sleep 0.08200
+cansend vcan0 485#6AFFC5FF
+cansend vcan0 486#E0FF6CFF
+sleep 0.08200
+cansend vcan0 485#6AFFC6FF
+cansend vcan0 486#DEFF6BFF
+sleep 0.08200
+cansend vcan0 485#6AFFC6FF
+cansend vcan0 486#DDFF6BFF
+sleep 0.08200
+cansend vcan0 485#6AFFC7FF
+cansend vcan0 486#DCFF6BFF
+sleep 0.08200
+cansend vcan0 485#6AFFC8FF
+cansend vcan0 486#DBFF6BFF
+sleep 0.08200
+cansend vcan0 485#6AFFC8FF
+cansend vcan0 486#D9FF6BFF
+sleep 0.08200
+cansend vcan0 485#6AFFC9FF
+cansend vcan0 486#D8FF6BFF
+sleep 0.08200
+cansend vcan0 485#6AFFCAFF
+cansend vcan0 486#D7FF6AFF
+sleep 0.08200
+cansend vcan0 485#6AFFCAFF
+cansend vcan0 486#D6FF6AFF
+sleep 0.08200
+cansend vcan0 485#6AFFCBFF
+cansend vcan0 486#D4FF6AFF
+sleep 0.08200
+cansend vcan0 485#6AFFCBFF
+cansend vcan0 486#D3FF6AFF
+sleep 0.08200
+cansend vcan0 485#6AFFCCFF
+cansend vcan0 486#D2FF6AFF
+sleep 0.08200
+cansend vcan0 485#6AFFCDFF
+cansend vcan0 486#D1FF6AFF
+sleep 0.08200
+cansend vcan0 485#6AFFCDFF
+cansend vcan0 486#CFFF6AFF
+sleep 0.08200
+cansend vcan0 485#6AFFCEFF
+cansend vcan0 486#CEFF6AFF
+sleep 0.08200
+cansend vcan0 485#6AFFCFFF
+cansend vcan0 486#CDFF6AFF
+sleep 0.08200
+cansend vcan0 485#6AFFCFFF
+cansend vcan0 486#CBFF6AFF
+sleep 0.08200
+cansend vcan0 485#6AFFD0FF
+cansend vcan0 486#CAFF6AFF
+sleep 0.08200
+cansend vcan0 485#6AFFD1FF
+cansend vcan0 486#C9FF6AFF
+sleep 0.08200
+cansend vcan0 485#6AFFD1FF
+cansend vcan0 486#C8FF6AFF
+sleep 0.08200
+cansend vcan0 485#6AFFD2FF
+cansend vcan0 486#C6FF6AFF
+sleep 0.08200
+cansend vcan0 485#6AFFD2FF
+cansend vcan0 486#C5FF6AFF
+sleep 0.08200
+cansend vcan0 485#6AFFD3FF
+cansend vcan0 486#C4FF6BFF
+sleep 0.08200
+cansend vcan0 485#6AFFD4FF
+cansend vcan0 486#C3FF6BFF
+sleep 0.08200
+cansend vcan0 485#6AFFD4FF
+cansend vcan0 486#C1FF6BFF
+sleep 0.08200
+cansend vcan0 485#6AFFD5FF
+cansend vcan0 486#C0FF6BFF
+sleep 0.08200
+cansend vcan0 485#6AFFD6FF
+cansend vcan0 486#BFFF6BFF
+sleep 0.08200
+cansend vcan0 485#6AFFD6FF
+cansend vcan0 486#BEFF6BFF
+sleep 0.08200
+cansend vcan0 485#6AFFD7FF
+cansend vcan0 486#BCFF6CFF
+sleep 0.08200
+cansend vcan0 485#6AFFD7FF
+cansend vcan0 486#BBFF6CFF
+sleep 0.08200
+cansend vcan0 485#6BFFD8FF
+cansend vcan0 486#BAFF6CFF
+sleep 0.08200
+cansend vcan0 485#6BFFD9FF
+cansend vcan0 486#B9FF6CFF
+sleep 0.08200
+cansend vcan0 485#6BFFD9FF
+cansend vcan0 486#B8FF6DFF
+sleep 0.08200
+cansend vcan0 485#6BFFDAFF
+cansend vcan0 486#B6FF6DFF
+sleep 0.08200
+cansend vcan0 485#6BFFDBFF
+cansend vcan0 486#B5FF6DFF
+sleep 0.08200
+cansend vcan0 485#6BFFDBFF
+cansend vcan0 486#B4FF6DFF
+sleep 0.08200
+cansend vcan0 485#6BFFDCFF
+cansend vcan0 486#B3FF6EFF
+sleep 0.08200
+cansend vcan0 485#6BFFDCFF
+cansend vcan0 486#B1FF6EFF
+sleep 0.08200
+cansend vcan0 485#6BFFDDFF
+cansend vcan0 486#B0FF6FFF
+sleep 0.08200
+cansend vcan0 485#6BFFDEFF
+cansend vcan0 486#AFFF6FFF
+sleep 0.08200
+cansend vcan0 485#6BFFDEFF
+cansend vcan0 486#AEFF6FFF
+sleep 0.08200
+cansend vcan0 485#6BFFDFFF
+cansend vcan0 486#ADFF70FF
+sleep 0.08200
+cansend vcan0 485#6CFFE0FF
+cansend vcan0 486#ACFF70FF
+sleep 0.08200
+cansend vcan0 485#6CFFE0FF
+cansend vcan0 486#AAFF71FF
+sleep 0.08200
+cansend vcan0 485#6CFFE1FF
+cansend vcan0 486#A9FF71FF
+sleep 0.08200
+cansend vcan0 485#6CFFE1FF
+cansend vcan0 486#A8FF71FF
+sleep 0.08200
+cansend vcan0 485#6CFFE2FF
+cansend vcan0 486#A7FF72FF
+sleep 0.08200
+cansend vcan0 485#6CFFE3FF
+cansend vcan0 486#A6FF72FF
+sleep 0.08200
+cansend vcan0 485#6CFFE3FF
+cansend vcan0 486#A5FF73FF
+sleep 0.08200
+cansend vcan0 485#6CFFE4FF
+cansend vcan0 486#A3FF74FF
+sleep 0.08200
+cansend vcan0 485#6DFFE4FF
+cansend vcan0 486#A2FF74FF
+sleep 0.08200
+cansend vcan0 485#6DFFE5FF
+cansend vcan0 486#A1FF75FF
+sleep 0.08200
+cansend vcan0 485#6DFFE6FF
+cansend vcan0 486#A0FF75FF
+sleep 0.08200
+cansend vcan0 485#6DFFE6FF
+cansend vcan0 486#9FFF76FF
+sleep 0.08200
+cansend vcan0 485#6DFFE7FF
+cansend vcan0 486#9EFF76FF
+sleep 0.08200
+cansend vcan0 485#6DFFE7FF
+cansend vcan0 486#9DFF77FF
+sleep 0.08200
+cansend vcan0 485#6DFFE8FF
+cansend vcan0 486#9CFF78FF
+sleep 0.08200
+cansend vcan0 485#6EFFE9FF
+cansend vcan0 486#9BFF78FF
+sleep 0.08200
+cansend vcan0 485#6EFFE9FF
+cansend vcan0 486#99FF79FF
+sleep 0.08200
+cansend vcan0 485#6EFFEAFF
+cansend vcan0 486#98FF7AFF
+sleep 0.08200
+cansend vcan0 485#6EFFEBFF
+cansend vcan0 486#97FF7AFF
+sleep 0.08200
+cansend vcan0 485#6EFFEBFF
+cansend vcan0 486#96FF7BFF
+sleep 0.08200
+cansend vcan0 485#6FFFECFF
+cansend vcan0 486#95FF7CFF
+sleep 0.08200
+cansend vcan0 485#6FFFECFF
+cansend vcan0 486#94FF7CFF
+sleep 0.08200
+cansend vcan0 485#6FFFEDFF
+cansend vcan0 486#93FF7DFF
+sleep 0.08200
+cansend vcan0 485#6FFFEDFF
+cansend vcan0 486#92FF7EFF
+sleep 0.08200
+cansend vcan0 485#6FFFEEFF
+cansend vcan0 486#91FF7FFF
+sleep 0.08200
+cansend vcan0 485#6FFFEFFF
+cansend vcan0 486#90FF7FFF
+sleep 0.08200
+cansend vcan0 485#70FFEFFF
+cansend vcan0 486#8FFF80FF
+sleep 0.08200
+cansend vcan0 485#70FFF0FF
+cansend vcan0 486#8EFF81FF
+sleep 0.08200
+cansend vcan0 485#70FFF0FF
+cansend vcan0 486#8DFF82FF
+sleep 0.08200
+cansend vcan0 485#70FFF1FF
+cansend vcan0 486#8CFF83FF
+sleep 0.08200
+cansend vcan0 485#71FFF2FF
+cansend vcan0 486#8BFF83FF
+sleep 0.08200
+cansend vcan0 485#71FFF2FF
+cansend vcan0 486#8AFF84FF
+sleep 0.08200
+cansend vcan0 485#71FFF3FF
+cansend vcan0 486#8AFF85FF
+sleep 0.08200
+cansend vcan0 485#71FFF3FF
+cansend vcan0 486#89FF86FF
+sleep 0.08200
+cansend vcan0 485#71FFF4FF
+cansend vcan0 486#88FF87FF
+sleep 0.08200
+cansend vcan0 485#72FFF5FF
+cansend vcan0 486#87FF88FF
+sleep 0.08200
+cansend vcan0 485#72FFF5FF
+cansend vcan0 486#86FF89FF
+sleep 0.08200
+cansend vcan0 485#72FFF6FF
+cansend vcan0 486#85FF8AFF
+sleep 0.08200
+cansend vcan0 485#72FFF6FF
+cansend vcan0 486#84FF8AFF
+sleep 0.08200
+cansend vcan0 485#73FFF7FF
+cansend vcan0 486#83FF8BFF
+sleep 0.08200
+cansend vcan0 485#73FFF7FF
+cansend vcan0 486#83FF8CFF
+sleep 0.08200
+cansend vcan0 485#73FFF8FF
+cansend vcan0 486#82FF8DFF
+sleep 0.08200
+cansend vcan0 485#74FFF9FF
+cansend vcan0 486#81FF8EFF
+sleep 0.08200
+cansend vcan0 485#74FFF9FF
+cansend vcan0 486#80FF8FFF
+sleep 0.08200
+cansend vcan0 485#74FFFAFF
+cansend vcan0 486#7FFF90FF
+sleep 0.08200
+cansend vcan0 485#74FFFAFF
+cansend vcan0 486#7FFF91FF
+sleep 0.08200
+cansend vcan0 485#75FFFBFF
+cansend vcan0 486#7EFF92FF
+sleep 0.08200
+cansend vcan0 485#75FFFBFF
+cansend vcan0 486#7DFF93FF
+sleep 0.08200
+cansend vcan0 485#75FFFCFF
+cansend vcan0 486#7CFF94FF
+sleep 0.08200
+cansend vcan0 485#75FFFDFF
+cansend vcan0 486#7CFF95FF
+sleep 0.08200
+cansend vcan0 485#76FFFDFF
+cansend vcan0 486#7BFF96FF
+sleep 0.08200
+cansend vcan0 485#76FFFEFF
+cansend vcan0 486#7AFF97FF
+sleep 0.08200
+cansend vcan0 485#76FFFEFF
+cansend vcan0 486#7AFF98FF
+sleep 0.08200
+cansend vcan0 485#77FFFFFF
+cansend vcan0 486#79FF99FF
+sleep 0.08200
+cansend vcan0 485#77FFFFFF
+cansend vcan0 486#78FF9BFF
+sleep 0.08200
+cansend vcan0 485#77FF0000
+cansend vcan0 486#78FF9CFF
+sleep 0.08200
+cansend vcan0 485#78FF0000
+cansend vcan0 486#77FF9DFF
+sleep 0.08200
+cansend vcan0 485#78FF0100
+cansend vcan0 486#76FF9EFF
+sleep 0.08200
+cansend vcan0 485#78FF0100
+cansend vcan0 486#76FF9FFF
+sleep 0.08200
+cansend vcan0 485#79FF0200
+cansend vcan0 486#75FFA0FF
+sleep 0.08200
+cansend vcan0 485#79FF0300
+cansend vcan0 486#75FFA1FF
+sleep 0.08200
+cansend vcan0 485#79FF0300
+cansend vcan0 486#74FFA2FF
+sleep 0.08200
+cansend vcan0 485#7AFF0400
+cansend vcan0 486#74FFA3FF
+sleep 0.08200
+cansend vcan0 485#7AFF0400
+cansend vcan0 486#73FFA5FF
+sleep 0.08200
+cansend vcan0 485#7AFF0500
+cansend vcan0 486#72FFA6FF
+sleep 0.08200
+cansend vcan0 485#7BFF0500
+cansend vcan0 486#72FFA7FF
+sleep 0.08200
+cansend vcan0 485#7BFF0600
+cansend vcan0 486#71FFA8FF
+sleep 0.08200
+cansend vcan0 485#7BFF0600
+cansend vcan0 486#71FFA9FF
+sleep 0.08200
+cansend vcan0 485#7CFF0700
+cansend vcan0 486#71FFAAFF
+sleep 0.08200
+cansend vcan0 485#7CFF0700
+cansend vcan0 486#70FFACFF
+sleep 0.08200
+cansend vcan0 485#7CFF0800
+cansend vcan0 486#70FFADFF
+sleep 0.08200
+cansend vcan0 485#7DFF0800
+cansend vcan0 486#6FFFAEFF
+sleep 0.08200
+cansend vcan0 485#7DFF0900
+cansend vcan0 486#6FFFAFFF
+sleep 0.08200
+cansend vcan0 485#7DFF0900
+cansend vcan0 486#6FFFB0FF
+sleep 0.08200
+cansend vcan0 485#7EFF0A00
+cansend vcan0 486#6EFFB1FF
+sleep 0.08200
+cansend vcan0 485#7EFF0A00
+cansend vcan0 486#6EFFB3FF
+sleep 0.08200
+cansend vcan0 485#7FFF0B00
+cansend vcan0 486#6DFFB4FF
+sleep 0.08200
+cansend vcan0 485#7FFF0B00
+cansend vcan0 486#6DFFB5FF
+sleep 0.08200
+cansend vcan0 485#7FFF0C00
+cansend vcan0 486#6DFFB6FF
+sleep 0.08200
+cansend vcan0 485#80FF0C00
+cansend vcan0 486#6DFFB8FF
+sleep 0.08200
+cansend vcan0 485#80FF0D00
+cansend vcan0 486#6CFFB9FF
+sleep 0.08200
+cansend vcan0 485#81FF0D00
+cansend vcan0 486#6CFFBAFF
+sleep 0.08200
+cansend vcan0 485#81FF0E00
+cansend vcan0 486#6CFFBBFF
+sleep 0.08200
+cansend vcan0 485#81FF0E00
+cansend vcan0 486#6CFFBCFF
+sleep 0.08200
+cansend vcan0 485#82FF0F00
+cansend vcan0 486#6BFFBEFF
+sleep 0.08200
+cansend vcan0 485#82FF0F00
+cansend vcan0 486#6BFFBFFF
+sleep 0.08200
+cansend vcan0 485#83FF1000
+cansend vcan0 486#6BFFC0FF
+sleep 0.08200
+cansend vcan0 485#83FF1000
+cansend vcan0 486#6BFFC1FF
+sleep 0.08200
+cansend vcan0 485#83FF1100
+cansend vcan0 486#6BFFC3FF
+sleep 0.08200
+cansend vcan0 485#84FF1100
+cansend vcan0 486#6BFFC4FF
+sleep 0.08200
+cansend vcan0 485#84FF1200
+cansend vcan0 486#6AFFC5FF
+sleep 0.08200
+cansend vcan0 485#85FF1200
+cansend vcan0 486#6AFFC6FF
+sleep 0.08200
+cansend vcan0 485#85FF1200
+cansend vcan0 486#6AFFC8FF
+sleep 0.08200
+cansend vcan0 485#86FF1300
+cansend vcan0 486#6AFFC9FF
+sleep 0.08200
+cansend vcan0 485#86FF1300
+cansend vcan0 486#6AFFCAFF
+sleep 0.08200
+cansend vcan0 485#86FF1400
+cansend vcan0 486#6AFFCBFF
+sleep 0.08200
+cansend vcan0 485#87FF1400
+cansend vcan0 486#6AFFCDFF
+sleep 0.08200
+cansend vcan0 485#87FF1500
+cansend vcan0 486#6AFFCEFF
+sleep 0.08200
+cansend vcan0 485#88FF1500
+cansend vcan0 486#6AFFCFFF
+sleep 0.08200
+cansend vcan0 485#88FF1600
+cansend vcan0 486#6AFFD1FF
+sleep 0.08200
+cansend vcan0 485#89FF1600
+cansend vcan0 486#6AFFD2FF
+sleep 0.08200
+cansend vcan0 485#89FF1600
+cansend vcan0 486#6AFFD3FF
+sleep 0.08200
+cansend vcan0 485#8AFF1700
+cansend vcan0 486#6AFFD4FF
+sleep 0.08200
+cansend vcan0 485#8AFF1700
+cansend vcan0 486#6AFFD6FF
+sleep 0.08200
+cansend vcan0 485#8AFF1800
+cansend vcan0 486#6AFFD7FF
+sleep 0.08200
+cansend vcan0 485#8BFF1800
+cansend vcan0 486#6BFFD8FF
+sleep 0.08200
+cansend vcan0 485#8BFF1900
+cansend vcan0 486#6BFFD9FF
+sleep 0.08200
+cansend vcan0 485#8CFF1900
+cansend vcan0 486#6BFFDBFF
+sleep 0.08200
+cansend vcan0 485#8CFF1900
+cansend vcan0 486#6BFFDCFF
+sleep 0.08200
+cansend vcan0 485#8DFF1A00
+cansend vcan0 486#6BFFDDFF
+sleep 0.08200
+cansend vcan0 485#8DFF1A00
+cansend vcan0 486#6BFFDEFF
+sleep 0.08200
+cansend vcan0 485#8EFF1B00
+cansend vcan0 486#6CFFE0FF
+sleep 0.08200
+cansend vcan0 485#8EFF1B00
+cansend vcan0 486#6CFFE1FF
+sleep 0.08200
+cansend vcan0 485#8FFF1B00
+cansend vcan0 486#6CFFE2FF
+sleep 0.08200
+cansend vcan0 485#8FFF1C00
+cansend vcan0 486#6CFFE3FF
+sleep 0.08200
+cansend vcan0 485#90FF1C00
+cansend vcan0 486#6DFFE4FF
+sleep 0.08200
+cansend vcan0 485#90FF1D00
+cansend vcan0 486#6DFFE6FF
+sleep 0.08200
+cansend vcan0 485#91FF1D00
+cansend vcan0 486#6DFFE7FF
+sleep 0.08200
+cansend vcan0 485#91FF1D00
+cansend vcan0 486#6DFFE8FF
+sleep 0.08200
+cansend vcan0 485#92FF1E00
+cansend vcan0 486#6EFFE9FF
+sleep 0.08200
+cansend vcan0 485#92FF1E00
+cansend vcan0 486#6EFFEBFF
+sleep 0.08200
+cansend vcan0 485#93FF1F00
+cansend vcan0 486#6FFFECFF
+sleep 0.08200
+cansend vcan0 485#93FF1F00
+cansend vcan0 486#6FFFEDFF
+sleep 0.08200
+cansend vcan0 485#94FF1F00
+cansend vcan0 486#6FFFEEFF
+sleep 0.08200
+cansend vcan0 485#94FF2000
+cansend vcan0 486#70FFEFFF
+sleep 0.08200
+cansend vcan0 485#95FF2000
+cansend vcan0 486#70FFF0FF
+sleep 0.08200
+cansend vcan0 485#95FF2000
+cansend vcan0 486#71FFF2FF
+sleep 0.08200
+cansend vcan0 485#96FF2100
+cansend vcan0 486#71FFF3FF
+sleep 0.08200
+cansend vcan0 485#96FF2100
+cansend vcan0 486#71FFF4FF
+sleep 0.08200
+cansend vcan0 485#97FF2100
+cansend vcan0 486#72FFF5FF
+sleep 0.08200
+cansend vcan0 485#97FF2200
+cansend vcan0 486#72FFF6FF
+sleep 0.08200
+cansend vcan0 485#98FF2200
+cansend vcan0 486#73FFF7FF
+sleep 0.08200
+cansend vcan0 485#98FF2200
+cansend vcan0 486#74FFF9FF
+sleep 0.08200
+cansend vcan0 485#99FF2300
+cansend vcan0 486#74FFFAFF
+sleep 0.08200
+cansend vcan0 485#99FF2300
+cansend vcan0 486#75FFFBFF
+sleep 0.08200
+cansend vcan0 485#9AFF2300
+cansend vcan0 486#75FFFCFF
+sleep 0.08200
+cansend vcan0 485#9BFF2400
+cansend vcan0 486#76FFFDFF
+sleep 0.08200
+cansend vcan0 485#9BFF2400
+cansend vcan0 486#76FFFEFF
+sleep 0.08200
+cansend vcan0 485#9CFF2400
+cansend vcan0 486#77FFFFFF
+sleep 0.08200
+cansend vcan0 485#9CFF2500
+cansend vcan0 486#78FF0000
+sleep 0.08200
+cansend vcan0 485#9DFF2500
+cansend vcan0 486#78FF0100
+sleep 0.08200
+cansend vcan0 485#9DFF2500
+cansend vcan0 486#79FF0300
+sleep 0.08200
+cansend vcan0 485#9EFF2600
+cansend vcan0 486#7AFF0400
+sleep 0.08200
+cansend vcan0 485#9EFF2600
+cansend vcan0 486#7AFF0500
+sleep 0.08200
+cansend vcan0 485#9FFF2600
+cansend vcan0 486#7BFF0600
+sleep 0.08200
+cansend vcan0 485#9FFF2700
+cansend vcan0 486#7CFF0700
+sleep 0.08200
+cansend vcan0 485#A0FF2700
+cansend vcan0 486#7CFF0800
+sleep 0.08200
+cansend vcan0 485#A1FF2700
+cansend vcan0 486#7DFF0900
+sleep 0.08200
+cansend vcan0 485#A1FF2700
+cansend vcan0 486#7EFF0A00
+sleep 0.08200
+cansend vcan0 485#A2FF2800
+cansend vcan0 486#7FFF0B00
+sleep 0.08200
+cansend vcan0 485#A2FF2800
+cansend vcan0 486#7FFF0C00
+sleep 0.08200
+cansend vcan0 485#A3FF2800
+cansend vcan0 486#80FF0D00
+sleep 0.08200
+cansend vcan0 485#A3FF2800
+cansend vcan0 486#81FF0E00
+sleep 0.08200
+cansend vcan0 485#A4FF2900
+cansend vcan0 486#82FF0F00
+sleep 0.08200
+cansend vcan0 485#A5FF2900
+cansend vcan0 486#83FF1000
+sleep 0.08200
+cansend vcan0 485#A5FF2900
+cansend vcan0 486#83FF1100
+sleep 0.08200
+cansend vcan0 485#A6FF2A00
+cansend vcan0 486#84FF1200
+sleep 0.08200
+cansend vcan0 485#A6FF2A00
+cansend vcan0 486#85FF1200
+sleep 0.08200
+cansend vcan0 485#A7FF2A00
+cansend vcan0 486#86FF1300
+sleep 0.08200
+cansend vcan0 485#A7FF2A00
+cansend vcan0 486#87FF1400
+sleep 0.08200
+cansend vcan0 485#A8FF2B00
+cansend vcan0 486#88FF1500
+sleep 0.08200
+cansend vcan0 485#A9FF2B00
+cansend vcan0 486#89FF1600
+sleep 0.08200
+cansend vcan0 485#A9FF2B00
+cansend vcan0 486#8AFF1700
+sleep 0.08200
+cansend vcan0 485#AAFF2B00
+cansend vcan0 486#8AFF1800
+sleep 0.08200
+cansend vcan0 485#AAFF2B00
+cansend vcan0 486#8BFF1900
+sleep 0.08200
+cansend vcan0 485#ABFF2C00
+cansend vcan0 486#8CFF1900
+sleep 0.08200
+cansend vcan0 485#ACFF2C00
+cansend vcan0 486#8DFF1A00
+sleep 0.08200
+cansend vcan0 485#ACFF2C00
+cansend vcan0 486#8EFF1B00
+sleep 0.08200
+cansend vcan0 485#ADFF2C00
+cansend vcan0 486#8FFF1C00
+sleep 0.08200
+cansend vcan0 485#ADFF2D00
+cansend vcan0 486#90FF1D00
+sleep 0.08200
+cansend vcan0 485#AEFF2D00
+cansend vcan0 486#91FF1D00
+sleep 0.08200
+cansend vcan0 485#AFFF2D00
+cansend vcan0 486#92FF1E00
+sleep 0.08200
+cansend vcan0 485#AFFF2D00
+cansend vcan0 486#93FF1F00
+sleep 0.08200
+cansend vcan0 485#B0FF2D00
+cansend vcan0 486#94FF2000
+sleep 0.08200
+cansend vcan0 485#B0FF2D00
+cansend vcan0 486#95FF2000
+sleep 0.08200
+cansend vcan0 485#B1FF2E00
+cansend vcan0 486#96FF2100
+sleep 0.08200
+cansend vcan0 485#B1FF2E00
+cansend vcan0 486#97FF2200
+sleep 0.08200
+cansend vcan0 485#B2FF2E00
+cansend vcan0 486#98FF2200
+sleep 0.08200
+cansend vcan0 485#B3FF2E00
+cansend vcan0 486#99FF2300
+sleep 0.08200
+cansend vcan0 485#B3FF2E00
+cansend vcan0 486#9BFF2400
+sleep 0.08200
+cansend vcan0 485#B4FF2F00
+cansend vcan0 486#9CFF2400
+sleep 0.08200
+cansend vcan0 485#B5FF2F00
+cansend vcan0 486#9DFF2500
+sleep 0.08200
+cansend vcan0 485#B5FF2F00
+cansend vcan0 486#9EFF2600
+sleep 0.08200
+cansend vcan0 485#B6FF2F00
+cansend vcan0 486#9FFF2600
+sleep 0.08200
+cansend vcan0 485#B6FF2F00
+cansend vcan0 486#A0FF2700
+sleep 0.08200
+cansend vcan0 485#B7FF2F00
+cansend vcan0 486#A1FF2700
+sleep 0.08200
+cansend vcan0 485#B8FF2F00
+cansend vcan0 486#A2FF2800
+sleep 0.08200
+cansend vcan0 485#B8FF3000
+cansend vcan0 486#A3FF2800
+sleep 0.08200
+cansend vcan0 485#B9FF3000
+cansend vcan0 486#A5FF2900
+sleep 0.08200
+cansend vcan0 485#B9FF3000
+cansend vcan0 486#A6FF2A00
+sleep 0.08200
+cansend vcan0 485#BAFF3000
+cansend vcan0 486#A7FF2A00
+sleep 0.08200
+cansend vcan0 485#BBFF3000
+cansend vcan0 486#A8FF2B00
+sleep 0.08200
+cansend vcan0 485#BBFF3000
+cansend vcan0 486#A9FF2B00
+sleep 0.08200
+cansend vcan0 485#BCFF3000
+cansend vcan0 486#AAFF2B00
+sleep 0.08200
+cansend vcan0 485#BCFF3000
+cansend vcan0 486#ACFF2C00
+sleep 0.08200
+cansend vcan0 485#BDFF3100
+cansend vcan0 486#ADFF2C00
+sleep 0.08200
+cansend vcan0 485#BEFF3100
+cansend vcan0 486#AEFF2D00
+sleep 0.08200
+cansend vcan0 485#BEFF3100
+cansend vcan0 486#AFFF2D00
+sleep 0.08200
+cansend vcan0 485#BFFF3100
+cansend vcan0 486#B0FF2D00
+sleep 0.08200
+cansend vcan0 485#C0FF3100
+cansend vcan0 486#B1FF2E00
+sleep 0.08200
+cansend vcan0 485#C0FF3100
+cansend vcan0 486#B3FF2E00
+sleep 0.08200
+cansend vcan0 485#C1FF3100
+cansend vcan0 486#B4FF2F00
+sleep 0.08200
+cansend vcan0 485#C1FF3100
+cansend vcan0 486#B5FF2F00
+sleep 0.08200
+cansend vcan0 485#C2FF3100
+cansend vcan0 486#B6FF2F00
+sleep 0.08200
+cansend vcan0 485#C3FF3100
+cansend vcan0 486#B8FF2F00
+sleep 0.08200
+cansend vcan0 485#C3FF3100
+cansend vcan0 486#B9FF3000
+sleep 0.08200
+cansend vcan0 485#C4FF3100
+cansend vcan0 486#BAFF3000
+sleep 0.08200
+cansend vcan0 485#C5FF3200
+cansend vcan0 486#BBFF3000
+sleep 0.08200
+cansend vcan0 485#C5FF3200
+cansend vcan0 486#BCFF3000
+sleep 0.08200
+cansend vcan0 485#C6FF3200
+cansend vcan0 486#BEFF3100
+sleep 0.08200
+cansend vcan0 485#C6FF3200
+cansend vcan0 486#BFFF3100
+sleep 0.08200
+cansend vcan0 485#C7FF3200
+cansend vcan0 486#C0FF3100
+sleep 0.08200
+cansend vcan0 485#C8FF3200
+cansend vcan0 486#C1FF3100
+sleep 0.08200
+cansend vcan0 485#C8FF3200
+cansend vcan0 486#C3FF3100
+sleep 0.08200
+cansend vcan0 485#C9FF3200
+cansend vcan0 486#C4FF3100
+sleep 0.08200
+cansend vcan0 485#CAFF3200
+cansend vcan0 486#C5FF3200
+sleep 0.08200
+cansend vcan0 485#CAFF3200
+cansend vcan0 486#C6FF3200
+sleep 0.08200
+cansend vcan0 485#CBFF3200
+cansend vcan0 486#C8FF3200
+sleep 0.08200
+cansend vcan0 485#CBFF3200
+cansend vcan0 486#C9FF3200
+sleep 0.08200
+cansend vcan0 485#CCFF3200
+cansend vcan0 486#CAFF3200
+sleep 0.08200
+cansend vcan0 485#CDFF3200
+cansend vcan0 486#CBFF3200
+sleep 0.08200
+cansend vcan0 485#CDFF3200
+cansend vcan0 486#CDFF3200
+sleep 0.08200

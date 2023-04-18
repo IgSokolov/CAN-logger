@@ -43,7 +43,8 @@
 	      can-interface can-interface-cli
 	      dt (/ dt-cli 1000)
 	      t-max t-max-cli)))
-    (format t "Running CAN logger:~%config path = ~a~%can interface = ~a~%dt = ~f s~%t-max = ~a s~%" config-file can-interface dt t-max)      
+    (format t "Running CAN logger:~%config path = ~a~%can interface = ~a~%dt = ~f s~%t-max = ~a s~%"
+	    config-file can-interface dt t-max)      
     (setq *stop* NIL)
 
     (handler-case
@@ -92,7 +93,7 @@
 			(sleep 0.1) ;; without sleep clx doesn't produce output
 			(display-force-output display))		 
 		    (list plot-window))            
-	      (unwind-protect ;; todo handle SB-INT:BROKEN-PIPE and END-OF-FILE and SB-INT:SIMPLE-STREAM-ERROR		   
+	      (unwind-protect ;; should we handle SB-INT:BROKEN-PIPE and END-OF-FILE and SB-INT:SIMPLE-STREAM-ERROR ?
 		   (sb-thread:join-thread
 		    (sb-thread:make-thread (lambda () (make-widget-plot
 						      :main-window (cdr plot-window)
@@ -100,7 +101,7 @@
 						      :screen screen
 						      :colormap colormap
 						      :x-start 0 :y-start 0 :size 800
-						      :data-queue *plot-queue* :t-max t-max :dt dt)))) ;; todo: dt + t_max -> cli!
+						      :data-queue *plot-queue* :t-max t-max :dt dt))))
 		(stop-gui)
 		(close-display display)))))
       (sb-sys:interactive-interrupt () (stop-gui)))))

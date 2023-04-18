@@ -21,9 +21,11 @@
     (let ((interface-number (parse-integer (string (elt interface-name (- len 1))) :junk-allowed t))
 	  (name-body (subseq interface-name 0 (- len 1))))
       (unless interface-number	 
-	(error 'parse-error-report :msg (format nil "Name of CAN interface must have be a positive integer at the end (ex. vcan0)")))
+	(error 'parse-error-report
+	       :msg (format nil "Name of CAN interface must have be a positive integer at the end (ex. vcan0)")))
       (unless (search "can" name-body)
-	(error 'parse-error-report :msg (format nil "Name of CAN interface must include a `can` substring (ex. vcan0)")))))
+	(error 'parse-error-report
+	       :msg (format nil "Name of CAN interface must include a `can` substring (ex. vcan0)")))))
   interface-name)
 
 (defun check-time (string-value &key mode)

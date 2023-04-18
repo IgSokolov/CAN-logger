@@ -69,9 +69,7 @@ Red Hat 4.8.5-44 - SBCL 2.1.9
 	- [unix-sockets](https://github.com/libre-man/unix-opts)
 
 ## Todos
-- [ ] Fix autorescaling
 - [ ] Decode multiplexed payload
-- [ ] Add project to Ultralisp
 
 ## Acknowledgement
 Kudos to Oliver Hartkopp for his brilliant work on the SocketCAN API!
